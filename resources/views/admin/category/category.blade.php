@@ -112,10 +112,16 @@
                                         Add Category
                                     </button>
                                     <div class="d-none w-100" id="add-main-category">
-                                        <form action="/category/main/store" method="POST" class=" d-flex row flex-nowrap m-0 w-100">
-                                            <div class="col-10 d-flex p-0 pr-3">
+                                        <form action="/category/main/store" method="POST" class=" d-flex row flex-nowrap m-0 w-100" enctype='multipart/form-data'>
+                                            <div class="col-6 d-flex p-0 pr-3">
                                                 <input type="text" placeholder="Ender category" name="catname" id="catname" class="form-control bg-gray w-100">
                                             </div>
+                                            <div class="col-4 d-flex p-0 pr-3">
+
+                                                <label class="file-input-btn btn btn-primary RT-shadow m-0 w-100"  for="catImage"><i class="fas fa-upload"></i> image</label>
+                                                <input type="file" class="d-none" class="image-upload" name="image" id="catImage" accept="image/*" />
+                                            </div>
+
                                             <div class="col-2 d-flex justify-content-center align-items-center p-0">
 
                                                 <button class="btn btn-success rounded-0 mr-2" type="submit">

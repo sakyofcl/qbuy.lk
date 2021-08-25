@@ -18,8 +18,10 @@ class categoryController extends Controller
 
     public function storeMainCategory(Request $data)
     {
+        
         $store = new category;
         $store->name = $data->catname;
+        $store->image=base64_encode(file_get_contents($data->file('image')));
         if ($store->save()) {
             return back();
         }
