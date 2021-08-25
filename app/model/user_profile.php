@@ -11,7 +11,8 @@ class user_profile extends Model
         'email',
         'gender',
         'contact',
-        'uid'
+        'uid',
+        'image'
     ];
     public $primaryKey = "id";
     public $timestamps = false;

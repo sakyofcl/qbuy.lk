@@ -16,6 +16,10 @@ class apiClientAuthController extends Controller
 {
     public function clientRegister(Request $request){
 
+        
+        
+
+
         if(user::where('phone',$request->phone)->exists()){
             $client = user::where(['phone' =>$request->phone])->first();
         
@@ -63,11 +67,21 @@ class apiClientAuthController extends Controller
                 $token->access_token =$access_token;
 
                 if ($token->save()) {
+                    
+                    #create user profile
+                    $profile=new user_profile;
+                    $profile->uid=$uid->uid;
+                    $defaultImage = public_path('assets/Backend/img/default/user.png');
+                    $image=base64_encode(file_get_contents($defaultImage));      
+                    $profile->image=$image;
+                    $profile->save();
+
                     return response()->json(
                         [
                             'status' => true,
                             'access_token' => $access_token,
-                            'message' => "User successfully register"
+                            'message' => "User successfully register",
+                            "test"=>$uid->uid
                         ]
                     );
                 }

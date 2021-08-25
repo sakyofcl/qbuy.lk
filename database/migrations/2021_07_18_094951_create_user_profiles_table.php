@@ -15,10 +15,11 @@ class CreateUserProfilesTable extends Migration
     {
         Schema::create('user_profiles', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
-            $table->string('name', 25)->nullable();
-            $table->string('email')->nullable()->unique();
-            $table->string('gender')->nullable();
-            $table->integer('contact')->nullable()->unique();
+            $table->string('name', 25)->nullable()->default('john');
+            $table->string('email')->nullable()->default('john@abc.com');
+            $table->string('gender')->nullable()->default('male');
+            $table->string('contact')->nullable()->default("0XXXXXXXXX");
+            $table->binary('image')->nullable();
             $table->integer('uid')->nullable(false);
         });
     }
