@@ -19,15 +19,23 @@ class categoryController extends Controller
 
     public function storeMainCategory(Request $data)
     {
-        # store main image
-        $image = $data->file('image');
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $storepath = public_path('./category');
-        $image->move($storepath,  $imageName);
+        
+        
         
         $store = new category;
         $store->name = $data->catname;
-        $store->image=$imageName;
+
+        # store main image
+        if($data->file('image')){
+            $image = $data->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $storepath = public_path('./category');
+            $image->move($storepath,  $imageName);
+
+            $store->image=$imageName;
+        }
+      
+        
         if ($store->save()) {
             return back();
         }
