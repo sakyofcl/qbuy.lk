@@ -20,7 +20,7 @@ class CreateShipAddresses extends Migration
             $table->string('city', 100)->nullable(false);
             $table->string('province', 100)->nullable(false);
             $table->string('zip', 100)->nullable(false);
-            $table->integer('contact')->nullable(false)->unique();
+            $table->integer('contact')->nullable(false);
             $table->integer('uid')->nullable(false);
         });
     }

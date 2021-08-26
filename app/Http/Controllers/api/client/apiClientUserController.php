@@ -73,4 +73,135 @@ class apiClientUserController extends Controller
 
                
     }
+
+
+    public function getUserShipAddress(Request $request){
+        $userToken=$request->header('access_token');
+        if($userToken){
+            if(user_token::where('access_token',$userToken)->exists()){
+                #get uid from token
+                $user=user_token::where('access_token',$userToken)->first();
+                #user id
+                $userId=$user->uid;
+                #get user profile data
+                $userShipAddress=ship_address::where('uid',$userId)->get();
+                if(isset($userShipAddress) && count($userShipAddress)>0){
+                    return response()->json(['status'=>true,'data'=> $userShipAddress,'message'=>"user ship address"]);
+                }
+                else{
+                    return response()->json(["status"=>true,"data"=> [],"message"=>"does not have data"]);
+                }
+                
+            }
+            else{
+                return response()->json(["status"=>false,"data"=>[],"message"=>"User not found!"]);
+            }
+        }
+        else{
+            return response()->json(["status"=>false,"data"=>[],"message"=>"please add signature"]);
+        }
+        
+    }
+
+
+    public function createUserShipAddress(Request $request){
+        
+        $userToken=$request->header('access_token');
+        if($userToken){
+            if(user_token::where('access_token',$userToken)->exists()){
+                #get uid from token
+                $user=user_token::where('access_token',$userToken)->first();
+                #user id
+                $userId=$user->uid;
+                #get user profile data
+
+                $store = new ship_address;
+                $store->name = $request->name;
+                $store->street = $request->street;
+                $store->city = $request->city;
+                $store->province = $request->province;
+                $store->zip = $request->zip;
+                $store->contact = $request->contact;
+                $store->uid =$userId;
+
+                if ($store->save()) {
+                    return response()->json(["status"=>true,"data"=>[],"message"=>"ship address created successfully"]);
+                } else {
+                    return response()->json(["status"=>false,"data"=>[],"message"=>"ship address not created , plz insert correct data!"]);
+                }
+
+            }
+            else{
+                return response()->json(["status"=>false,"data"=>[],"message"=>"User not found!"]);
+            }
+        }
+        else{
+            return response()->json(["status"=>false,"data"=>[],"message"=>"please add signature"]);
+        }
+
+
+        
+    }
+
+
+    public function updateUserShipAddress(Request $request)
+    {
+        $userToken=$request->header('access_token');
+        if($userToken){
+            if(user_token::where('access_token',$userToken)->exists()){
+                #get uid from token
+                $user=user_token::where('access_token',$userToken)->first();
+                #user id
+                $userId=$user->uid;
+                #get user profile data
+
+                ship_address::where('id', $request->id)->update(array(
+                    'name' => $request->name,
+                    'street' => $request->street,
+                    'city' => $request->city,
+                    'province' => $request->province,
+                    'zip' => $request->zip,
+                    'contact' => $request->contact,
+                    'uid' => $userId
+                ));
+                return response()->json(["status"=>true,"data"=>[],"message"=>"ship address updated successfully"]);
+
+            }
+            else{
+                return response()->json(["status"=>false,"data"=>[],"message"=>"User not found!"]);
+            }
+        }
+        else{
+            return response()->json(["status"=>false,"data"=>[],"message"=>"please add signature"]);
+        }
+    }
+
+
+    public function deleteUserShipAddress( Request $request){
+        $userToken=$request->header('access_token');
+        $addressId=$request->header('id');
+        if($userToken){
+            if(user_token::where('access_token',$userToken)->exists()){
+                #get uid from token
+                $user=user_token::where('access_token',$userToken)->first();
+                #user id
+                $userId=$user->uid;
+                #get user profile data
+
+                $delteAddres = ship_address::where('id', $addressId)->first();
+                if ($delteAddres->delete()) {
+                    return response()->json(["status"=>true,"data"=>[],"message"=>"ship address delete successfully"]);
+                    
+                } else {
+                    return response()->json(["status"=>false,"data"=>[],"message"=>"ship address not deleted "]);
+                }
+            }
+            else{
+                return response()->json(["status"=>false,"data"=>[],"message"=>"User not found!"]);
+            }
+        }
+        else{
+            return response()->json(["status"=>false,"data"=>[],"message"=>"please add signature"]);
+        }
+    }
 }

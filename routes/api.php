@@ -41,19 +41,17 @@ Route::post('/auth/client/register', [apiClientAuthController::class, 'clientReg
 
 //------------------------------- [ PROFILE API ROUTES ] ---------------------------------\\
 
-//------- [ GET ] -------\\
-#get profile details
+#profile
 Route::get('/user/profile', [apiClientUserController::class, 'getUserProfile']);
-
-//------- [ POST ] -------\\
-#update user profile
 Route::post('/user/profile/update', [apiClientUserController::class, 'updateUserProfile']);
+#ship address
+Route::get('/ship/address', [apiClientUserController::class, 'getUserShipAddress']);
+Route::get('/ship/address/delete', [apiClientUserController::class, 'deleteUserShipAddress']);
+Route::post('/ship/address/create', [apiClientUserController::class, 'createUserShipAddress']);
+Route::post('/ship/address/update', [apiClientUserController::class, 'updateUserShipAddress']);
 
-Route::post('/user/create/store', [apiUserController::class, 'storeUser']);
-#Route::post('/user/profile/update', [apiUserController::class, 'updateProfile']);
-Route::post('/user/ship/create', [apiUserController::class, 'createShippingAddress']);
-Route::post('/user/ship/update', [apiUserController::class, 'updateShippingAddress']);
-Route::get('/user/ship/delete', [apiUserController::class, 'deleteShippingAddress']);
+
+
 
 #---------------- [ TEST ] --------------
 Route::get('/test', ['middleware' => 'storeUser', 'uses' => [apiUserController::class, 'deleteShippingAddress']]);
