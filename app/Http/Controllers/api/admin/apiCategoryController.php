@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\model\sub_category;
+use App\model\category;
 
 class apiCategoryController extends Controller
 {
@@ -21,5 +22,18 @@ class apiCategoryController extends Controller
                 return response()->json([], 404);
             }
         }
+    }
+
+    public function getMainCategory(){
+        $maincat=category::all();
+
+        if(isset($maincat) && count($maincat)>0){
+            return response()->json(['status'=>true,'data'=>$maincat,'message'=>"get all main categories!"]);
+        }
+        else{
+            return response()->json(['status'=>true,'data'=>[],'message'=>"get all main categories!"]);
+        }
+        
+
     }
 }

@@ -50,7 +50,9 @@ Route::get('/ship/address/delete', [apiClientUserController::class, 'deleteUserS
 Route::post('/ship/address/create', [apiClientUserController::class, 'createUserShipAddress']);
 Route::post('/ship/address/update', [apiClientUserController::class, 'updateUserShipAddress']);
 
-
+//------------------------------- [ CATEGORY API ROUTES ] ---------------------------------\\
+#category
+Route::get('/category/main/get', [apiCategoryController::class, 'getMainCategory']);
 
 
 #---------------- [ TEST ] --------------
