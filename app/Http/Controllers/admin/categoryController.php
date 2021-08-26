@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\model\category;
 use App\model\sub_category;
+use Illuminate\Support\Facades\File;
 
 class categoryController extends Controller
 {
@@ -18,10 +19,15 @@ class categoryController extends Controller
 
     public function storeMainCategory(Request $data)
     {
+        # store main image
+        $image = $data->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $storepath = public_path('./category');
+        $image->move($storepath,  $imageName);
         
         $store = new category;
         $store->name = $data->catname;
-        $store->image=base64_encode(file_get_contents($data->file('image')));
+        $store->image=$imageName;
         if ($store->save()) {
             return back();
         }
@@ -29,7 +35,9 @@ class categoryController extends Controller
 
     public function deleteMainCategory(Request $data)
     {
+
         $maincat = category::findOrFail($data->cid);
+        File::delete(public_path("category/{$maincat->image}"));
         $maincat->delete();
         return back();
     }

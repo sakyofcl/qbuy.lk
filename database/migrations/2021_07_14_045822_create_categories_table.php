@@ -16,7 +16,7 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->integer('cid')->autoIncrement();
             $table->string('name')->nullable(false);
-            $table->binary('image')->nullable(true);
+            $table->string('image')->nullable(true);
         });
     }
 

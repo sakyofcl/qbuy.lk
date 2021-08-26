@@ -25,7 +25,7 @@
     <!-- Store -->
     <?php
     echo dropdownHeader('shop');
-    echo dropdown('D-0', 'Category', '/category', 'fas fa-align-left');
+    echo dropdown('D-0', 'Category', '/category-tab', 'fas fa-align-left');
     echo dropdown('D-0', 'Product', '/product', 'fas fa-shopping-bag');
     ?>
     <!-- End Category -->

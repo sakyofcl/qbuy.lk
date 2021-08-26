@@ -31,7 +31,7 @@ Route::get('/product/delete', [productController::class, 'productDelete']);
 Route::post('/product/update/store', [productController::class, 'productUpdate']);
 Route::get('/product/stock/update/staus', [productController::class, 'productStockStatusUpdate']);
 #------ [ CATEGORY ] -----#
-Route::get('/category', [categoryController::class, 'category']);
+Route::get('/category-tab', [categoryController::class, 'category']);
 Route::get('/category/main/delete', [categoryController::class, 'deleteMainCategory']);
 Route::post('/category/main/store', [categoryController::class, 'storeMainCategory']);
 Route::post('/category/sub/store', [categoryController::class, 'storeSubCategory']);

@@ -28,6 +28,11 @@ class apiCategoryController extends Controller
         $maincat=category::all();
 
         if(isset($maincat) && count($maincat)>0){
+            
+            foreach($maincat as $maincatItem){
+                $maincatItem['image']="http://qbuy.lk/category/".$maincatItem['image'];
+            }
+
             return response()->json(['status'=>true,'data'=>$maincat,'message'=>"get all main categories!"]);
         }
         else{
