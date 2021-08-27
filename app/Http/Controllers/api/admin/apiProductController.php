@@ -15,6 +15,8 @@ class apiProductController extends Controller
     {
 
         $store = new product;
+        
+
         $store->cid = $data->cid;
 
         if ($data->name == null) {
@@ -57,5 +59,32 @@ class apiProductController extends Controller
         } else {
             return response()->json(['message' => "something wrong", 'status' => 404]);
         }
+    }
+
+    public  function getProduct(Request $request){
+
+        $cat_Id=$request->header('cat_id');
+        if($cat_Id){
+            $data=product::where('cid',$cat_Id)->get();
+
+            if(isset($data) && count($data)>0){
+            
+                foreach($data as $dataItem){
+                    $dataItem['image']="http://qbuy.lk/product/".$dataItem['image'];
+                }
+    
+                return response()->json(['status'=>true,'data'=>$data,'message'=>"get product successfully..!"]);
+            }
+            else{
+                return response()->json(['status'=>true,'data'=>[],'message'=>"no product in this category..!"]);
+            }
+
+        }
+        else{
+            return response()->json(['status'=>false,'data'=>[],'message'=>"give your cat_id"]);
+        }
+
+       
+        
     }
 }

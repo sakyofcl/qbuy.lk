@@ -4,11 +4,14 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+
 use App\model\category;
 use App\model\product;
 use App\model\product_stock_status;
 use App\model\sub_category;
-use File;
+
+
 class productController extends Controller
 {
     public function index()

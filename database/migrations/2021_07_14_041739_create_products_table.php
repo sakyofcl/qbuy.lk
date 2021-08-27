@@ -23,7 +23,7 @@ class CreateProductsTable extends Migration
             $table->integer('sold_count')->default(0);
             $table->integer('unit_weight')->default(0);
             $table->string('unit')->default('g');
-            $table->binary('image');
+            $table->string('image');
             $table->timestamp('date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('cid')->nullable(false);
             $table->integer('sub_id')->nullable(true);

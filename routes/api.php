@@ -54,6 +54,10 @@ Route::post('/ship/address/update', [apiClientUserController::class, 'updateUser
 #category
 Route::get('/category/main/get', [apiCategoryController::class, 'getMainCategory']);
 
+//------------------------------- [ PRODUCT API ROUTES ] ---------------------------------\\
+#product get buy category
+Route::get('/product', [apiProductController::class, 'getProduct']);
+
 
 #---------------- [ TEST ] --------------
 Route::get('/test', ['middleware' => 'storeUser', 'uses' => [apiUserController::class, 'deleteShippingAddress']]);
