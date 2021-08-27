@@ -70,7 +70,7 @@ class apiProductController extends Controller
             if(isset($data) && count($data)>0){
             
                 foreach($data as $dataItem){
-                    $dataItem['image']="http://qbuy.lk/product/".$dataItem['image'];
+                    $dataItem['image']="http://qbuy.lk/products/".$dataItem['image'];
                 }
     
                 return response()->json(['status'=>true,'data'=>$data,'message'=>"get product successfully..!"]);
