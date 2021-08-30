@@ -12,6 +12,7 @@ use App\Http\Controllers\api\admin\apiOrderController;
 #--------------- [ client controllers ] ---------------
 use App\Http\Controllers\api\client\apiClientAuthController;
 use App\Http\Controllers\api\client\apiClientUserController;
+use App\Http\Controllers\api\client\apiClientOrderController;
 
 
 
@@ -24,15 +25,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/category/sub', [apiCategoryController::class, 'getSubCategory']);
 
-
-#---------------- [ PRODUCT ]--------------#
-Route::post('/product/store', [apiProductController::class, 'storeProduct']);
-
 //------------------------------- [ AUTH API ROUTES ] ---------------------------------\\
-
-//------- [ GET ] -------\\
-
-//------- [ POST ] -------\\
 
 #user login
 Route::post('/auth/client/login', [apiClientAuthController::class, 'clientLogin']);
@@ -55,9 +48,15 @@ Route::post('/ship/address/update', [apiClientUserController::class, 'updateUser
 Route::get('/category/main/get', [apiCategoryController::class, 'getMainCategory']);
 
 //------------------------------- [ PRODUCT API ROUTES ] ---------------------------------\\
-#product get buy category
+#product get by category
 Route::get('/product', [apiProductController::class, 'getProduct']);
+#store product 
+Route::post('/product/store', [apiProductController::class, 'storeProduct']);
 
+//------------------------------- [ ORDER API ROUTES ] ---------------------------------\\
+
+#place order
+Route::post('/user/order/place', [apiClientOrderController::class, 'userPlaceOrder']);
 
 #---------------- [ TEST ] --------------
 Route::get('/test', ['middleware' => 'storeUser', 'uses' => [apiUserController::class, 'deleteShippingAddress']]);

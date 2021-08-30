@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\DB;
 class CreateOrdersTable extends Migration
 {
     /**
@@ -15,10 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->integer('oid')->autoIncrement()->start_from(1000);
-            $table->string('name')->nullable(false);
-            $table->string('address')->nullable(false);
-            $table->string('city')->nullable(false);
-            $table->integer('phone')->nullable(false);
+            $table->integer('address_id')->nullable(false);
             $table->string('status')->nullable(false)->default('process');
             $table->string('payment')->nullable(false);
             $table->timestamp('date')->default(DB::raw('CURRENT_TIMESTAMP'));
