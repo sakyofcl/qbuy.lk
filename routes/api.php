@@ -13,6 +13,7 @@ use App\Http\Controllers\api\admin\apiOrderController;
 use App\Http\Controllers\api\client\apiClientAuthController;
 use App\Http\Controllers\api\client\apiClientUserController;
 use App\Http\Controllers\api\client\apiClientOrderController;
+use App\Http\Controllers\api\client\apiClientCartController;
 
 
 
@@ -53,6 +54,11 @@ Route::get('/product', [apiProductController::class, 'getProduct']);
 #store product 
 Route::post('/product/store', [apiProductController::class, 'storeProduct']);
 
+//------------------------------- [ CART API ROUTES ] ---------------------------------\\
+Route::get('/user/cart', [apiClientCartController::class, 'getCart']);
+Route::get('/user/add/cart', [apiClientCartController::class, 'addCart']);
+Route::get('/user/cart/delete', [apiClientCartController::class, 'deleteCart']);
+Route::get('/user/cart/qty/update', [apiClientCartController::class, 'qtyUpdate']);
 //------------------------------- [ ORDER API ROUTES ] ---------------------------------\\
 
 #place order

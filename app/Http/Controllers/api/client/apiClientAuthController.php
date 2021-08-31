@@ -11,6 +11,7 @@ use App\model\user;
 use App\model\user_token;
 use App\model\user_profile;
 use App\model\ship_address;
+use App\model\cart;
 
 class apiClientAuthController extends Controller
 {
@@ -76,6 +77,11 @@ class apiClientAuthController extends Controller
                     $profile->image=$image;
                     $profile->contact=$request->phone;
                     $profile->save();
+
+                    #initiate cart
+                    $cart=new cart;
+                    $cart->$uid->uid;
+                    $cart->save();
 
                     return response()->json(
                         [
