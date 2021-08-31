@@ -103,7 +103,10 @@
                                                     <select class="form-control bg-gray" name="unit" id="unit">
                                                         <option value="kg" selected>Kg</option>
                                                         <option value="g">g</option>
+                                                        <option value="mg">mg</option>
                                                         <option value="pcs">Pcs</option>
+                                                        <option value="L">L</option>
+                                                        <option value="ml">ml</option>
                                                     </select>
                                                 </div>
 
