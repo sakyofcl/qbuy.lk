@@ -64,15 +64,22 @@
                                         <ul class="list-unstyled">
                                             @foreach($main as $item)
                                             <li class="bg-gray d-flex row flex-nowrap m-0 mb-2">
-                                                <div class="col-10 d-flex p-0">
-                                                    <a data-toggle="collapse" href="#list-{{$item->cid}}" aria-expanded="false" class=" btn btn-primary rounded-0">
+                                                <div class="col-9 d-flex p-0">
+                                                    <a data-toggle="collapse" href="#list-{{$item->cid}}" aria-expanded="false" class=" btn btn-primary rounded-0 d-flex justify-content-center align-items-center">
                                                         <i class="fas fa-plus"></i>
                                                     </a>
                                                     <span class="d-flex align-items-center pl-2 font-weight-bold text-capitalize text-dark">{{$item->name}}</span>
                                                 </div>
-                                                <div class="col-2 d-flex justify-content-center align-items-center p-0">
-                                                    <i class="fas fa-pencil-alt text-primary mr-2" catid="{{$item->cid}}"></i>
-                                                    <a href="/category/main/delete?cid={{$item->cid}}"><i class="far fa-trash-alt text-danger" catid=""></i></a>
+                                                <div class="col-3 d-flex justify-content-center align-items-center p-1">
+                                                   
+                                                    <button class="btn btn-success RT-shadow rounded-0 mr-2" catid="{{$item->cid}}">
+                                                        <i class="fas fa-pencil-alt text-white" catid="{{$item->cid}}"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger RT-shadow rounded-0 delete-category-btn" endpoint="/category/main/delete?cid={{$item->cid}}">
+                                                        <i class="far fa-trash-alt text-white delete-category-btn" endpoint="/category/main/delete?cid={{$item->cid}}"></i>
+                                                    </button>
+                                                   
+                                                   
                                                 </div>
                                             </li>
                                             <ul class="list-unstyled pl-5 collapse" id="list-{{$item->cid}}">
@@ -190,6 +197,7 @@
     <!----------------------------[ Javascript Library ]---------------------------->
     @include('/admin/Component/Link/js')
     <script src="/assets/Backend/js/category/category.js"></script>
+    <script src="/assets/Backend/js/category/category-dynamic.js"></script>
 
 </body>
 
