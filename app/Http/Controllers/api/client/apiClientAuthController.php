@@ -74,6 +74,7 @@ class apiClientAuthController extends Controller
                     $defaultImage = public_path('assets/Backend/img/default/user.png');
                     $image=base64_encode(file_get_contents($defaultImage));      
                     $profile->image=$image;
+                    $profile->contact=$request->phone;
                     $profile->save();
 
                     return response()->json(

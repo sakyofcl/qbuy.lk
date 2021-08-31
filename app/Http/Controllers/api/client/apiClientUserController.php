@@ -26,6 +26,13 @@ class apiClientUserController extends Controller
                 #get user profile data
                 $userProfileData=user_profile::where('uid',$userId)->first();
 
+                $deCode = base64_decode($userProfileData->image);        
+                $profile = fopen(public_path('products/default/profile.jpg'), 'w');
+                fwrite($profile, $deCode);
+                fclose($profile);
+
+                $userProfileData['image']="http://qbuy.lk/products/default/profile.jpg";
+        
                 return response()->json(['status'=>true,'data'=> $userProfileData,'message'=>"user profie"]);
             }
             else{
@@ -57,7 +64,6 @@ class apiClientUserController extends Controller
                     'email' => $request->email,
                     'gender' => $request->gender,
                     'contact' => $request->contact,
-                    'image'=>base64_encode(file_get_contents($request->file('image')))
                 ));
 
                 return response()->json(['status'=>true,'data'=>[],'message'=>"profile updated!"]);
