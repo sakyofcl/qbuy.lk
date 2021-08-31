@@ -63,7 +63,6 @@ class apiClientUserController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'gender' => $request->gender,
-                    'contact' => $request->contact,
                 ));
 
                 return response()->json(['status'=>true,'data'=>[],'message'=>"profile updated!"]);
