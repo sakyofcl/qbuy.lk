@@ -80,7 +80,7 @@ class apiClientAuthController extends Controller
 
                     #initiate cart
                     $cart=new cart;
-                    $cart->$uid->uid;
+                    $cart->uid=$uid->uid;
                     $cart->save();
 
                     return response()->json(
