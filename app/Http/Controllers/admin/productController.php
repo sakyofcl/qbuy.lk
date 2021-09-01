@@ -16,7 +16,7 @@ class productController extends Controller
 {
     public function index()
     {
-        $product = product::paginate(10);
+        $product = product::orderBy('date', 'DESC')->paginate(10);
         $stock_status = product_stock_status::all();
         $maincat = category::all();
         $subcat = sub_category::all();
