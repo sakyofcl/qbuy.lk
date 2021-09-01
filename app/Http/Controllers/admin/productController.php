@@ -14,12 +14,17 @@ use App\model\sub_category;
 
 class productController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $product = product::orderBy('date', 'DESC')->paginate(10);
         $stock_status = product_stock_status::all();
         $maincat = category::all();
         $subcat = sub_category::all();
+
+        if($request->maincat!=null && $request->maincat!=0){
+            $product = product::where('cid',$request->maincat)->orderBy('date', 'DESC')->paginate(10);
+        }
+        
         return view('admin/product/product', ['product' => $product, 'stock_status' => $stock_status, 'main' => $maincat, 'sub' => $subcat]);
     }
     public function productCreate()

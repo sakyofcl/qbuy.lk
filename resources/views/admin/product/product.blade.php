@@ -150,7 +150,7 @@
 
 
                                         <div class="filter-wrapper mb-3">
-                                            <form class="row m-0 d-flex flex-nowrap">
+                                            <form class="row m-0 d-flex flex-nowrap" method="GET" action="/product">
                                                 <div class="col-4 col-md-2 p-0 mr-2">
                                                     <select class="custom-select rounded-0 bg-gray" name="maincat">
                                                         <option value="0">All</option>
