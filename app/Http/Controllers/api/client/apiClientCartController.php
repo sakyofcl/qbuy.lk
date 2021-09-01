@@ -118,7 +118,7 @@ class apiClientCartController extends Controller
                                         return response()->json(['status'=>true,'data'=>[],'message'=>"Cart added successfully..!"]);
                                     }
                                     else{
-                                        return response()->json(['status'=>true,'data'=>[],'message'=>"Cart not added"]);
+                                        return response()->json(['status'=>false,'data'=>[],'message'=>"Cart not added"]);
                                     }
                                     
                                 }
@@ -231,7 +231,7 @@ class apiClientCartController extends Controller
                                         'qty' =>$qty
                                     ));
             
-                                    return response()->json(['status'=>false,'data'=>[],'message'=>"Cart updated successfully..!"]);
+                                    return response()->json(['status'=>true,'data'=>[],'message'=>"Cart updated successfully..!"]);
                                 }
                                 else{
                                     return response()->json(['status'=>false,'data'=>[],'message'=>"Qty not less then 1"]);
