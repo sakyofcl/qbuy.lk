@@ -4,9 +4,8 @@ namespace App\Http\Controllers\api\client;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-
 use Illuminate\Support\Facades\DB;
+
 use App\model\order;
 use App\model\order_stage;
 use App\model\ship_address;
@@ -15,6 +14,7 @@ use App\model\product;
 use App\model\order_product;
 use App\model\user_token;
 use App\model\payment_method;
+
 
 
 class apiClientOrderController extends Controller
@@ -108,5 +108,54 @@ class apiClientOrderController extends Controller
         else{
             return response()->json(["status"=>false,"data"=>[],"message"=>"please add signature"]);
         }
+    }
+
+
+    public function getPlaceOrder(Request $request){
+        $userToken=$request->header('access_token');
+
+        if($userToken){
+            
+            if(user_token::where('access_token',$userToken)->exists()){
+
+                #get uid from token
+                $user=user_token::where('access_token',$userToken)->first();
+                #user id
+                $userId=$user->uid;
+                #get user profile data
+
+                #$orederData=order::where('uid',)
+
+                $orederData=DB::table('orders')
+                ->select(
+                    [
+                        'products.name',
+                        'products.price',
+                        'order_products.qty',
+                        'orders.oid',
+                        'orders.status',
+                        'orders.date',
+                        "products.image"
+
+                    ]
+                )
+                ->join('order_products','orders.oid','=','order_products.oid')
+                ->join('products','order_products.pid',"=","products.pid")
+                ->where(['orders.uid' =>$userId])
+                ->orderBy('orders.date','DESC')
+                ->get();
+
+                
+                return response()->json(["status"=>true,"data"=>$orederData,"message"=>"User orders"]);
+
+            }
+            else{
+                return response()->json(["status"=>false,"data"=>[],"message"=>"User not found!"]);
+            }
+        }
+        else{
+            return response()->json(["status"=>false,"data"=>[],"message"=>"please add signature"]);
+        }
+
     }
 }

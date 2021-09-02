@@ -59,13 +59,17 @@ Route::get('/user/cart', [apiClientCartController::class, 'getCart']);
 Route::get('/user/add/cart', [apiClientCartController::class, 'addCart']);
 Route::get('/user/cart/delete', [apiClientCartController::class, 'deleteCart']);
 Route::get('/user/cart/qty/update', [apiClientCartController::class, 'qtyUpdate']);
+
+
 //------------------------------- [ ORDER API ROUTES ] ---------------------------------\\
 
 #place order
 Route::post('/user/order/place', [apiClientOrderController::class, 'userPlaceOrder']);
+Route::get('/user/order', [apiClientOrderController::class, 'getPlaceOrder']);
+
 
 #---------------- [ TEST ] --------------
-Route::get('/test', ['middleware' => 'storeUser', 'uses' => [apiUserController::class, 'deleteShippingAddress']]);
+Route::get('/test', ['middleware' => 'demo', 'uses' => [apiUserController::class, 'deleteShippingAddress']]);
 
 #---------------- [ ORDER ]--------------#
 Route::post('/user/order/place/create', [apiOrderController::class, 'createPlaceOrder']);
