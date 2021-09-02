@@ -20,7 +20,7 @@ use App\model\payment_method;
 class apiClientOrderController extends Controller
 {
     public function userPlaceOrder(Request $request){
-        return response()->json(['data type'=>gettype($request->product),'content type'=>$request->header("Content-type"),'data'=>$request->product]);
+        #return response()->json(['data type'=>gettype($request->product),'content type'=>$request->header("Content-type"),'data'=>$request->product]);
         $userToken=$request->header('access_token');
         if($userToken){
             
