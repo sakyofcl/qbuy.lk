@@ -38,6 +38,7 @@ Route::post('/auth/client/register', [apiClientAuthController::class, 'clientReg
 #profile
 Route::get('/user/profile', [apiClientUserController::class, 'getUserProfile']);
 Route::post('/user/profile/update', [apiClientUserController::class, 'updateUserProfile']);
+Route::post('/user/profile/image/update', [apiClientUserController::class, 'updateUserProfileImage']);
 #ship address
 Route::get('/ship/address', [apiClientUserController::class, 'getUserShipAddress']);
 Route::get('/ship/address/delete', [apiClientUserController::class, 'deleteUserShipAddress']);

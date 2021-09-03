@@ -79,6 +79,40 @@ class apiClientUserController extends Controller
                
     }
 
+    public function updateUserProfileImage(Request $request){
+        #check token
+        $userToken=$request->header('access_token');
+        if($userToken){
+            if(user_token::where('access_token',$userToken)->exists()){
+                #get uid from token
+                $user=user_token::where('access_token',$userToken)->first();
+                #user id
+                $userId=$user->uid;
+
+                if($request->image){
+                    $update = user_profile::where('uid', $userId)->update(array(
+                        'image' => $request->image
+                    ));
+    
+                    return response()->json(['status'=>true,'data'=>[],'message'=>"Profile successfully updated..!"]);
+                }
+                else{
+                    return response()->json(['status'=>false,'data'=>[],'message'=>"Plz select image"]);
+                }
+
+
+            }
+            else{
+                return response()->json(['status'=>false,'data'=>[],'message'=>"User not found!"]);
+            }
+
+        }
+        else{
+            return response()->json(['status'=>false,'data'=>[],'message'=>"please add signature"]);
+        }
+
+    }
+
 
     public function getUserShipAddress(Request $request){
         $userToken=$request->header('access_token');
