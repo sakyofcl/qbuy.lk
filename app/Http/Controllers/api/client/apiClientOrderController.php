@@ -136,7 +136,6 @@ class apiClientOrderController extends Controller
                         'orders.oid',
                         'orders.status',
                         'orders.date',
-                        "products.image"
 
                     ]
                 )
@@ -146,8 +145,23 @@ class apiClientOrderController extends Controller
                 ->orderBy('orders.date','DESC')
                 ->get();
 
+                $newArray=[];
+
+                foreach( $orederData as $item ){
+                    /*
+                    if(array_key_exists( $item->oid,$newArray )){
+                        $newArray[$item->oid][]=$item;
+                    }
+                    else{
+                        $newArray[$item->oid][]=$item;
+                    }
+                    */
+                    $newArray[$item->oid][]=$item;
+                }
+
+
                 
-                return response()->json(["status"=>true,"data"=>$orederData,"message"=>"User orders"]);
+                return response()->json(["status"=>true,"data"=>$newArray,"message"=>"User orders"]);
 
             }
             else{
