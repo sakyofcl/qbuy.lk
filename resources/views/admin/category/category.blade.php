@@ -68,16 +68,38 @@
                                                     <a data-toggle="collapse" href="#list-{{$item->cid}}" aria-expanded="false" class=" btn btn-primary rounded-0 d-flex justify-content-center align-items-center">
                                                         <i class="fas fa-plus"></i>
                                                     </a>
-                                                    <span class="d-flex align-items-center pl-2 font-weight-bold text-capitalize text-dark">{{$item->name}}</span>
+                                                    <form method="POST" action="/category/main/edit" class="d-none align-items-center w-100 pl-1 pr-1" id="cat-edit-{{$item->cid}}" enctype="multipart/form-data">
+                                                        <input type="text" name="catname" class="form-control border" value="{{$item->name}}">
+
+                                                        <label class="file-input-btn btn btn-primary RT-shadow m-0 ml-1 mr-1"  for="catImageEdit">
+                                                            <i class="fas fa-upload"></i> 
+                                                            
+                                                        </label>
+                                                        <input type="file" class="image-upload" name="image" id="catImageEdit" hidden/>
+                                                        <input type="text" name="catid" value="{{$item->cid}}" hidden/>
+                                                    </form>
+
+                                                   <span class="d-flex align-items-center pl-2 font-weight-bold text-capitalize text-dark" id="display-{{$item->cid}}">{{$item->name}}</span>
+
                                                 </div>
                                                 <div class="col-3 d-flex justify-content-center align-items-center p-1">
-                                                   
-                                                    <button class="btn btn-success RT-shadow rounded-0 mr-2" catid="{{$item->cid}}">
-                                                        <i class="fas fa-pencil-alt text-white" catid="{{$item->cid}}"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger RT-shadow rounded-0 delete-category-btn" endpoint="/category/main/delete?cid={{$item->cid}}">
-                                                        <i class="far fa-trash-alt text-white delete-category-btn" endpoint="/category/main/delete?cid={{$item->cid}}"></i>
-                                                    </button>
+
+                                                    <div id="cat-container-{{$item->cid}}" class="d-block">
+                                                        <button class="btn btn-success RT-shadow rounded-0 mr-2 cat-edit-btn" targetContainer="cat-edit-container-{{$item->cid}}"  container="cat-container-{{$item->cid}}" catid="{{$item->cid}}" target="cat-edit-{{$item->cid}}" display="display-{{$item->cid}}">
+                                                            <i class="fas fa-pencil-alt text-white cat-edit-btn" targetContainer="cat-edit-container-{{$item->cid}}" container="cat-container-{{$item->cid}}" catid="{{$item->cid}}" target="cat-edit-{{$item->cid}}" display="display-{{$item->cid}}"></i>
+                                                        </button>
+                                                        <button class="btn btn-danger RT-shadow rounded-0 delete-category-btn" endpoint="/category/main/delete?cid={{$item->cid}}">
+                                                            <i class="far fa-trash-alt text-white delete-category-btn" endpoint="/category/main/delete?cid={{$item->cid}}"></i>
+                                                        </button>
+                                                    </div>   
+                                                    <div id="cat-edit-container-{{$item->cid}}" class="d-none">
+                                                        <button class="btn btn-success RT-shadow rounded-0 mr-2 category-save" type="submit" form="cat-edit-{{$item->cid}}">
+                                                            <i class="fas fa-check text-white category-save"></i>
+                                                        </button>
+                                                        <button class="btn btn-danger RT-shadow rounded-0 cancel-cat-btn" display="display-{{$item->cid}}" container="cat-edit-container-{{$item->cid}}" targetContainer="cat-container-{{$item->cid}}" target="cat-edit-{{$item->cid}}">
+                                                            <i class="fas fa-times text-white delete-category-btn" display="display-{{$item->cid}}" container="cat-edit-container-{{$item->cid}}" targetContainer="cat-container-{{$item->cid}}" target="cat-edit-{{$item->cid}}"></i>
+                                                        </button>
+                                                    </div>  
                                                    
                                                    
                                                 </div>
@@ -196,8 +218,8 @@
 
     <!----------------------------[ Javascript Library ]---------------------------->
     @include('/admin/Component/Link/js')
-    <script src="/assets/Backend/js/category/category.js"></script>
-    <script src="/assets/Backend/js/category/category-dynamic.js"></script>
+    <script src="/assets/Backend/js/category/category.js" ></script>
+    <script src="/assets/Backend/js/category/category-dynamic.js" type="module"></script>
 
 </body>
 

@@ -34,6 +34,7 @@ Route::get('/product/stock/update/staus', [productController::class, 'productSto
 Route::get('/category-tab', [categoryController::class, 'category']);
 Route::get('/category/main/delete', [categoryController::class, 'deleteMainCategory']);
 Route::post('/category/main/store', [categoryController::class, 'storeMainCategory']);
+Route::post('/category/main/edit', [categoryController::class, 'editMainCategory']);
 Route::post('/category/sub/store', [categoryController::class, 'storeSubCategory']);
 
 #------ [ ORDER ] -----#
