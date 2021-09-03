@@ -77,7 +77,7 @@ class apiClientOrderController extends Controller
 
                                     DB::table('order_products')->insert($orderProductData);
 
-                                    return response()->json(["status"=>true,"data"=>[],"message"=>"Order successfully placed"]);
+                                    return response()->json(["status"=>true,"data"=>[],"message"=>"Order successfully placed",'oreder'=>$oid->oid]);
                                 }
                                 else{
                                     return response()->json(["status"=>false,"data"=>[],"message"=>"Somthiing wrong"]);
