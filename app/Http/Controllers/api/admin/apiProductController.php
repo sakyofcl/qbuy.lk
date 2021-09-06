@@ -23,6 +23,16 @@ class apiProductController extends Controller
             $store->name = "no name";
         } else {
             $store->name = $data->name;
+            #final string;
+            $ask=" ";
+            #explode word by " "
+            $word=explode(" ", $data->name);
+
+            foreach($word as $wordItem){
+                $ask.=metaphone($wordItem)." ";
+            }
+
+            $store->key_tag=$ask;
         }
 
         $store->price = $data->price;

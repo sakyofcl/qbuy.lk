@@ -17,7 +17,8 @@ class product extends Model
         'date',
         'cid',
         'sub_id',
-        'description'
+        'description',
+        'key_tag'
     ];
     public $primaryKey = "pid";
     public $timestamps = false;
