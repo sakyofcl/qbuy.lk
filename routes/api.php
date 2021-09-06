@@ -14,6 +14,7 @@ use App\Http\Controllers\api\client\apiClientAuthController;
 use App\Http\Controllers\api\client\apiClientUserController;
 use App\Http\Controllers\api\client\apiClientOrderController;
 use App\Http\Controllers\api\client\apiClientCartController;
+use App\Http\Controllers\api\client\apiClientSearchController;
 
 
 
@@ -68,6 +69,9 @@ Route::get('/user/cart/qty/update', [apiClientCartController::class, 'qtyUpdate'
 Route::post('/user/order/place', [apiClientOrderController::class, 'userPlaceOrder']);
 Route::get('/user/order', [apiClientOrderController::class, 'getPlaceOrder']);
 
+
+//------------------------------- [ SEARCH API ROUTES ] ---------------------------------\\
+Route::get('/search', [apiClientSearchController::class, 'userFindProduct']);
 
 #---------------- [ TEST ] --------------
 Route::get('/test', ['middleware' => 'demo', 'uses' => [apiUserController::class, 'deleteShippingAddress']]);
