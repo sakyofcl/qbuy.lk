@@ -114,4 +114,26 @@ class apiProductController extends Controller
             return response()->json(['status'=>false,'data'=>[],'message'=>"qive pid"]);
         }
     } 
+
+
+    public function updateTag(){
+        $data=product::all();
+        if($data){
+            foreach($data as $dataItem){
+                #final string;
+                $ask=" ";
+                #explode word by " "
+                $word=explode(" ", $dataItem->name);
+
+                foreach($word as $wordItem){
+                    $ask.=metaphone($wordItem)." ";
+                }
+                
+                product::where('pid', $dataItem->pid)->update(array(
+                    'key_tag' => $ask
+                ));
+            }
+        }
+
+    }
 }
