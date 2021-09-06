@@ -54,7 +54,6 @@ Route::get('/category/main/get', [apiCategoryController::class, 'getMainCategory
 #product get by category
 Route::get('/product', [apiProductController::class, 'getProduct']);
 Route::get('/product/info', [apiProductController::class, 'getProductInfo']);
-Route::get('/product/update/tag', [apiProductController::class, 'updateTag']);
 #store product 
 Route::post('/product/store', [apiProductController::class, 'storeProduct']);
 
