@@ -147,18 +147,28 @@ class apiClientOrderController extends Controller
 
                 $newArray=[];
 
-                foreach( $orederData as $item ){
-                    /*
-                    if(array_key_exists( $item->oid,$newArray )){
-                        $newArray[$item->oid][]=$item;
-                    }
-                    else{
-                        $newArray[$item->oid][]=$item;
-                    }
-                    */
-                    $newArray[$item->oid][]=$item;
-                }
+               
+                for ($i=0;$i<count($orederData);$i++){
+                    
+                    $machedIndex=false;
+                    for($j=0;$j<count($newArray);$j++){
+                        if($newArray[$j]["OrderId"]==$orederData[$i]->oid){
 
+                            $newArray[$j]["OrderData"][]=$orederData[$i];
+                            $machedIndex=true;
+                           
+                        }
+                        else{
+                            $machedIndex=false;
+                        }
+                    }
+                    if(!$machedIndex){
+                        $newArray[]=[
+                            'OrderId'=>$orederData[$i]->oid,"OrderData"=>[$orederData[$i]]
+                        ];
+                    }
+
+                }
 
                 
                 return response()->json(["status"=>true,"data"=>$newArray,"message"=>"User orders"]);
