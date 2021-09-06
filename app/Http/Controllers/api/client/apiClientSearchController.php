@@ -47,8 +47,9 @@ class apiClientSearchController extends Controller
             #common all search
             $data=product::query()
             ->where('key_tag', 'LIKE', "%{$ask}%") 
+            ->orWhere('name', 'LIKE', $request->q)
             ->orderBy('date','DESC')
-            ->take(50)
+            ->take(30)
             ->get(['name','pid','image']);
 
             if(count($data)>0){
