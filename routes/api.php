@@ -53,6 +53,7 @@ Route::get('/category/main/get', [apiCategoryController::class, 'getMainCategory
 //------------------------------- [ PRODUCT API ROUTES ] ---------------------------------\\
 #product get by category
 Route::get('/product', [apiProductController::class, 'getProduct']);
+Route::get('/product/info', [apiProductController::class, 'getProductInfo']);
 #store product 
 Route::post('/product/store', [apiProductController::class, 'storeProduct']);
 

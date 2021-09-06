@@ -87,4 +87,21 @@ class apiProductController extends Controller
        
         
     }
+
+    public function getProductInfo(Request $request){
+        if($request->pid){
+            $data=product::where('pid',$request->pid)->first();
+            if($data){
+                $data->image="http://qbuy.lk/products/".$data->image;
+                return response()->json(['status'=>true,'data'=>$data,'message'=>"product info."]);
+            }
+            else{
+                return response()->json(['status'=>false,'data'=>[],'message'=>"not available!"]);
+            }            
+
+        }
+        else{
+            return response()->json(['status'=>false,'data'=>[],'message'=>"qive pid"]);
+        }
+    } 
 }
