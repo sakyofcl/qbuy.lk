@@ -63,26 +63,28 @@ class categoryController extends Controller
        
         $storepath = public_path('./category');
         
-        if (isset($request->image)) {
-            
+        
+        if($request->image){
             
             $maincat = category::findOrFail( $request->catid);
             File::delete(public_path("./category/{$maincat->image}"));
-
-            
+    
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move($storepath,  $imageName);
             category::where('cid', $request->catid)->update(array(
-                'image' => $imageName
+                    'image' => $imageName
             ));
-
         }
+        
+       
         if($request->catname){
+            
             category::where('cid', $request->catid)->update(array(
                 'name' => $request->catname
             ));
         }
+       
         
         return back();
 

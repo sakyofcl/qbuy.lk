@@ -60,7 +60,10 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
+                                  
+
                                     <div class="category-list-wrapper p-2">
+                                    
                                         <ul class="list-unstyled">
                                             @foreach($main as $item)
                                             <li class="bg-gray d-flex row flex-nowrap m-0 mb-2">
@@ -71,11 +74,14 @@
                                                     <form method="POST" action="/category/main/edit" class="d-none align-items-center w-100 pl-1 pr-1" id="cat-edit-{{$item->cid}}" enctype="multipart/form-data">
                                                         <input type="text" name="catname" class="form-control border" value="{{$item->name}}">
 
-                                                        <label class="file-input-btn btn btn-primary RT-shadow m-0 ml-1 mr-1"  for="catImageEdit">
+                                                        
+                                                        <label class="file-input-btn btn btn-primary RT-shadow m-0 ml-1 mr-1"  for="catImageEdit-{{$item->cid}}">
                                                             <i class="fas fa-upload"></i> 
                                                             
                                                         </label>
-                                                        <input type="file" class="image-upload" name="image" id="catImageEdit" hidden/>
+                                                        
+                                                        <input type="file" class="image-upload" name="image" id="catImageEdit-{{$item->cid}}" accept="image/*"  hidden>
+                                                        
                                                         <input type="text" name="catid" value="{{$item->cid}}" hidden/>
                                                     </form>
 
