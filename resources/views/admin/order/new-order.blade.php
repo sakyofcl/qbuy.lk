@@ -4,71 +4,74 @@
         <table class="table" id="dataTable" width="100%" cellspacing="0">
             <thead class="bg-gray">
                 <tr class="product-table-head-tr">
-                    <th>Order Id</th>
-                    <th>Date</th>
-                    <th>Name</th>
-                    <th>Location</th>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Contact</th>
                     <th>Amount</th>
-                    <th>Status</th>
+                    <th>Payment</th>
+                    <th>Date</th>
+                    <th>Action</th>
                 </tr>
             </thead>
 
             <tbody>
 
-                <tr class="product-list-tr">
-                    <td>
-                        <div>1001</div>
-                    </td>
 
-                    <td>
-                        <div>2021/02/10 4.05pm</div>
-                    </td>
-                    <td>
-                        <div>Mohamed sakeen</div>
-                    </td>
-                    <td>
-                        <div>241/new road kalmunai</div>
-                    </td>
-                    <td>
-                        <div>Rs 254.00</div>
+                @foreach ($orders as $ordersItem )
+                    <tr class="product-list-tr">
+                        <td>
+                            <div>#{{$ordersItem->oid}}</div>
+                        </td>
 
-                    </td>
-                    <td class="d-flex justify-content-center align-items-center">
-                        <select id="order-status" name="status" orderid="10" class="text-white bg-success order-status border-0 RT-shadow" style="appearance:none;text-align-last: center; padding: 5px;outline: none;">
-                            <option value="prepare" class="bg-white text-dark" selected>Process</option>
-                            <option value="delivered" class="bg-white text-dark">Delivered</option>
-                            <option value="Canceled" class="bg-white text-dark">Canceled</option>
-                        </select>
-                    </td>
-                </tr>
+                        <td>
+                            <div class="user-profile-avatar">
+                                <div class="avatar RT-shadow">
+                                    <a href="#" class="link rounded-circle" id="profile">
+                                        <img src="data:image/png;base64,{{$ordersItem->image}}" class="avatar-img" />
+                                    </a>
+                                </div>
+                            </div>
+                            
+                        </td>
 
-                <tr class="product-list-tr">
-                    <td>
-                        <div>1001</div>
-                    </td>
+                        <td>
+                            <div>{{$ordersItem->phone}}</div>
+                        </td>
+                        <td>
+                            <div>Rs 254.00</div>
+                        </td>
+                        <td>
+                            <div>
 
-                    <td>
-                        <div>2021/02/10 4.05pm</div>
-                    </td>
-                    <td>
-                        <div>Mohamed sakeen</div>
-                    </td>
-                    <td>
-                        <div>241/new road kalmunai</div>
-                    </td>
-                    <td>
-                        <div>Rs 254.00</div>
-
-                    </td>
-                    <td class="d-flex justify-content-center align-items-center">
-                        <select id="order-status" name="status" orderid="10" class="text-white bg-success order-status border-0 RT-shadow" style="appearance:none;text-align-last: center; padding: 5px;outline: none;">
-                            <option value="prepare" class="bg-white text-dark" selected>Process</option>
-                            <option value="delivered" class="bg-white text-dark">Delivered</option>
-                            <option value="Canceled" class="bg-white text-dark">Canceled</option>
-                        </select>
-                    </td>
-                </tr>
-
+                                @if($ordersItem->payment=="cash")
+                                    <span class="badge badge-primary rounded-0 p-2 text-uppercase border">
+                                        <i class="fas fa-money-bill-alt"></i>
+                                        Cash
+                                    </span>
+                                @elseif($ordersItem->payment=="card")
+                                    <span class="badge badge-primary rounded-0 p-2 text-uppercase border">
+                                        <i class="fas fa-credit-card"></i>
+                                        Card
+                                    </span>
+                                @endif
+                            
+                            </div>
+                        </td>
+                    
+                        <td>
+                            <div>{{$ordersItem->date}}</div>
+                        </td>
+                        <td>
+                            <div>
+                                <button class="btn btn-danger text-white border-0 RT-shadow">
+                                    <i class="fas fa-eye font-weight-bold"></i>
+                                    <span class="font-weight-bold">View</span>
+                                </button>
+                            </div>
+                        </td>
+                        
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

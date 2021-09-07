@@ -179,35 +179,38 @@
                                     </div>
                                     <div class="card-body">
 
-                                        <div class="nav nav-tabs order-tap-pane-controller mb-2">
-                                            <a class="nav-link active btn" href="#new" data-toggle="tab" aria-selected="true" role="tab" aria-controls="new">
+                                        <div class="order-tap-pane-controller mb-2">
+                                            
+                                            <a class="nav-link btn {{$tab=="new" ? "active" : ""}}" href="/order?tab=new">
                                                 New
                                             </a>
-                                            <a class="nav-link btn" href="#process" data-toggle="tab" aria-selected="false" role="tab" aria-controls="process">
+                                            <a class="nav-link btn {{$tab=="process" ? "active" : ""}}" href="/order?tab=process">
                                                 Process
                                             </a>
-                                            <a class="nav-link btn" href="#complete" data-toggle="tab" aria-selected="false" role="tab" aria-controls="complete">
+                                            <a class="nav-link btn {{$tab=="complete" ? "active" : ""}}" href="/order?tab=complete">
                                                 Delivered
                                             </a>
-                                            <a class="nav-link btn" href="#cancelled" data-toggle="tab" aria-selected="false" role="tab" aria-controls="cancelled">
+                                            <a class="nav-link btn {{$tab=="cancelled" ? "active" : ""}}" href="/order?tab=cancelled">
                                                 Cancelled
                                             </a>
+
                                         </div>
 
 
 
                                         <div class="tab-content">
-                                            <div class="tab-pane fade show active" id="new">
-                                                @include('./admin/order/new-order')
-                                            </div>
-                                            <div class="tab-pane fade" id="process">
-                                                @include('./admin/order/process-order')
-                                            </div>
-                                            <div class="tab-pane fade" id="complete">
-                                                fdsfsd
-                                            </div>
-                                            <div class="tab-pane fade" id="cancelled">
-                                                fdsfsd
+                                            @if($tab=="new")
+                                                @include('/admin/order/new-order') 
+                                            @elseif($tab=="process")
+                                                @include('/admin/order/process-order') 
+                                            @elseif($tab=="complete")
+                                                @include('/admin/order/complete-order')
+                                            @elseif($tab=="cancelled") 
+                                                @include('/admin/order/cancelled-order')
+                                            @endif
+
+                                            <div class="pagination-area d-flex justify-content-center align-items-center">
+                                                {{ $orders->links() }}
                                             </div>
                                         </div>
 

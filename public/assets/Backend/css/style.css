@@ -129,3 +129,66 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
+
+/*user-profile-avatar*/
+.user-profile-avatar .avatar {
+	height: 50px;
+	width: 50px;
+    border-radius: 25px;
+    background-color: #E4E6EB;
+}
+.user-profile-avatar .avatar-img{
+    height: 50px;
+	width: 50px;
+    border-radius: 25px;
+    border:1px solid  rgb(207, 207, 207);
+}
+/*
+.user-profile-avatar .avatar:before {
+	content: ":hover state on";
+	display: inline-block;
+	position: absolute;
+	left: -70px;
+	top: -80px;
+	height: 40px;
+	line-height: 40px;
+	width: 200px;
+	text-align: center;
+	color: #1e1e21;
+	font-weight: 400;
+    font-size: 1.2em;
+	text-shadow: 1px 0 0 rgba(0,0,0,0.5);
+	font-family: 'Roboto Mono', monospace;
+}
+
+.user-profile-avatar .avatar-img {
+	height: 70px;
+	width: 70px;
+	background: blue;
+	border: 2px solid black;
+	position: absolute;
+	margin: 2px 0 0 2px;
+	z-index: 99;
+	overflow: hidden;
+}
+
+.user-profile-avatar .live-marker {
+	background: crimson;
+    position: relative;
+    z-index: 100;
+    height: 20px;
+    width: 40px;
+    text-transform: uppercase;
+    border-radius: 15%/25%;
+    line-height: 16px;
+    text-align: center;
+    border: 2px solid #000;
+    font-family: sans-serif;
+    font-size: 12px;
+    padding-top: 1px;
+    top: 59px;
+	left: 50%;
+	margin-left: -20px;
+	text-shadow: 1px 0 0 rgba(0,0,0,0.4);
+}
+*/
