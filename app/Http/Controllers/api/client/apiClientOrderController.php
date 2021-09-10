@@ -114,6 +114,7 @@ class apiClientOrderController extends Controller
 
     public function getPlaceOrder(Request $request){
         $userToken=$request->header('access_token');
+        $orderStatus=$request->header('status');
 
         if($userToken){
             
@@ -124,6 +125,23 @@ class apiClientOrderController extends Controller
                 #user id
                 $userId=$user->uid;
                 #get user profile data
+
+
+                #get order by status
+                $status="pending"; 
+                if($orderStatus){
+                    
+                    if($orderStatus=="process"){
+                        $status="process";
+                    }
+                    else if($orderStatus=="delivered"){
+                        $status="delivered";
+                    }
+                    else if($orderStatus=="cancelled"){
+                        $status="cancelled";
+                    }
+                }
+
 
                 #$orederData=order::where('uid',)
 
@@ -142,6 +160,7 @@ class apiClientOrderController extends Controller
                 ->join('order_products','orders.oid','=','order_products.oid')
                 ->join('products','order_products.pid',"=","products.pid")
                 ->where(['orders.uid' =>$userId])
+                ->where(['orders.status'=>$status])
                 ->orderBy('orders.date','DESC')
                 ->get();
 
