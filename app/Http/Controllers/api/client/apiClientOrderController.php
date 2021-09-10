@@ -145,16 +145,23 @@ class apiClientOrderController extends Controller
                 ->orderBy('orders.date','DESC')
                 ->get();
 
-                $newArray=[];
+                #type cast int into string
+                for ($i=0;$i<count($orederData);$i++){
+                    $orederData[$i]->oid=strval($orederData[$i]->oid);
+                    $orederData[$i]->price=strval($orederData[$i]->price);
+                    $orederData[$i]->qty=strval($orederData[$i]->qty);
+                }
+
+                $newArray=['result'=>[]];
 
                
                 for ($i=0;$i<count($orederData);$i++){
                     
                     $machedIndex=false;
-                    for($j=0;$j<count($newArray);$j++){
-                        if($newArray[$j]["OrderId"]==$orederData[$i]->oid){
+                    for($j=0;$j<count($newArray['result']);$j++){
+                        if($newArray['result'][$j]["OrderId"]==$orederData[$i]->oid){
 
-                            $newArray[$j]["OrderData"][]=$orederData[$i];
+                            $newArray['result'][$j]["OrderData"][]=$orederData[$i];
                             $machedIndex=true;
                            
                         }
@@ -163,7 +170,7 @@ class apiClientOrderController extends Controller
                         }
                     }
                     if(!$machedIndex){
-                        $newArray[]=[
+                        $newArray['result'][]=[
                             'OrderId'=>$orederData[$i]->oid,"OrderData"=>[$orederData[$i]]
                         ];
                     }
