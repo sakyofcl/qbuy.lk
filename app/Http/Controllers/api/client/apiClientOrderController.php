@@ -165,11 +165,13 @@ class apiClientOrderController extends Controller
                 ->get();
 
                 #type cast int into string
+                /*
                 for ($i=0;$i<count($orederData);$i++){
                     $orederData[$i]->oid=strval($orederData[$i]->oid);
                     $orederData[$i]->price=strval($orederData[$i]->price);
                     $orederData[$i]->qty=strval($orederData[$i]->qty);
                 }
+                */
 
                 $newArray=['result'=>[]];
 
