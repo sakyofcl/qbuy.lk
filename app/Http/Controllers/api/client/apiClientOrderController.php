@@ -179,7 +179,8 @@ class apiClientOrderController extends Controller
                     $machedIndex=false;
                     for($j=0;$j<count($newArray['result']);$j++){
                         if($newArray['result'][$j]["OrderId"]==$orederData[$i]->oid){
-
+                            $newArray['result'][$j]["total"]=$newArray['result'][$j]["total"]+(int)$orederData[$i]->price*(int)$orederData[$i]->qty;
+                            
                             $newArray['result'][$j]["OrderData"][]=$orederData[$i];
                             $machedIndex=true;
                            
@@ -190,7 +191,10 @@ class apiClientOrderController extends Controller
                     }
                     if(!$machedIndex){
                         $newArray['result'][]=[
-                            'OrderId'=>$orederData[$i]->oid,"OrderData"=>[$orederData[$i]]
+                            'OrderId'=>$orederData[$i]->oid,
+                            'date'=>$orederData[$i]->date,
+                            'total'=>(int)$orederData[$i]->price*(int)$orederData[$i]->qty,
+                            "OrderData"=>[$orederData[$i]]
                         ];
                     }
 
