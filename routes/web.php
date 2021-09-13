@@ -39,3 +39,4 @@ Route::post('/category/sub/store', [categoryController::class, 'storeSubCategory
 
 #------ [ ORDER ] -----#
 Route::get('/order', [orderController::class, 'order']);
+Route::get('/order/accept', [orderController::class, 'orderAccept']);

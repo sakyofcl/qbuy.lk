@@ -22,6 +22,10 @@ class orderController extends Controller
     {
 
         
+
+       
+
+        
         $tab="new";
         if($request->tab){
             if($request->tab=="new"){
@@ -65,7 +69,33 @@ class orderController extends Controller
                 ->orderBy('orders.date','DESC')
                 ->paginate(10);
             
+        $orderProduct=order_product::get(['oid','price','qty']);
+            
 
-        return view('admin/order/order',['orders'=>$orederData,'tab'=>$tab]);
+        return view('admin/order/order',['orders'=>$orederData,'tab'=>$tab,'orderProduct'=>$orderProduct]);
+    }
+
+
+
+    public function orderAccept(Request $request){
+        if($request->oid){
+            if(order::where('oid', $request->oid)->exists()){
+                $status="process";
+                order::where('oid', $request->oid)->update(array(
+                    'status' =>$status
+                ));
+                order_stage::where('oid', $request->oid)->update(array(
+                    'stage' =>$status
+                ));
+
+                return back();
+            }
+            else{
+                return back();
+            }
+        }
+        else{
+            return back();
+        }
     }
 }

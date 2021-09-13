@@ -65,4 +65,17 @@ class apiOrderController extends Controller
             }
         }
     }
+
+
+    public function getOrderViewInfo(Request $request){
+        $order=order::where('oid',$request->oid)->first();
+        $ship=DB::table('orders')
+                ->select(["ship_addresses.*"])
+                ->join('ship_addresses','orders.uid','=','ship_addresses.uid')
+                ->where(['ship_addresses.id' =>$order->address_id])
+                ->first();
+        $product=order_product::where('oid',$request->oid)->get(['name','price','qty']);
+
+        return response()->json(["address" =>$ship ,'status'=>true,'order'=>$order,'product'=>$product]);
+    }
 }

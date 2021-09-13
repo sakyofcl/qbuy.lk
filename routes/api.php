@@ -71,6 +71,8 @@ Route::get('/user/cart/qty/update', [apiClientCartController::class, 'qtyUpdate'
 Route::post('/user/order/place', [apiClientOrderController::class, 'userPlaceOrder']);
 Route::get('/user/order', [apiClientOrderController::class, 'getPlaceOrder']);
 
+#admin
+Route::get('/order/view/info', [apiOrderController::class, 'getOrderViewInfo']);
 
 //------------------------------- [ SEARCH API ROUTES ] ---------------------------------\\
 Route::get('/search', [apiClientSearchController::class, 'userFindProduct']);

@@ -5,11 +5,9 @@
             <thead class="bg-gray">
                 <tr class="product-table-head-tr">
                     <th>ID</th>
-                    <th>User</th>
-                    <th>Contact</th>
+                    <th>Date</th>
                     <th>Amount</th>
                     <th>Payment</th>
-                    <th>Date</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -22,24 +20,33 @@
                         <td>
                             <div>#{{$ordersItem->oid}}</div>
                         </td>
-
                         <td>
-                            <div class="user-profile-avatar">
-                                <div class="avatar RT-shadow">
-                                    <a href="#" class="link rounded-circle" id="profile">
-                                        <img src="data:image/png;base64,{{$ordersItem->image}}" class="avatar-img" />
-                                    </a>
-                                </div>
-                            </div>
+                            <div>
+                            <?php
+                        
+                                echo date('m/d/Y', strtotime($ordersItem->date));
+                                echo " ";
+                                echo date('h:i a',strtotime($ordersItem->date));
+                                
+                            ?>
                             
-                        </td>
-
-                        <td>
-                            <div>{{$ordersItem->phone}}</div>
+                            
+                            </div>
                         </td>
                         <td>
-                            <div>Rs 254.00</div>
+                            <?php 
+                                $totalAmount=0;
+                                foreach($orderProduct as  $orderProductItem){
+                                    if($orderProductItem['oid']==$ordersItem->oid){
+                                        $totalAmount+=$orderProductItem['price']*$orderProductItem['qty'];
+                                    }
+                                }
+                                
+                            ?>
+                            
+                            <div>Rs {{number_format($totalAmount,2)}}</div>
                         </td>
+                        
                         <td>
                             <div>
 
@@ -49,7 +56,7 @@
                                         Cash
                                     </span>
                                 @elseif($ordersItem->payment=="card")
-                                    <span class="badge badge-primary rounded-0 p-2 text-uppercase border">
+                                    <span class="badge badge-danger rounded-0 p-2 text-uppercase border">
                                         <i class="fas fa-credit-card"></i>
                                         Card
                                     </span>
@@ -57,15 +64,13 @@
                             
                             </div>
                         </td>
-                    
-                        <td>
-                            <div>{{$ordersItem->date}}</div>
-                        </td>
+
+                        
                         <td>
                             <div>
-                                <button class="btn btn-danger text-white border-0 RT-shadow">
-                                    <i class="fas fa-eye font-weight-bold"></i>
-                                    <span class="font-weight-bold">View</span>
+                                <button class="btn btn-danger text-white border-0 RT-shadow order-view-btn"  oid={{$ordersItem->oid}} data-toggle="modal" data-target="#order-info-model">
+                                    <i class="fas fa-eye font-weight-bold order-view-btn"  oid={{$ordersItem->oid}} ></i>
+                                    <span class="font-weight-bold order-view-btn"  oid={{$ordersItem->oid}} >View</span>
                                 </button>
                             </div>
                         </td>

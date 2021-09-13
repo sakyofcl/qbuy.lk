@@ -215,6 +215,8 @@
                                         </div>
 
 
+
+
                                     </div>
                                 </div>
                             </div>
@@ -239,10 +241,13 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+    <!-- PRODUCT INFO MODEL -->
+    @include('/admin/Component/popup/order-info')
 
     <!----------------------------[ Javascript Library ]---------------------------->
     @include('/admin/Component/Link/js')
     <script src="/assets/Backend/js/category/category.js"></script>
+    <script src="/assets/Backend/js/order/order-info.js"></script>
 
 </body>
 
