@@ -1,8 +1,11 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Facade\FlareClient\Http\Response;
+use App\model\order_product;
+
 
 use App\Http\Controllers\api\admin\apiCategoryController;
 use App\Http\Controllers\api\admin\apiProductController;
@@ -82,3 +85,9 @@ Route::get('/test', ['middleware' => 'demo', 'uses' => [apiUserController::class
 
 #---------------- [ ORDER ]--------------#
 Route::post('/user/order/place/create', [apiOrderController::class, 'createPlaceOrder']);
+
+
+Route::get('/demoapi', function(){
+    $data=order_product::all();
+    return response()->json([$data]);
+});
