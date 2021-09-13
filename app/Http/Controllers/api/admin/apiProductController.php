@@ -4,11 +4,10 @@ namespace App\Http\Controllers\api\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 
 use App\model\product;
 use App\model\product_stock_status;
-
 class apiProductController extends Controller
 {
     public function storeProduct(Request $data)
@@ -114,6 +113,30 @@ class apiProductController extends Controller
             return response()->json(['status'=>false,'data'=>[],'message'=>"qive pid"]);
         }
     } 
+
+    public function getBestSellProducts(){
+        $bestSellItem=[];
+        $data=DB::table('order_products')
+                ->select(
+                    [
+                       "order_products.pid"
+                    ]
+                )
+                ->groupBy('order_products.pid')
+                ->orderByRaw('COUNT(order_products.pid) DESC')
+                ->take(20)
+                ->get();
+            
+        foreach($data as $dataItem){
+            $item=product::where('pid',$dataItem->pid)->first();
+            if($item){
+                $item->image="http://qbuy.lk/products/".$item->image;
+                $bestSellItem[]=$item;
+            }
+            
+        }
+        return response()->json(['status'=>true,'data'=>$bestSellItem,'message'=>"Best sell products"]);
+    }
 
 
 }
