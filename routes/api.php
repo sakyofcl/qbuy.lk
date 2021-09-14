@@ -89,5 +89,5 @@ Route::post('/user/order/place/create', [apiOrderController::class, 'createPlace
 
 Route::get('/demoapi', function(){
     $data=order_product::all();
-    return response()->json([$data], 200, [], JSON_NUMERIC_CHECK);
+    return response()->json([$data]);
 });

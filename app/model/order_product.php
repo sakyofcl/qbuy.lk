@@ -15,4 +15,12 @@ class order_product extends Model
     ];
     public $primaryKey = "id";
     public $timestamps = false;
+
+    protected $casts = [ 
+        'oid' => 'integer', 
+        'pid' => 'integer', 
+        'price' => 'integer', 
+        'qty' => 'integer', 
+        'id' => 'integer'
+    ];
 }
