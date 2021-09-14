@@ -12,4 +12,10 @@ class user_token extends Model
     ];
     public $primaryKey = "token_id";
     public $timestamps = false;
+
+    protected $casts = [ 
+        'uid' => 'integer',
+        'token_id'=> 'integer',
+    ];
+
 }

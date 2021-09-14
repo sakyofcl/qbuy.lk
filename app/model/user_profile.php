@@ -16,4 +16,10 @@ class user_profile extends Model
     ];
     public $primaryKey = "id";
     public $timestamps = false;
+
+    protected $casts = [ 
+        'uid' => 'integer',
+        'id'=> 'integer',
+    ];
+
 }

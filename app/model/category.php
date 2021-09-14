@@ -17,4 +17,8 @@ class category extends Model
     {
         return $this->hasMany('App\model\sub_category', 'cid');
     }
+
+    protected $casts = [ 
+        'cid' => 'integer'
+    ];
 }

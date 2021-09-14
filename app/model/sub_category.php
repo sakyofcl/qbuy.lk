@@ -12,4 +12,10 @@ class sub_category extends Model
     ];
     public $primaryKey = "sub_id";
     public $timestamps = false;
+
+    protected $casts = [ 
+        'sub_id' => 'integer',
+        'cid'=> 'integer',
+    ];
+
 }

@@ -12,4 +12,9 @@ class order_stage extends Model
     ];
     public $primaryKey = "id";
     public $timestamps = false;
+
+    protected $casts = [ 
+        'oid' => 'integer',
+        'id'=> 'integer',
+    ];
 }

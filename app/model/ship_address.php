@@ -17,4 +17,12 @@ class ship_address extends Model
     ];
     public $primaryKey = "id";
     public $timestamps = false;
+
+    protected $casts = [ 
+        'id' => 'integer',
+        'contact'=> 'integer',
+        'uid'=>'integer',
+    ];
+
+
 }

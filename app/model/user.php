@@ -13,4 +13,10 @@ class user extends Model
     ];
     public $primaryKey = "uid";
     public $timestamps = false;
+
+    protected $casts = [ 
+        'uid' => 'integer',
+        'phone'=> 'integer',
+    ];
+
 }

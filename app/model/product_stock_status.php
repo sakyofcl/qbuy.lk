@@ -12,4 +12,10 @@ class product_stock_status extends Model
     ];
     public $primaryKey = "id";
     public $timestamps = false;
+
+    protected $casts = [ 
+        'pid' => 'integer',
+        'status'=> 'integer',
+        'id'=>'integer',
+    ];
 }

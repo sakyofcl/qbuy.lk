@@ -22,4 +22,15 @@ class product extends Model
     ];
     public $primaryKey = "pid";
     public $timestamps = false;
+
+    protected $casts = [ 
+        'pid' => 'integer',
+        'price'=> 'integer',
+        'stock'=> 'integer',
+        'sold_count' => 'integer',
+        'unit_weight'=> 'integer',
+        'cid' => 'integer',
+        'sub_id'=> 'integer',
+    ];
+
 }

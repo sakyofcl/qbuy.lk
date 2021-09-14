@@ -15,4 +15,11 @@ class order extends Model
     ];
     public $primaryKey = "oid";
     public $timestamps = false;
+
+    protected $casts = [ 
+        'address_id' => 'integer',
+        'oid' => 'integer',
+        'uid'=> 'integer',
+
+    ];
 }

@@ -11,4 +11,8 @@ class cart extends Model
     ];
     public $primaryKey = "cart_id";
     public $timestamps = false;
+    protected $casts = [ 
+        'uid' => 'integer', 
+        'cart_id' => 'integer'
+    ];
 }
