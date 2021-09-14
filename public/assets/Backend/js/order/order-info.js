@@ -23,6 +23,7 @@ $(document).ready(()=>{
     let orderCheckBtn=$('.order-view-btn');
     let productItemWrapper=$('#product-item-list-wrapper');
     let acceptOrderBtn=$('#accept-order-btn');
+    let cancelOrderBtn=$('#reject-order-btn');
   
     let url="/api/order/view/info?oid=";
      
@@ -74,7 +75,9 @@ $(document).ready(()=>{
                     setValueToInnerHtml('date',dateFinal)
 
                     //accept order
-                    acceptOrderBtn.attr('href','/order/accept?oid='+orderId);
+                    acceptOrderBtn.attr('href','/order/status/change?status=process&oid='+orderId);
+                    //cancell order
+                    cancelOrderBtn.attr('href','/order/status/change?status=cancelled&oid='+orderId);
                 }
                 else{
                     setValueToInnerHtml('order-id-ele',"#xxxx")

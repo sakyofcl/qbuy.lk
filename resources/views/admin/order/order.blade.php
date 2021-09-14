@@ -188,7 +188,7 @@
                                                 Process
                                             </a>
                                             <a class="nav-link btn {{$tab=="complete" ? "active" : ""}}" href="/order?tab=complete">
-                                                Delivered
+                                                Complete
                                             </a>
                                             <a class="nav-link btn {{$tab=="cancelled" ? "active" : ""}}" href="/order?tab=cancelled">
                                                 Cancelled

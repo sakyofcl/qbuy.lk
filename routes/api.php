@@ -87,7 +87,3 @@ Route::get('/test', ['middleware' => 'demo', 'uses' => [apiUserController::class
 Route::post('/user/order/place/create', [apiOrderController::class, 'createPlaceOrder']);
 
 
-Route::get('/demoapi', function(){
-    $data=order_product::all();
-    return response()->json([$data]);
-});

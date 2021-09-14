@@ -71,8 +71,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary RT-shadow" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger RT-shadow">Reject</button>
-        <a href="#" type="button" class="btn btn-success RT-shadow" id="accept-order-btn">Accept</a>
+        <a href="#"  class="btn btn-danger RT-shadow" id="reject-order-btn">Reject</button>
+        <a href="#" class="btn btn-success RT-shadow" id="accept-order-btn">Accept</a>
       </div>
     </div>
   </div>

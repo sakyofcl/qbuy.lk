@@ -98,4 +98,45 @@ class orderController extends Controller
             return back();
         }
     }
+
+    public function changeOrderStatus( Request $request){
+        if($request->oid && $request->status ){
+    
+            if(order::where('oid', $request->oid)->exists()){
+
+                if($request->status=="complete"){
+                    order::where('oid', $request->oid)->update(array(
+                        'status' =>"complete"
+                    ));
+                    order_stage::where('oid', $request->oid)->update(array(
+                        'stage' =>"complete"
+                    ));
+                }
+                else if($request->status=="cancelled"){
+                    order::where('oid', $request->oid)->update(array(
+                        'status' =>"cancelled"
+                    ));
+                    order_stage::where('oid', $request->oid)->update(array(
+                        'stage' =>"cancelled"
+                    ));
+                }
+                else if($request->status=="process"){
+                    order::where('oid', $request->oid)->update(array(
+                        'status' =>"process"
+                    ));
+                    order_stage::where('oid', $request->oid)->update(array(
+                        'stage' =>"process"
+                    ));
+                }
+
+                return back();
+            }
+            else{
+                return back();
+            }
+        }
+        else{
+            return back();
+        }
+    }
 }
