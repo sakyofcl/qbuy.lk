@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\dashboard;
 use App\Http\Controllers\admin\productController;
 use App\Http\Controllers\admin\categoryController;
 use App\Http\Controllers\admin\orderController;
+use App\Http\Controllers\admin\userController;
 #use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route;
 
@@ -41,3 +42,7 @@ Route::post('/category/sub/store', [categoryController::class, 'storeSubCategory
 Route::get('/order', [orderController::class, 'order']);
 Route::get('/order/accept', [orderController::class, 'orderAccept']);
 Route::get('/order/status/change', [orderController::class, 'changeOrderStatus']);
+
+#------ [ USER ] -----#
+Route::get('/user', [userController::class, 'user']);
+Route::get('/user/info', [userController::class, 'userInfo']);

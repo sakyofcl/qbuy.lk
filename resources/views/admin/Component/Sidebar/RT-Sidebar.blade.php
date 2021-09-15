@@ -26,7 +26,7 @@
     <?php
     echo dropdownHeader('shop');
     echo dropdown('D-0', 'Category', '/category-tab', 'fas fa-align-left');
-    echo dropdown('D-0', 'Product', '/product', 'fas fa-shopping-bag');
+    echo dropdown('D-0', 'Product', '/product', 'fas fa-store-alt');
     ?>
     <!-- End Category -->
     <hr class="sidebar-divider">
@@ -42,7 +42,7 @@
     <!-- Order -->
     <?php
     echo dropdownHeader('customer');
-    echo dropdown('D-0', 'User', '/order', 'fas fa-shopping-bag');
+    echo dropdown('D-0', 'User', '/user', 'fas fa-users');
     ?>
 
     <!-- Sidebar Toggler-->
