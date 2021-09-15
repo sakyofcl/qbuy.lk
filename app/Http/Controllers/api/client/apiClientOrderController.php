@@ -128,50 +128,70 @@ class apiClientOrderController extends Controller
 
 
                 #get order by status
-                $status="pending"; 
+                $status="all"; 
                 if($orderStatus){
-                    
-                    if($orderStatus=="process"){
-                        $status="process";
+                    if($orderStatus=="wait"){
+                        $status="wait";
                     }
-                    else if($orderStatus=="delivered"){
-                        $status="delivered";
-                    }
-                    else if($orderStatus=="cancelled"){
-                        $status="cancelled";
+                    else{
+                        $status="all"; 
                     }
                 }
 
 
-                #$orederData=order::where('uid',)
-
-                $orederData=DB::table('orders')
-                ->select(
-                    [
-                        'products.name',
-                        'products.price',
-                        'order_products.qty',
-                        'orders.oid',
-                        'orders.status',
-                        'orders.date',
-
-                    ]
-                )
-                ->join('order_products','orders.oid','=','order_products.oid')
-                ->join('products','order_products.pid',"=","products.pid")
-                ->where(['orders.uid' =>$userId])
-                ->where(['orders.status'=>$status])
-                ->orderBy('orders.date','DESC')
-                ->get();
-
-                #type cast int into string
-                /*
-                for ($i=0;$i<count($orederData);$i++){
-                    $orederData[$i]->oid=strval($orederData[$i]->oid);
-                    $orederData[$i]->price=strval($orederData[$i]->price);
-                    $orederData[$i]->qty=strval($orederData[$i]->qty);
+                if($status=="wait"){
+                    $status1='pending';
+                    $status2='process';
+                    $status3='couriered';
+                    $orederData=DB::table('orders')
+                    ->select(
+                        [
+                            'products.name',
+                            'products.price',
+                            'order_products.qty',
+                            'orders.oid',
+                            'orders.status',
+                            'orders.date',
+    
+                        ]
+                    )
+                    ->join('order_products','orders.oid','=','order_products.oid')
+                    ->join('products','order_products.pid',"=","products.pid")
+                    ->where(['orders.uid' =>$userId])
+                    ->where('orders.status',$status1)
+                    ->orWhere('orders.status',$status2)
+                    ->orWhere('orders.status',$status3)
+                    ->orderBy('orders.date','DESC')
+                    ->get();
                 }
-                */
+                else{
+                   
+                    $status1='complete';
+                    $status2='cancelled';
+
+                    $orederData=DB::table('orders')
+                    ->select(
+                        [
+                            'products.name',
+                            'products.price',
+                            'order_products.qty',
+                            'orders.oid',
+                            'orders.status',
+                            'orders.date',
+    
+                        ]
+                    )
+                    ->join('order_products','orders.oid','=','order_products.oid')
+                    ->join('products','order_products.pid',"=","products.pid")
+                    ->where(['orders.uid' =>$userId])
+                    ->where('orders.status',$status1)
+                    ->orWhere('orders.status',$status2)
+                    ->orderBy('orders.date','DESC')
+                    ->get();
+                }
+
+
+
 
                 $newArray=['result'=>[]];
 
@@ -196,7 +216,9 @@ class apiClientOrderController extends Controller
                             'OrderId'=>$orederData[$i]->oid,
                             'date'=>$orederData[$i]->date,
                             'total'=>(int)$orederData[$i]->price*(int)$orederData[$i]->qty,
-                            "OrderData"=>[$orederData[$i]]
+                            'status'=>$orederData[$i]->status,
+                            'OrderData'=>[$orederData[$i]]
+                            
                         ];
                     }
 
