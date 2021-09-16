@@ -36,6 +36,9 @@ Route::get('/category/sub', [apiCategoryController::class, 'getSubCategory']);
 Route::post('/auth/client/login', [apiClientAuthController::class, 'clientLogin']);
 #user register
 Route::post('/auth/client/register', [apiClientAuthController::class, 'clientRegister']);
+#check phone number exist or not
+Route::get('/auth/check/number', [apiClientAuthController::class, 'checkNumberOrNot']);
+
 
 //------------------------------- [ PROFILE API ROUTES ] ---------------------------------\\
 

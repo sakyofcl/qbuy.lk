@@ -171,4 +171,23 @@ class apiClientAuthController extends Controller
             return response()->json(['status'=>false,'data'=>[],'message'=>'Wrong phone number.']);
         }
     }
+
+
+    public function checkNumberOrNot(Request $request){
+        $validator=Validator::make($request->all(),[
+            'phone'=>'required|max:10',
+        ]);
+        if($validator->fails()){
+            return response()->json(['status'=>false,'data'=>[],'message'=>'plz put your phone number.']);
+        }
+
+        #check user number exist or not
+        if(user::where('phone',$request->phone)->exists()){
+            return response()->json(['status'=>false,'data'=>[],'message'=>'This number already exists']);
+        }
+        else{
+            return response()->json(['status'=>true,'data'=>[],'message'=>'This nuumber is done']);
+        }
+
+    }
 }
