@@ -17,7 +17,13 @@ Route::get('/', function () {
 
 #------ [ lOGIN ] -----#
 Route::get('/admin', [login::class, 'index']);
+Route::post('/login', [login::class, 'adminLogin']);
 
+Route::group(['middleware' => 'admin.check'], function () {
+
+
+#------ [ lOGOUT ] -----#
+Route::get('/logout', [login::class, 'adminLogout']);
 #------ [ DASHBOARD ] -----#
 Route::get('/dashboard', [dashboard::class, 'index']);
 
@@ -43,3 +49,7 @@ Route::get('/order/status/change', [orderController::class, 'changeOrderStatus']
 #------ [ USER ] -----#
 Route::get('/user', [userController::class, 'user']);
 Route::get('/user/info', [userController::class, 'userInfo']);
+
+
+});
+

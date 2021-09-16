@@ -20,7 +20,7 @@
                         <div class="d-flex justify-content-center p-3 mb-3">
                             <img src="/assets/Backend/img/logo/favicon.png">
                         </div>
-                        <form action="admin" method="post">
+                        <form action="/login" method="post">
 
                             <div class="input-group">
                                 <div class="input-group-prepend">
