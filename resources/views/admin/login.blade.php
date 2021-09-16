@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login | Qbuy.lk</title>
     <!----------------------------[ Css Library ]---------------------------->
-    @include('/Admin/Component/Link/css')
+    @include('/admin/Component/Link/css')
 </head>
 
 <body class="bg-gray">
@@ -56,7 +56,7 @@
 
                     </div>
                     <!----------------------------[ Footer ]---------------------------->
-                    @include('/Admin/Component/Footer/footer')
+                    @include('/admin/Component/Footer/footer')
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@
 
 
     <!----------------------------[ Javascript Library ]---------------------------->
-    @include('/Admin/Component/Link/js')
+    @include('/admin/Component/Link/js')
     <script src="/assets/Backend/js/validation/login/login.js"></script>
 </body>
 

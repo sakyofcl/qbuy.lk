@@ -10,7 +10,7 @@ use App\Http\Controllers\admin\userController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('/admin/login');
+    return view('/admin/under-construction');
 });
 
 #-------------------- [ ADMIN ROUTES] --------------------#

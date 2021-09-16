@@ -9,6 +9,6 @@ class login extends Controller
 {
     public function index()
     {
-        return view('/Admin/login');
+        return view('/admin/login');
     }
 }
