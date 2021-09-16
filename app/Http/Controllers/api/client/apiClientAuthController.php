@@ -126,6 +126,49 @@ class apiClientAuthController extends Controller
        
     }
     public function clientLogin(Request $request){
-     
+        $validator=Validator::make($request->all(),[
+            'phone'=>'required|max:10',
+            'password'=>'required|min:8|max:15',
+        ]);
+        if($validator->fails()){
+            return response()->json(['status'=>false,'data'=>[],'message'=>'plz ender data correct format.']);
+        }
+
+        if(user::where('phone',$request->phone)->exists()){
+            $user = user::where(['phone' => $request->phone])->first();
+        
+            if($user){
+
+            
+                if (Hash::check($request->password, $user->password)) {
+                    $token=user_token::where('uid',$user->uid)->first(['access_token']);
+                    if($token){
+                        return response()->json(
+                            [
+                                'status' => true,
+                                'access_token' => $token->access_token,
+                                'message' => "user successfully login"
+                            ]
+                        );
+                    }
+                    else{
+                        return response()->json(
+                            [
+                                'status' => false,
+                                'access_token' => "",
+                                'message' => "verify your account!"
+                            ]
+                        ); 
+                    }
+                } 
+                else {
+                    return response()->json(['status'=>false,'data'=>[],'message'=>'Wrong password.']);
+                }
+            }
+          
+        }
+        else{
+            return response()->json(['status'=>false,'data'=>[],'message'=>'Wrong phone number.']);
+        }
     }
 }
