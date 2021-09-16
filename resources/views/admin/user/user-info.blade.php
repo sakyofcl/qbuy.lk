@@ -43,7 +43,7 @@
                         ['name' => 'home', 'link' => '/'],
                         ['name' => 'user', 'link' => '/user']
                     ];
-                    echo breadcrumb('info', $path);
+                    echo breadcrumb($user->name, $path);
                     ?>
                     <!-- end breadcrumb -->
 
@@ -56,7 +56,7 @@
                             <div class="row">
                                 <div class="col-md-5 col-xl-4">
 
-                                    <div class="card">
+                                    <div class="card shadow-none">
                                         <div class="card-header">
                                             <h5 class="card-title mb-0">Profile Settings</h5>
                                         </div>
@@ -69,19 +69,16 @@
                                             Password
                                             </a>
                                             <a class="list-group-item list-group-item-action" data-toggle="list" href="#" role="tab">
-                                            Privacy and safety
+                                            Orders
                                             </a>
                                             <a class="list-group-item list-group-item-action" data-toggle="list" href="#" role="tab">
-                                            Email notifications
+                                            Cart
                                             </a>
                                             <a class="list-group-item list-group-item-action" data-toggle="list" href="#" role="tab">
-                                            Web notifications
+                                            Chat
                                             </a>
                                             <a class="list-group-item list-group-item-action" data-toggle="list" href="#" role="tab">
-                                            Widgets
-                                            </a>
-                                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#" role="tab">
-                                            Your data
+                                            Activity
                                             </a>
                                             <a class="list-group-item list-group-item-action" data-toggle="list" href="#" role="tab">
                                             Delete account
@@ -94,18 +91,45 @@
                                     <div class="tab-content">
                                         <div class="tab-pane fade show active" id="account" role="tabpanel">
 
-                                            <div class="card">
-                                               <div class="container bootstrap snippets bootdey">
+                                            <div class="card shadow-none">
+                                               <div class="container bootstrap snippets bootdey ">
                                                     <div class="panel-body inf-content">
                                                         <div class="row">
                                                             <div class="col-lg-4">
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div class="d-flex flex-column align-items-center text-center">
-                                                                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="rounded-circle p-1 bg-primary" width="110">
+                                                                <div class="card shadow-none h-100 border-0">
+                                                                    <div class="card-body ">
+                                                                        <div class="d-flex flex-column align-items-center justify-content-center text-center h-100 ">
+                                                                            @if ($user->status=="active")
+                                                                                <img src="data:image/png;base64,{{$user->image}}" class="rounded-circle p-1 bg-success" width="100px" height="100px">
+                                                                            @elseif($user->status=="restricted")
+                                                                                <img src="data:image/png;base64,{{$user->image}}" class="rounded-circle p-1 bg-warning" width="100px" height="100px">
+                                                                            @elseif($user->status=="deactive")
+                                                                                <img src="data:image/png;base64,{{$user->image}}" class="rounded-circle p-1 bg-danger" width="100px" height="100px">
+                                                                            @else
+                                                                                <img src="data:image/png;base64,{{$user->image}}" class="rounded-circle p-1 bg-dark" width="100px" height="100px">
+                                                                            @endif
                                                                             
-                                                                            <div class="d-flex justify-content-center text-dark">
-                                                                                <span>Mohamed sakeen</span>
+                                                                            
+                                                                            <div class="d-flex justify-content-center text-dark w-100  pt-1 pb-1">
+
+                                                                                @if ($user->level=="silver")
+                                                                                    <span><i class="fas fa-crown" style="color:#e5e4e2;"></i> Silver<span>
+                                                                                @elseif($user->level=="gold")
+                                                                                    <span><i class="fas fa-crown" style="color:#FFD700;"></i> Gold</span>
+                                                                                @elseif($user->level=="platinum")
+                                                                                    <span><i class="fas fa-crown" style="color:#9e9e9e;"></i> Platinum</span>
+                                                                                @elseif($user->level=="diamond")
+                                                                                    <span><i class="fas fa-crown" style="color:#7b00e8;"></i> Diamond</span>
+                                                                                @else
+                                                                                    <span><i class="fas fa-crown" style="color:#000;"></i>?</span>
+                                                                                @endif
+                                                                                
+                                                                            </div>
+
+                                                                            <div class="d-flex justify-content-center text-dark w-100  pt-1 pb-1">
+                                                                                <button class="btn btn-primary text-white border-0 RT-shadow">
+                                                                                    <i class="fas fa-user-edit"></i> Edit
+                                                                                </button>
                                                                             </div>
 
                                                                         </div>
@@ -115,22 +139,22 @@
                                                             <div class="col-md-8">
                                                                
                                                                 <div class="table-responsive">
-                                                                <table class="table table-user-information">
+                                                                <table class="table table-user-information ">
                                                                     <tbody>
                                                                         <tr>        
                                                                             <td>
                                                                                 <span>Signature</span>
                                                                             </td>
                                                                             <td class="text-primary">
-                                                                                #1022    
+                                                                                #{{$user->uid}}    
                                                                             </td>
                                                                         </tr>
-                                                                        <tr>    
+                                                                        <tr>        
                                                                             <td>
                                                                                 <span>Name</span>
                                                                             </td>
                                                                             <td class="text-primary">
-                                                                                <span>Mohamed sakeen</span>     
+                                                                                {{$user->name}}    
                                                                             </td>
                                                                         </tr>
                                                                         <tr>        
@@ -138,7 +162,7 @@
                                                                                 <span>Phone</span>
                                                                             </td>
                                                                             <td class="text-primary">
-                                                                                0757630782 
+                                                                                {{$user->phone}}
                                                                             </td>
                                                                         </tr>
 
@@ -147,7 +171,7 @@
                                                                                 <span>Email</span>
                                                                             </td>
                                                                             <td class="text-primary">
-                                                                                sakyofcl@gmail.com
+                                                                                {{$user->email}}
                                                                             </td>
                                                                         </tr>
 
@@ -157,7 +181,7 @@
                                                                                 <span>Gender</span>
                                                                             </td>
                                                                             <td class="text-primary">
-                                                                                Male
+                                                                                {{$user->gender}}
                                                                             </td>
                                                                         </tr>
                                                                         <tr>        
@@ -165,7 +189,7 @@
                                                                                 <span>Join</span>
                                                                             </td>
                                                                             <td class="text-primary">
-                                                                                <span>2012/02/15</span> 
+                                                                                <span>{{$user->date}}</span> 
                                                                             </td>
                                                                         </tr>
                                                                                                           
@@ -176,74 +200,6 @@
                                                         </div>
                                                     </div>
                                                 </div>                                        
-                                            </div>
-
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <div class="card-actions float-right">
-                                                        <div class="dropdown show">
-                                                            <a href="#" data-toggle="dropdown" data-display="static">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal align-middle">
-                                                                    <circle cx="12" cy="12" r="1"></circle>
-                                                                    <circle cx="19" cy="12" r="1"></circle>
-                                                                    <circle cx="5" cy="12" r="1"></circle>
-                                                                </svg>
-                                                            </a>
-
-                                                            <div class="dropdown-menu dropdown-menu-right">
-                                                                <a class="dropdown-item" href="#">Action</a>
-                                                                <a class="dropdown-item" href="#">Another action</a>
-                                                                <a class="dropdown-item" href="#">Something else here</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <h5 class="card-title mb-0">Private info</h5>
-                                                </div>
-                                                <div class="card-body">
-                                                    <form>
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6">
-                                                                <label for="inputFirstName">First name</label>
-                                                                <input type="text" class="form-control" id="inputFirstName" placeholder="First name">
-                                                            </div>
-                                                            <div class="form-group col-md-6">
-                                                                <label for="inputLastName">Last name</label>
-                                                                <input type="text" class="form-control" id="inputLastName" placeholder="Last name">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="inputEmail4">Email</label>
-                                                            <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="inputAddress">Address</label>
-                                                            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="inputAddress2">Address 2</label>
-                                                            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                                                        </div>
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6">
-                                                                <label for="inputCity">City</label>
-                                                                <input type="text" class="form-control" id="inputCity">
-                                                            </div>
-                                                            <div class="form-group col-md-4">
-                                                                <label for="inputState">State</label>
-                                                                <select id="inputState" class="form-control">
-                                                                    <option selected="">Choose...</option>
-                                                                    <option>...</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group col-md-2">
-                                                                <label for="inputZip">Zip</label>
-                                                                <input type="text" class="form-control" id="inputZip">
-                                                            </div>
-                                                        </div>
-                                                        <button type="submit" class="btn btn-primary">Save changes</button>
-                                                    </form>
-
-                                                </div>
                                             </div>
 
                                         </div>

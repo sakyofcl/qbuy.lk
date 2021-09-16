@@ -184,38 +184,69 @@
 
                                                     <tbody>
 
-
+                                                    @foreach ($users as $userItem)
                                                         <tr class="product-list-tr">
                                                                 <td>
-                                                                    <div>#15</div>
+                                                                    <div>#{{$userItem->uid}}</div>
                                                                 </td>
                                                                 <td>
                                                                     <div class="w-100 d-flex justify-content-center">
                                                                         <div style="width:40px;height:40px;" class="RT-shadow rounded-circle bg-light">
-                                                                        <img src="https://bootdey.com/img/Content/avatar/avatar4.png" style="width:40px;height:40px;" class="rounded-circle">
+                                                                            <img src="data:image/png;base64,{{$userItem->image}}" style="width:40px;height:40px;" class="rounded-circle">
                                                                         </div>
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    <div>0757630782</div>
+                                                                    <div>{{$userItem->phone}}</div>
                                                                 </td>
                                                                 
                                                                 <td>
                                                                     <div>
-                                                                        <span>Mohamed sakeen</span>
+                                                                        <span>{{$userItem->name}}</span>
                                                                     
                                                                     </div>
                                                                 </td>
 
                                                                 <td>
                                                                     <div>
-                                                                       <span><span class="badge badge-success RT-shadow p-2 rounded-0" style="font-size:15px;">Active</span></span>
+                                                                       <span>
+                                                                            @if ($userItem->status=="active")
+                                                                                <span class="badge badge-success  p-2 rounded-0" style="font-size:15px;">Active</span>
+                                                                            @elseif($userItem->status=="restricted")
+                                                                                <span class="badge badge-warning p-2 rounded-0" style="font-size:15px;">Restricted</span>
+                                                                            @elseif($userItem->status=="deactive")
+                                                                                <span class="badge badge-danger p-2 rounded-0" style="font-size:15px;">Deactive</span>
+                                                                            @else
+                                                                                <span class="badge badge-light p-2 rounded-0" style="font-size:15px;">?</span>
+                                                                            @endif
+                                                                        </span>
                                                                     </div>
                                                                 </td>
 
                                                                 <td>
                                                                     <div>
-                                                                       <span> <i class="fas fa-crown " style="color:#FFD700;"></i></span>
+                                                                        
+                                                                        <span class="badge bg-white  p-2 rounded-0 text-dark text-uppercase" style="font-size:15px; letter-spacing:2px;">
+
+                                                                            @if ($userItem->level=="silver")
+                                                                                <i class="fas fa-crown" style="color:#e5e4e2;"></i>
+                                                                                <span >Silver</span>
+                                                                            @elseif($userItem->level=="gold")
+                                                                                <i class="fas fa-crown" style="color:#FFD700;"></i>
+                                                                                <span>Gold</span>
+                                                                            @elseif($userItem->level=="platinum")
+                                                                                <i class="fas fa-crown" style="color:#9e9e9e;"></i>
+                                                                                <span>Platinum</span>
+                                                                            @elseif($userItem->level=="diamond")
+                                                                                <i class="fas fa-crown" style="color:#7b00e8;"></i>
+                                                                                <span>Diamond</span>
+                                                                            @else
+                                                                                <i class="fas fa-crown" style="color:#000;"></i>
+                                                                                <span>?</span>
+                                                                            @endif
+                                                                            
+                                                                        </span>
+                                                                        
                                                                     </div>
                                                                 </td>
                                                                 
@@ -223,7 +254,7 @@
                                                                 
                                                                 <td>
                                                                     <div>
-                                                                        <a href="/user/info" class="btn btn-primary text-white border-0 RT-shadow mr-2" >
+                                                                        <a href="/user/info?uid={{$userItem->uid}}" class="btn btn-primary text-white border-0 RT-shadow mr-2" >
                                                                             <i class="fas fa-user font-weight-bold"></i>
                                                                         </a>
                                                                         <button class="btn btn-danger text-white border-0 RT-shadow" data-toggle="modal" data-target="#user-delete-confirm-model">
@@ -233,9 +264,16 @@
                                                                     </div>
                                                                 </td>
                                                                 
-                                                            </tr>
+                                                        </tr>
+                                                    @endforeach
+                                                        
+                                                        
                                                     </tbody>
                                                 </table>
+                                            </div>
+
+                                            <div class="pagination-area d-flex justify-content-center align-items-center">
+                                                {{ $users->links() }}
                                             </div>
 
 
