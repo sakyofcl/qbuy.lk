@@ -156,5 +156,64 @@ class apiProductController extends Controller
         }
     }
 
+    public function getProductOffer(Request $request){
+
+        #this is all the offer status
+        $status1='active';
+        $status2='expired';
+        $status3='schedule';
+        $currentDate=date_create(date('Y-m-d'));
+
+
+        $data=DB::table('offers')
+        ->select(
+            [
+                'products.*',
+                'offers.offer_id',
+                'offers.offer_price',
+                'offers.start',
+                'offers.end',
+            ])
+        ->join('products','products.pid','=','offers.pid')
+        ->orderBy('offers.date','DESC')
+        ->paginate(20);
+        
+
+        $finalData=[];
+        $next=$data->nextPageUrl()?$data->nextPageUrl():false;
+        $prew=$data->previousPageUrl()?$data->nextPageUrl():false;
+        foreach($data as $dataItem){
+            $dataItem->image="http://qbuy.lk/products/".$dataItem->image;
+
+            $endDate=date_create($dataItem->end);
+            $startDate=date_create($dataItem->start);
+
+            $diff_current_end=date_diff($currentDate,$endDate);
+            $diff_current_start=date_diff($startDate,$currentDate);
+
+            #check active
+            if($diff_current_start->format("%R%a")>=0 && $diff_current_end->format("%R%a")>=0){
+                
+                $dataItem->status=$status1;
+                $finalData[]=$dataItem;
+            }
+            #check expird
+            
+            else if($diff_current_end->format("%R%a")<0){
+                $dataItem->status=$status2;
+            }
+            
+            #check schedule
+            else if($diff_current_start->format("%R%a")<0){
+                $dataItem->status=$status3;
+                $finalData[]=$dataItem;
+            }
+
+
+        }
+
+        return response()->json(['status'=>true,'data'=>$finalData,'message'=>"offers",'next'=>$next,'prew'=>$prew ]);
+    }
+
 
 }
