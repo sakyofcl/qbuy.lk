@@ -8,7 +8,7 @@ class offer extends Model
 {
     protected $fillable = [
         'pid',
-        'price',
+        'offer_price',
         'start',
         'end',
         'tag',

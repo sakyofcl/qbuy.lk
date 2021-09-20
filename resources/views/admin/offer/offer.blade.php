@@ -166,7 +166,7 @@
                                                <div class="col-md-12 pr-1 pl-1 mb-3">
                                                     <small  class="form-text text-muted font-weight-bold text-uppercase">product id</small>
                                                     <div class="input-group m-0">
-                                                        <input type="text" id="offer-product-id" name="pid" class="form-control" value=""  disabled >
+                                                        <input type="text" id="offer-product-id" name="pid" class="form-control" value="" readonly>
                                                     </div>
                                                 </div>
 
@@ -213,14 +213,16 @@
                                                     </div>
                                                 </div>
 
+                                                <!--
                                                 <div class="col-md-12 pr-1 pl-1 mb-3">
-                                                    <small  class="form-text text-muted font-weight-bold text-uppercase">select tag</small>
+                                                    <small  class="form-text text-muted font-weight-bold text-uppercase">select type</small>
                                                     <div class="input-group m-0">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text text-uppercase">#Tag</span>
+                                                            <span class="input-group-text text-capitalize">type</span>
                                                         </div>
                                                         <select class="form-control" name="tag">
-                                                            <option value="all">All</option>
+                                                            
+                                                            <option value="general" selected>General</option>
                                                             <option value="active">Active</option>
                                                             <option value="deactive">Deactive</option>
                                                             <option value="restricted">Restricted</option>
@@ -230,6 +232,7 @@
                                                     
                                                     <input type="text" placeholder="new tag" class="form-control" name="newTag">
                                                 </div>
+                                                -->
 
                                                 <div class="col-md-12 pr-1 pl-1 mb-3">
                                                    <button type="submit" class="btn btn-danger RT-shadow w-100 pt-2 pb-2"><i class="fas fa-tags"></i> Place Offer</button>
@@ -295,14 +298,72 @@
                                                             <th>Price</th>
                                                             <th>Start</th>
                                                             <th>End</th>
+                                                            <th>status</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
 
                                                     <tbody>
 
-                                                    
-                                                        
+                                                        @foreach ($offer as $offerItem )
+                                                            <tr class="product-list-tr">
+                                                                <td>
+                                                                    <div>{{$offerItem->offer_id}}</div>
+                                                                </td>
+                                                                <td>
+                                                                    <div>
+                                                                     {{$offerItem->name}}
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    
+                                                                    
+                                                                    <div>
+                                                                        Rs {{number_format($offerItem->offer_price,2)}} 
+                                                                        <span class="text-muted ml-1 mr-1" style="font-size:12px;">
+                                                                            <del>{{$offerItem->price}}</del>
+                                                                        </span> 
+                                                                    </div>
+                                                                </td>
+                                                                
+                                                                <td>
+                                                                    <div>
+
+                                                                            {{$offerItem->start}}
+                                                                    
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div>
+                                                                            {{$offerItem->end}}
+                                                                            
+                                                                    
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div>
+                                                                        @if ($offerItem->status=="active")
+                                                                            <span class="badge badge-success p-2 text-capitalize rounded-0" style="font-size:13px;">active</span>
+                                                                        @elseif($offerItem->status=="expired")
+                                                                            <span class="badge badge-danger p-2 text-capitalize rounded-0" style="font-size:13px;">expired</span>
+                                                                        @elseif($offerItem->status=="schedule")
+                                                                            <span class="badge badge-primary p-2 text-capitalize rounded-0" style="font-size:13px;">schedule</span>
+                                                                        @endif
+                                                                        
+                                                                    </div>
+                                                                </td>
+                                                                
+                                                                <td>
+                                                                    <div>
+                                                                        <button class="btn btn-danger text-white border-0 RT-shadow">
+                                                                            <i class="fas fa-eye font-weight-bold"></i>
+                                                                            <span class="font-weight-bold">View</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                                
+                                                            </tr>
+                                                        @endforeach
                                                         
                                                     </tbody>
                                                 </table>
