@@ -138,5 +138,23 @@ class apiProductController extends Controller
         return response()->json(['status'=>true,'data'=>$bestSellItem,'message'=>"Best sell products"]);
     }
 
+    public function getProductByCategory(Request $request){
+        $cat_Id=$request->header('cat_id');
+        if($cat_Id){
+            $data=product::where('cid',$cat_Id)->get(['pid','name']);
+
+            if(isset($data) && count($data)>0){
+                return response()->json(['status'=>true,'data'=>$data,'message'=>"get product successfully..!"]);
+            }
+            else{
+                return response()->json(['status'=>true,'data'=>[],'message'=>"no product in this category..!"]);
+            }
+
+        }
+        else{
+            return response()->json(['status'=>false,'data'=>[],'message'=>"give your cat_id"]);
+        }
+    }
+
 
 }

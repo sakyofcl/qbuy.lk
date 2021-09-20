@@ -63,6 +63,8 @@ Route::get('/product/info', [apiProductController::class, 'getProductInfo']);
 Route::get('/product/best/sell',[apiProductController::class,'getBestSellProducts']);
 #store product 
 Route::post('/product/store', [apiProductController::class, 'storeProduct']);
+#admin get product name id by catgory
+Route::get('/product/by/category', [apiProductController::class, 'getProductByCategory']);
 
 //------------------------------- [ CART API ROUTES ] ---------------------------------\\
 Route::get('/user/cart', [apiClientCartController::class, 'getCart']);

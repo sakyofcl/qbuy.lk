@@ -27,6 +27,7 @@
     echo dropdownHeader('shop');
     echo dropdown('D-0', 'Category', '/category-tab', 'fas fa-align-left');
     echo dropdown('D-0', 'Product', '/product', 'fas fa-store-alt');
+    echo dropdown('D-0', 'Offer', '/offer', 'fas fa-tags');
     ?>
     <!-- End Category -->
     <hr class="sidebar-divider">
