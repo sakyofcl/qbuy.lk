@@ -62,7 +62,11 @@ Route::get('/product', [apiProductController::class, 'getProduct']);
 Route::get('/product/info', [apiProductController::class, 'getProductInfo']);
 Route::get('/product/best/sell',[apiProductController::class,'getBestSellProducts']);
 Route::get('/product/offer',[apiProductController::class,'getProductOffer']);
+Route::get('/product/trending',[apiProductController::class,'getTrendingProducts']);
+Route::get('/product/loved',[apiProductController::class,'getMostLovedProducts']);
 
+#set product viewed information
+Route::post('/product/viewed',[apiProductController::class,'storeProductViewedInformation']);
 #store product 
 Route::post('/product/store', [apiProductController::class, 'storeProduct']);
 #admin get product name id by catgory

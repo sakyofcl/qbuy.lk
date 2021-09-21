@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 
 use App\model\product;
 use App\model\product_stock_status;
+use App\model\user_token;
+use App\model\view_log;
+
 class apiProductController extends Controller
 {
     public function storeProduct(Request $data)
@@ -215,5 +218,105 @@ class apiProductController extends Controller
         return response()->json(['status'=>true,'data'=>$finalData,'message'=>"offers",'next'=>$next,'prew'=>$prew ]);
     }
 
+
+    public function getTrendingProducts(Request $request){
+
+
+        $trendingItems=[];
+
+        $data=DB::table('view_logs')
+        ->select(
+            [
+               "view_logs.item"
+            ]
+        )
+        ->groupBy('view_logs.item')
+        ->whereRaw('TIMESTAMPDIFF(DAY,view_logs.date,NOW())=0')
+        ->orderByRaw('COUNT(view_logs.item) DESC')
+        ->take(20)
+        ->get();
+
+        foreach($data as $dataItem){
+            $item=product::where('pid',$dataItem->item)->first();
+            if($item){
+                $item->image="http://qbuy.lk/products/".$item->image;
+                $trendingItems[]=$item;
+            }        
+        }
+
+        return response()->json(['status'=>true,'data'=>$trendingItems,'message'=>"Trending products..!"]);
+    }
+
+    public function getMostLovedProducts(Request $request){
+        $mostLovedItem=[];
+        $data=DB::table('view_logs')
+                ->select(
+                    [
+                       "view_logs.item"
+                    ]
+                )
+                ->groupBy('view_logs.item')
+                ->orderByRaw('COUNT(view_logs.item) DESC')
+                ->take(20)
+                ->get();
+
+        foreach($data as $dataItem){
+            $item=product::where('pid',$dataItem->item)->first();
+            if($item){
+                $item->image="http://qbuy.lk/products/".$item->image;
+                $mostLovedItem[]=$item;
+            }        
+        }
+
+        return response()->json(['status'=>true,'data'=>$mostLovedItem,'message'=>"Most loved products..!"]);
+    }
+
+    public function storeProductViewedInformation(Request $request){
+        $store=new view_log;
+
+        if($request->item){
+            
+            $item=$request->item;
+            if(product::where('pid',$item)->exists()){
+                $userToken=$request->access_token;
+                if($userToken){
+                    if(user_token::where('access_token',$userToken)->exists()){
+                        #get uid from token
+                        $user=user_token::where('access_token',$userToken)->first();
+                        #user id
+                        $userId=$user->uid;
+
+                        if(view_log::where(['uid'=>$userId,'item'=>$item])->exists()){
+                            return response()->json(['status'=>true,'data'=>[],'message'=>"product already viewed..!"]);
+                        }
+                        else{
+                            $store->item=$item;
+                            $store->uid=$userId;   
+                            
+                            if($store->save()){
+                                return response()->json(['status'=>true,'data'=>[],'message'=>"product viewed..!"]);
+                            }
+                        }
+                        
+                    }
+                }
+                else{
+                    $store->item=$item;
+                    if($store->save()){
+                        return response()->json(['status'=>true,'data'=>[],'message'=>"product viewed by unknown..!"]);
+                    }
+                }
+
+
+            }
+            else{
+                return response()->json(['status'=>false,'data'=>[],'message'=>"product not found"]);
+            }
+            
+        }
+        else{
+            return response()->json(['status'=>false,'data'=>[],'message'=>"product not viewed"]);
+        }
+    }
 
 }
