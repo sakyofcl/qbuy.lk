@@ -14,6 +14,7 @@ use App\model\product;
 use App\model\order_product;
 use App\model\user_token;
 use App\model\payment_method;
+use App\model\offer;
 
 
 
@@ -35,6 +36,7 @@ class apiClientOrderController extends Controller
                 $address=$request->address;
                 $payment=$request->payment;
                 $productData=$request->product;
+
                 if($address){
                     if(ship_address::where('id',$address)->exists()){
                         if(payment_method::where('payment',$payment)->exists()){
@@ -61,18 +63,56 @@ class apiClientOrderController extends Controller
                                     #order product
                                     $orderProductData = [];
                                     foreach ($productData as $item) {
+
+                                        if(array_key_exists('offer',$item)){
+                                            $offer=$item['offer'];
+                                            if(offer::where('offer_id',$offer)->exists()){
+                                                
+                                                $offerData=DB::table('offers')
+                                                    ->select(['products.pid','products.name','offers.offer_price','offers.start','offers.end'])
+                                                    ->join('products','offers.pid','=','products.pid')
+                                                    ->where('offers.offer_id','=',$offer)
+                                                    ->first();
+                                                
+                                                if($offerData){
+                                                    
+                                                    $currentDate=date_create(date('Y-m-d'));
+                                                    $endDate=date_create($offerData->end);
+                                                    $startDate=date_create($offerData->start);
                                         
-                                        $product = product::where('pid', $item['pid'])->first(['pid', 'name', 'price']);
-                                        if($product!=null){
-                                            $orderProductData[] = [
-                                                'oid' => $oid->oid,
-                                                'pid' => $product->pid,
-                                                'name' => $product->name,
-                                                'price' => $product->price,
-                                                'qty' => $item['qty']
-                                            ];
+                                                    $diff_current_end=date_diff($currentDate,$endDate);
+                                                    $diff_current_start=date_diff($startDate,$currentDate);
+                                        
+                                                    #check offer is active?
+                                                    if($diff_current_start->format("%R%a")>=0 && $diff_current_end->format("%R%a")>=0){
+                                                        $orderProductData[] = [
+                                                            'oid' => $oid->oid,
+                                                            'pid' => $offerData->pid,
+                                                            'name' => $offerData->name,
+                                                            'price' => $offerData->offer_price,
+                                                            'qty' => $item['qty']
+                                                        ];
+                                                    }
+
+                                                }
+                                            
+                                            }
+                                            
                                         }
-                                       
+                                        else {
+                                            $product = product::where('pid', $item['pid'])->first(['pid', 'name', 'price']);
+                                            if($product!=null){
+                                                $orderProductData[] = [
+                                                    'oid' => $oid->oid,
+                                                    'pid' => $product->pid,
+                                                    'name' => $product->name,
+                                                    'price' => $product->price,
+                                                    'qty' => $item['qty']
+                                                ];
+                                            }
+                                        }
+
+                                        
                                     }
 
                                     DB::table('order_products')->insert($orderProductData);
