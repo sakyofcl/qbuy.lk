@@ -188,6 +188,16 @@ class apiProductController extends Controller
         foreach($data as $dataItem){
             $dataItem->image="http://qbuy.lk/products/".$dataItem->image;
 
+                        #typecasete
+            $dataItem->pid=(int)$dataItem->pid;
+            $dataItem->price=(int)$dataItem->price;
+            $dataItem->stock=(int)$dataItem->stock;
+            $dataItem->sold_count=(int)$dataItem->sold_count;
+            $dataItem->unit_weight=(int)$dataItem->unit_weight;
+            $dataItem->cid=(int)$dataItem->cid;
+            $dataItem->offer_id=(int)$dataItem->offer_id;
+            $dataItem->offer_price=(int)$dataItem->offer_price;
+
             $endDate=date_create($dataItem->end);
             $startDate=date_create($dataItem->start);
 
