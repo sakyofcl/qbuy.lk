@@ -51,9 +51,9 @@ class apiClientCartController extends Controller
                                     'price' => $product->price,
                                     'image'=>"http://qbuy.lk/products/".$product->image,
                                     'qty' =>$cartItemData['qty'],
-                                    'offer'=>false,
-                                    'offer_price'=>false,
-                                    'offer_cart_id'=>false
+                                    'offer'=>0,
+                                    'offer_price'=>0,
+                                    'offer_cart_id'=>0
                                 ];
                                 if($cartItemData['qty']<=0){
                                     $total=$total+($product->price*1);
