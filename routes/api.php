@@ -38,6 +38,8 @@ Route::post('/auth/client/login', [apiClientAuthController::class, 'clientLogin'
 Route::post('/auth/client/register', [apiClientAuthController::class, 'clientRegister']);
 #check phone number exist or not
 Route::get('/auth/check/number', [apiClientAuthController::class, 'checkNumberOrNot']);
+#forgot password 
+Route::post('/auth/password/forgot', [apiClientAuthController::class, 'forgotUserPassword']);
 
 
 

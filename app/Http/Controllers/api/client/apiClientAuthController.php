@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
-
+use App\Lib\Common;
 
 use App\model\user;
 use App\model\user_token;
@@ -190,4 +190,43 @@ class apiClientAuthController extends Controller
         }
 
     }
+
+
+
+    
+    public function forgotUserPassword(Request $request){
+        $validator=Validator::make($request->all(),[
+            'password'=>'required|min:8|max:15',
+            'phone'=>'required|max:10',
+            'verify_key'=>'required'
+        ]);
+
+        if($validator->fails()){
+            return Common::json(false,[],"plz ender data correct format");
+        }
+
+        if(user::where('phone',$request->phone)->exists()){
+
+            $user=user::where('phone',$request->phone)->first(['uid']);
+
+            $update = user::where('uid', $user->uid)->update(array(
+                'password' => Hash::make($request->password)
+            ));
+
+            #get token
+            $token=user_token::where('uid',$user->uid)->first(['access_token']);
+            if($token){
+                return response()->json(['status' => true,'access_token' => $token->access_token,'message' => "Password successfully forgot"]);
+            }
+
+            
+        }
+        else{
+            return Common::json(false,[],"This number not exists..!");
+        }
+
+        
+    }
+
+ 
 }
