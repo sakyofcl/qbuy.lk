@@ -15,7 +15,8 @@ use App\model\order_product;
 use App\model\user_token;
 use App\model\payment_method;
 use App\model\offer;
-
+use App\model\cart;
+use App\model\cart_item;
 
 
 class apiClientOrderController extends Controller
@@ -115,7 +116,22 @@ class apiClientOrderController extends Controller
                                         
                                     }
 
+
+
+
+
                                     DB::table('order_products')->insert($orderProductData);
+
+                                    #clear cart after order place;
+                                    $cart=cart::where('uid',$userId)->first();
+                                    $cart_id=$cart->cart_id;
+                                    foreach($orderProductData as $delItem){
+                                        $delPid=$delItem['pid'];
+                                        $delItemData=cart_item::where([['pid','=',$delPid],['cart_id','=',$cart_id]])->first();
+                                        if($delItemData){
+                                            $delItemData->delete();
+                                        }
+                                    }
 
                                     return response()->json(["status"=>true,"data"=>[],"message"=>"Order successfully placed",'oreder'=>$oid->oid]);
                                 }

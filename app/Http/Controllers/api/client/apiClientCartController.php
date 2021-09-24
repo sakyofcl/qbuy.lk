@@ -227,11 +227,33 @@ class apiClientCartController extends Controller
                             if(cart_item::where([['cart_item_id','=',$cart_item_id],['cart_id','=',$cart_id]])->exists()){
 
                                 if($qty>0){
-                                    cart_item::where('cart_item_id', $cart_item_id)->update(array(
-                                        'qty' =>$qty
-                                    ));
+                                    
+
+                                    $cartItem=cart_item::where('cart_item_id',$cart_item_id)->first(['pid']);
+                                    $product=product::where('pid',$cartItem->pid)->first(['stock']);
+                                    
+                                    
+                                    if($product){
+                                        $stock=$product->stock;
+
+                                        if($qty<=$stock){
+                                            cart_item::where('cart_item_id', $cart_item_id)->update(array(
+                                                'qty' =>$qty
+                                            ));
+
+                                            return response()->json(['status'=>true,'data'=>[],'message'=>"Cart updated successfully..!"]);
+                                        }
+                                        else{
+                                            return response()->json(['status'=>false,'data'=>[],'message'=>"Stock not available..!"]);
+                                        }
+                                        
+                                    }
+                                    else{
+                                        return response()->json(['status'=>false,'data'=>[],'message'=>"unexpected product not found..!"]);
+                                    }
+                                    
             
-                                    return response()->json(['status'=>true,'data'=>[],'message'=>"Cart updated successfully..!"]);
+                                    
                                 }
                                 else{
                                     return response()->json(['status'=>false,'data'=>[],'message'=>"Qty not less then 1"]);
