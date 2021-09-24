@@ -65,7 +65,7 @@ class apiClientOrderController extends Controller
                                     $orderProductData = [];
                                     foreach ($productData as $item) {
 
-                                        if($item['offer']){
+                                        if($item['offer']!=0){
                                             $offer=$item['offer'];
                                             if(offer::where('offer_id',$offer)->exists()){
                                                 
