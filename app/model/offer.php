@@ -20,7 +20,7 @@ class offer extends Model
     protected $casts = [ 
         'pid' => 'integer',
         'offer_id'=>'integer',
-        'price'=>'integer',
+        'offer_price'=>'integer',
     ];
 
 }

@@ -239,6 +239,7 @@ class apiClientCartController extends Controller
         #check token
         $userToken=$request->header('access_token');
         $cart_item_id=$request->header('cart');
+        $offer=$request->header('offer');
 
         if($userToken){
             if(user_token::where('access_token',$userToken)->exists()){
@@ -248,11 +249,11 @@ class apiClientCartController extends Controller
                 $userId=$user->uid;
 
                 if(cart::where('uid',$userId)->exists()){
-                    if($cart_item_id){
+                    #get cart_id;
+                    $cart=cart::where('uid',$userId)->first();
+                    $cart_id=$cart->cart_id;
 
-                        #get cart_id;
-                        $cart=cart::where('uid',$userId)->first();
-                        $cart_id=$cart->cart_id;
+                    if($cart_item_id){
 
                         if(cart_item::where([['cart_item_id','=',$cart_item_id],['cart_id','=',$cart_id]])->exists()){
                             $deleteCart=cart_item::where('cart_item_id',$cart_item_id)->first();
@@ -263,6 +264,19 @@ class apiClientCartController extends Controller
                         else{
                             return response()->json(['status'=>false,'data'=>[],'message'=>"This is not your cart..!"]);
                         }
+                    }
+                    else if($offer){
+
+                        if(offer_cart_item::where([['offer_cart_id','=',$offer],['cart_id','=',$cart_id]])->exists()){
+                            $deleteCart=offer_cart_item::where('offer_cart_id',$offer)->first();
+
+                            $deleteCart->delete();
+                            return response()->json(['status'=>true,'data'=>[],'message'=>"cart deleted.."]);
+                        }
+                        else{
+                            return response()->json(['status'=>false,'data'=>[],'message'=>"This is not your cart..!"]);
+                        }
+
                     }
                     else{
                         return response()->json(['status'=>false,'data'=>[],'message'=>"Header credentials missing...!"]);
