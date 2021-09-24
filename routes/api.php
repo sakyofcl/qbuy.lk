@@ -77,6 +77,7 @@ Route::get('/product/best/sell',[apiProductController::class,'getBestSellProduct
 Route::get('/product/offer',[apiProductController::class,'getProductOffer']);
 Route::get('/product/trending',[apiProductController::class,'getTrendingProducts']);
 Route::get('/product/loved',[apiProductController::class,'getMostLovedProducts']);
+Route::get('/product/top/category',[apiProductController::class,'getTopCategory']);
 
 #set product viewed information
 Route::post('/product/viewed',[apiProductController::class,'storeProductViewedInformation']);

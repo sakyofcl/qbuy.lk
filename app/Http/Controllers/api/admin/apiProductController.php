@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\admin;
 
 use App\Http\Controllers\Controller;
+use App\model\category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -327,6 +328,34 @@ class apiProductController extends Controller
         else{
             return response()->json(['status'=>false,'data'=>[],'message'=>"product not viewed"]);
         }
+    }
+
+
+    public function getTopCategory(){
+        
+        $data=DB::table('order_products')
+                ->select(
+                    [
+                       "products.cid"
+                    ]
+                )
+                ->join('products','products.pid','=','order_products.pid')
+                ->groupBy('products.cid')
+                ->orderByRaw('COUNT(products.cid) DESC')
+                ->take(5)
+                ->get();
+        foreach($data as $dataItem){
+            $cat=category::where('cid',$dataItem->cid)->first(['name']);
+            if($cat){
+                $dataItem->name=$cat->name;
+            }
+            else{
+                $dataItem->name=false;
+            }
+            
+        }
+            
+        return response()->json(['status'=>true,'data'=>$data,'message'=>"Top 5 category"]);  
     }
 
 }
