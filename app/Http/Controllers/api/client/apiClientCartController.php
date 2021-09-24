@@ -303,6 +303,7 @@ class apiClientCartController extends Controller
         $userToken=$request->header('access_token');
         $cart_item_id=$request->header('cart');
         $qty=$request->header('qty');
+        $offer=$request->header('offer');
 
         if($userToken){
 
@@ -313,7 +314,60 @@ class apiClientCartController extends Controller
                 $userId=$user->uid;
                 
                 if(user::where('uid',$userId)->exists()){
-                    if($cart_item_id && $qty){
+                    if($offer && $qty){
+                        if(cart::where('uid',$userId)->exists()){
+
+                            #get cart_id;
+                            $cart=cart::where('uid',$userId)->first();
+                            $cart_id=$cart->cart_id;
+        
+                            if(offer_cart_item::where([['offer_cart_id','=',$offer],['cart_id','=',$cart_id]])->exists()){
+
+                                if($qty>0){
+                                    
+                                    
+                                    $cartItem=offer_cart_item::where('offer_cart_id',$offer)->first(['offer']);
+                                    $offerItem=$cartItem->offer;
+                                    
+                                    $offerDataItem=offer::where('offer_id',$offerItem)->first(['pid']);
+                                    $product=product::where('pid',$offerDataItem->pid)->first(['stock']);
+                                    
+                                    
+                                    if($product){
+                                        $stock=$product->stock;
+
+                                        if($qty<=$stock){
+                                            offer_cart_item::where('offer_cart_id', $offer)->update(array(
+                                                'qty' =>$qty
+                                            ));
+
+                                            return response()->json(['status'=>true,'data'=>[],'message'=>"Cart updated successfully..!"]);
+                                        }
+                                        else{
+                                            return response()->json(['status'=>false,'data'=>[],'message'=>"Stock not available..!"]);
+                                        }
+                                        
+                                    }
+                                    else{
+                                        return response()->json(['status'=>false,'data'=>[],'message'=>"unexpected product not found..!"]);
+                                    }
+                                    
+            
+                                    
+                                }
+                                else{
+                                    return response()->json(['status'=>false,'data'=>[],'message'=>"Qty not less then 1"]);
+                                }
+        
+                                
+                            }
+                            else{
+                                return response()->json(['status'=>false,'data'=>[],'message'=>"This is not your cart..!"]);
+                            }
+        
+                        }
+                    }
+                    else if($cart_item_id && $qty){
                         if(cart::where('uid',$userId)->exists()){
 
                             #get cart_id;
