@@ -11,6 +11,7 @@ use App\Http\Controllers\api\admin\apiCategoryController;
 use App\Http\Controllers\api\admin\apiProductController;
 use App\Http\Controllers\api\admin\apiUserController;
 use App\Http\Controllers\api\admin\apiOrderController;
+use App\Http\Controllers\api\admin\apiSaleController;
 
 #--------------- [ client controllers ] ---------------
 use App\Http\Controllers\api\client\apiClientAuthController;
@@ -109,4 +110,5 @@ Route::get('/test', ['middleware' => 'demo', 'uses' => [apiUserController::class
 #---------------- [ ORDER ]--------------#
 Route::post('/user/order/place/create', [apiOrderController::class, 'createPlaceOrder']);
 
-
+//------------------------------- [ SALES API ROUTES ] ---------------------------------\\
+Route::get('/banner', [apiSaleController::class, 'getBanners']);

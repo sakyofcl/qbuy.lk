@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\categoryController;
 use App\Http\Controllers\admin\orderController;
 use App\Http\Controllers\admin\userController;
 use App\Http\Controllers\admin\offerController;
+use App\Http\Controllers\admin\saleController;
 #use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route;
 
@@ -62,3 +63,6 @@ Route::group(['middleware' => 'admin.check'], function () {
 
 });
 
+#------ [ SALES ] -----#
+
+Route::post('/sale/add/banner', [saleController::class, 'addBanner']);
