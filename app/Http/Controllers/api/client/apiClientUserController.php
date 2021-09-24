@@ -161,7 +161,7 @@ class apiClientUserController extends Controller
 
         if(Hash::check($request->old, $user->password)){
             $update = user::where('uid', $userId)->update(array(
-                'password' => $request->new
+                'password' => Hash::make($request->new)
             ));
             return Common::json(true,[],"Pasword changed..!");
         }
