@@ -333,13 +333,13 @@ class apiProductController extends Controller
 
     public function getTopCategory(){
         
-        $data=DB::table('order_products')
+        $data=DB::table('view_logs')
                 ->select(
                     [
                        "products.cid"
                     ]
                 )
-                ->join('products','products.pid','=','order_products.pid')
+                ->join('products','products.pid','=','view_logs.item')
                 ->groupBy('products.cid')
                 ->orderByRaw('COUNT(products.cid) DESC')
                 ->take(5)
