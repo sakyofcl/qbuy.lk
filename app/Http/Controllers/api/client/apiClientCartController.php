@@ -10,7 +10,8 @@ use App\model\cart;
 use App\model\cart_item;
 use App\model\product;
 use App\model\user;
-
+use App\model\offer;
+use App\model\offer_cart_item;
 class apiClientCartController extends Controller
 {
     public function getCart(Request $request){
@@ -32,11 +33,13 @@ class apiClientCartController extends Controller
                     $cart_id=$cart->cart_id;
 
                     $cartItem = cart_item::where('cart_id',$cart_id)->orderBy('date', 'DESC')->get();
+                    $offerCart=offer_cart_item::where('cart_id',$cart_id)->orderBy('date', 'DESC')->get();
 
+                    $cartDataList = [];
+                    $total=0;
                     if($cartItem!=null && count($cartItem)>0){
-                        #order product
-                        $cartDataList = [];
-                        $total=0;
+                        
+                        
                         foreach ($cartItem as $cartItemData) {
                             
                             $product = product::where('pid', $cartItemData['pid'])->first(['name', 'price', 'image']);
@@ -48,6 +51,9 @@ class apiClientCartController extends Controller
                                     'price' => $product->price,
                                     'image'=>"http://qbuy.lk/products/".$product->image,
                                     'qty' =>$cartItemData['qty'],
+                                    'offer'=>false,
+                                    'offer_price'=>false,
+                                    'offer_cart_id'=>false
                                 ];
                                 if($cartItemData['qty']<=0){
                                     $total=$total+($product->price*1);
@@ -60,7 +66,42 @@ class apiClientCartController extends Controller
                         
                         
                         }
-                        return response()->json(['status'=>true,'data'=>$cartDataList,'message'=>"user carts..!",'total'=>$total]);
+                        #return response()->json(['status'=>true,'data'=>$cartDataList,'message'=>"user carts..!",'total'=>$total]);
+                    }
+
+                    if($offerCart!=null && count($offerCart)>0){
+                        foreach ($offerCart as $offerCartData) {
+                            $offerData=offer::where('offer_id',$offerCartData['offer'])->first(['pid', 'offer_price']);
+                            
+                            $product = product::where('pid',$offerData->pid)->first(['name', 'price', 'image','pid']);
+                            if($product!=null){
+                                $cartDataList[] = [
+                                    'cart_item_id' =>0,
+                                    'pid' =>$product->pid,
+                                    'name' => $product->name,
+                                    'price' => $product->price,
+                                    'image'=>"http://qbuy.lk/products/".$product->image,
+                                    'qty' =>$offerCartData['qty'],
+                                    'offer_price'=>$offerData->offer_price,
+                                    'offer'=>$offerCartData['offer'],
+                                    'offer_cart_id'=>$offerCartData['offer_cart_id']
+                                    
+                                ];
+                                if($offerCartData['qty']<=0){
+                                    $total=$total+($offerData->offer_price*1);
+                                }
+                                else{
+                                    $total=$total+($offerData->offer_price*$offerCartData['qty']);
+                                }
+                                
+                            }
+                        
+                        
+                        }
+                    }
+
+                    if(($offerCart!=null && count($offerCart)>0) && ($cartItem!=null && count($cartItem)>0)){
+                        return response()->json(['status'=>true,'data'=>$cartDataList,'message'=>"cart..!",'total'=>$total]);
                     }
                     else{
                         return response()->json(['status'=>false,'data'=>[],'message'=>"nothing cart..!"]);
@@ -88,6 +129,7 @@ class apiClientCartController extends Controller
         $userToken=$request->header('access_token');
         $pid=$request->header('pid');
         $qty=$request->header('qty');
+        $offer=$request->header('offer');
         if($userToken){
             if(user_token::where('access_token',$userToken)->exists()){
                 #get uid from token
@@ -97,7 +139,46 @@ class apiClientCartController extends Controller
 
                 if(cart::where('uid',$userId)->exists()){
 
-                    if($pid && $qty){
+                    if($offer && $qty){
+                        if(offer::where('offer_id',$offer)->exists()){
+                            #get cart_id;
+                            $cart=cart::where('uid',$userId)->first();
+                            $cart_id=$cart->cart_id;
+
+                            if(offer_cart_item::where([['offer','=',$offer],['cart_id','=',$cart_id]])->exists()){
+                                return response()->json(['status'=>false,'data'=>[],'message'=>"Product already in cart..!"]);
+                            }
+                            else{
+                                if($qty>0){
+                                    
+                                    $store=new offer_cart_item;
+                                    $store->offer=$offer;
+                                    $store->qty=$qty;
+                                    $store->cart_id=$cart_id;
+        
+                                    if($store->save()){
+                                        return response()->json(['status'=>true,'data'=>[],'message'=>"Cart added successfully..!"]);
+                                    }
+                                    else{
+                                        return response()->json(['status'=>false,'data'=>[],'message'=>"Cart not added"]);
+                                    }
+                                    
+                                }
+                                else{
+                                    return response()->json(['status'=>false,'data'=>[],'message'=>"Qty not less then 1"]);
+                                }
+
+                            }
+
+                            
+                            
+                        }
+                        else{
+                            return response()->json(['status'=>false,'data'=>[],'message'=>"This product not in offer..!"]);
+                        }
+                    }
+
+                    else if($pid && $qty){
                         if(product::where('pid',$pid)->exists()){
                             #get cart_id;
                             $cart=cart::where('uid',$userId)->first();
@@ -135,6 +216,7 @@ class apiClientCartController extends Controller
                             return response()->json(['status'=>false,'data'=>[],'message'=>"This product not exists..!"]);
                         }
                     }
+                    
                     else{
                         return response()->json(['status'=>false,'data'=>[],'message'=>"Header credentials missing...!"]);
                     }
