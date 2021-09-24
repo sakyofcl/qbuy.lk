@@ -40,17 +40,27 @@ Route::post('/auth/client/register', [apiClientAuthController::class, 'clientReg
 Route::get('/auth/check/number', [apiClientAuthController::class, 'checkNumberOrNot']);
 
 
-//------------------------------- [ PROFILE API ROUTES ] ---------------------------------\\
 
-#profile
-Route::get('/user/profile', [apiClientUserController::class, 'getUserProfile']);
-Route::post('/user/profile/update', [apiClientUserController::class, 'updateUserProfile']);
-Route::post('/user/profile/image/update', [apiClientUserController::class, 'updateUserProfileImage']);
-#ship address
-Route::get('/ship/address', [apiClientUserController::class, 'getUserShipAddress']);
-Route::get('/ship/address/delete', [apiClientUserController::class, 'deleteUserShipAddress']);
-Route::post('/ship/address/create', [apiClientUserController::class, 'createUserShipAddress']);
-Route::post('/ship/address/update', [apiClientUserController::class, 'updateUserShipAddress']);
+# check access token for requested user
+Route::middleware(['check.token'])->group(function(){
+
+    //------------------------------- [ PROFILE API ROUTES ] ---------------------------------\\
+
+    #profile
+    Route::get('/user/profile', [apiClientUserController::class, 'getUserProfile']);
+    Route::post('/user/profile/update', [apiClientUserController::class, 'updateUserProfile']);
+    Route::post('/user/profile/image/update', [apiClientUserController::class, 'updateUserProfileImage']);
+    #ship address
+    Route::get('/ship/address', [apiClientUserController::class, 'getUserShipAddress']);
+    Route::get('/ship/address/delete', [apiClientUserController::class, 'deleteUserShipAddress']);
+    Route::post('/ship/address/create', [apiClientUserController::class, 'createUserShipAddress']);
+    Route::post('/ship/address/update', [apiClientUserController::class, 'updateUserShipAddress']);
+    #change password
+    Route::post('/user/password/change', [apiClientUserController::class, 'changeUserPassword']);
+
+    
+});
+
 
 //------------------------------- [ CATEGORY API ROUTES ] ---------------------------------\\
 #category

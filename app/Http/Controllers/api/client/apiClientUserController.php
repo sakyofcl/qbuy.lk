@@ -4,7 +4,11 @@ namespace App\Http\Controllers\api\client;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
+
+use App\Lib\Common;
 use App\model\user;
 use App\model\user_token;
 use App\model\user_profile;
@@ -14,233 +18,161 @@ use App\model\ship_address;
 class apiClientUserController extends Controller
 {
     public function getUserProfile(Request $request){
-        $userToken=$request->header('access_token');
-        #return $request->header('access_token');
-        if($userToken){
-            #check token
-            if(user_token::where('access_token',$userToken)->exists()){
-                #get uid from token
-                $user=user_token::where('access_token',$userToken)->first();
-                #user id
-                $userId=$user->uid;
-                #get user profile data
-                $userProfileData=user_profile::where('uid',$userId)->first();
 
-                $deCode = base64_decode($userProfileData->image);        
-                $profile = fopen(public_path('products/default/profile.jpg'), 'w');
-                fwrite($profile, $deCode);
-                fclose($profile);
+        $userId=Common::getUserIdByToken($request->header('access_token'));
+        #get user profile data
+        $userProfileData=user_profile::where('uid',$userId)->first();
 
-                $userProfileData['image']="http://qbuy.lk/products/default/profile.jpg";
-        
-                return response()->json(['status'=>true,'data'=> $userProfileData,'message'=>"user profie"]);
-            }
-            else{
-                return response()->json(['status'=>false,'data'=>[],'message'=>"User not not found!"]);
-            }
-           
-        }
-        else{
-            return response()->json(['status'=>false,'data'=>[],'message'=>"please put your signature"]);
-        }
+        $deCode = base64_decode($userProfileData->image);        
+        $profile = fopen(public_path('products/default/profile.jpg'), 'w');
+        fwrite($profile, $deCode);
+        fclose($profile);
+
+        $userProfileData['image']="http://qbuy.lk/products/default/profile.jpg";
+
+        return Common::json(true,$userProfileData,"user profie");
+            
     }
 
 
     public function updateUserProfile(Request $request){
         
-        #check token
-        $userToken=$request->header('access_token');
-        if($userToken){
-            
-            if(user_token::where('access_token',$userToken)->exists()){
-                
-                #get uid from token
-                $user=user_token::where('access_token',$userToken)->first();
-                #user id
-                $userId=$user->uid;
+        #user id
+        $userId=Common::getUserIdByToken($request->header('access_token'));
 
-                $update = user_profile::where('uid', $userId)->update(array(
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'gender' => $request->gender,
-                ));
+        $update = user_profile::where('uid', $userId)->update(array(
+            'name' => $request->name,
+            'email' => $request->email,
+            'gender' => $request->gender,
+        ));
 
-                return response()->json(['status'=>true,'data'=>[],'message'=>"profile updated!"]);
-            }
-            else{
-                return response()->json(['status'=>false,'data'=>[],'message'=>"User not found!"]);
-            }
-        }
-        else{
-            return response()->json(['status'=>false,'data'=>[],'message'=>"please add signature"]);
-        }
+        return Common::json(true,[],"profile updated!");
 
-
-               
+                     
     }
 
     public function updateUserProfileImage(Request $request){
-        #check token
-        $userToken=$request->header('access_token');
-        if($userToken){
-            if(user_token::where('access_token',$userToken)->exists()){
-                #get uid from token
-                $user=user_token::where('access_token',$userToken)->first();
-                #user id
-                $userId=$user->uid;
+        
+        $userId=Common::getUserIdByToken($request->header('access_token'));
 
-                if($request->image){
-                    $update = user_profile::where('uid', $userId)->update(array(
-                        'image' => $request->image
-                    ));
-    
-                    return response()->json(['status'=>true,'data'=>[],'message'=>"Profile successfully updated..!"]);
-                }
-                else{
-                    return response()->json(['status'=>false,'data'=>[],'message'=>"Plz select image"]);
-                }
-
-
-            }
-            else{
-                return response()->json(['status'=>false,'data'=>[],'message'=>"User not found!"]);
-            }
-
+        if($request->image){
+            $update = user_profile::where('uid', $userId)->update(array(
+                'image' => $request->image
+            ));
+            return Common::json(true,[],"Profile successfully updated..!");
         }
         else{
-            return response()->json(['status'=>false,'data'=>[],'message'=>"please add signature"]);
+            return Common::json(false,[],"Plz select image");   
         }
 
     }
 
 
     public function getUserShipAddress(Request $request){
-        $userToken=$request->header('access_token');
-        if($userToken){
-            if(user_token::where('access_token',$userToken)->exists()){
-                #get uid from token
-                $user=user_token::where('access_token',$userToken)->first();
-                #user id
-                $userId=$user->uid;
-                #get user profile data
-                $userShipAddress=ship_address::where('uid',$userId)->get();
-                if(isset($userShipAddress) && count($userShipAddress)>0){
-                    return response()->json(['status'=>true,'data'=> $userShipAddress,'message'=>"user ship address"]);
-                }
-                else{
-                    return response()->json(["status"=>true,"data"=> [],"message"=>"does not have data"]);
-                }
-                
-            }
-            else{
-                return response()->json(["status"=>false,"data"=>[],"message"=>"User not found!"]);
-            }
+        
+        $userId=Common::getUserIdByToken($request->header('access_token'));
+        #get user profile data
+        $userShipAddress=ship_address::where('uid',$userId)->get();
+
+        if(isset($userShipAddress) && count($userShipAddress)>0){
+            return Common::json(true,$userShipAddress,"user ship address"); 
         }
         else{
-            return response()->json(["status"=>false,"data"=>[],"message"=>"please add signature"]);
+            return Common::json(true,[],"does not have data"); 
         }
-        
+                 
     }
 
 
     public function createUserShipAddress(Request $request){
         
-        $userToken=$request->header('access_token');
-        if($userToken){
-            if(user_token::where('access_token',$userToken)->exists()){
-                #get uid from token
-                $user=user_token::where('access_token',$userToken)->first();
-                #user id
-                $userId=$user->uid;
-                #get user profile data
+        $userId=Common::getUserIdByToken($request->header('access_token'));
+        #get user profile data
+        $store = new ship_address;
+        $store->name = $request->name;
+        $store->street = $request->street;
+        $store->city = $request->city;
+        $store->province = $request->province;
+        $store->zip = $request->zip;
+        $store->contact = $request->contact;
+        $store->uid =$userId;
 
-                $store = new ship_address;
-                $store->name = $request->name;
-                $store->street = $request->street;
-                $store->city = $request->city;
-                $store->province = $request->province;
-                $store->zip = $request->zip;
-                $store->contact = $request->contact;
-                $store->uid =$userId;
-
-                if ($store->save()) {
-                    return response()->json(["status"=>true,"data"=>[],"message"=>"ship address created successfully"]);
-                } else {
-                    return response()->json(["status"=>false,"data"=>[],"message"=>"ship address not created , plz insert correct data!"]);
-                }
-
-            }
-            else{
-                return response()->json(["status"=>false,"data"=>[],"message"=>"User not found!"]);
-            }
-        }
-        else{
-            return response()->json(["status"=>false,"data"=>[],"message"=>"please add signature"]);
+        if ($store->save()) {
+            return Common::json(true,[],"ship address created successfully"); 
+        } else {
+            return Common::json(false,[],"ship address not created , plz insert correct data!");
         }
 
-
-        
     }
 
 
     public function updateUserShipAddress(Request $request)
     {
-        $userToken=$request->header('access_token');
-        if($userToken){
-            if(user_token::where('access_token',$userToken)->exists()){
-                #get uid from token
-                $user=user_token::where('access_token',$userToken)->first();
-                #user id
-                $userId=$user->uid;
-                #get user profile data
+        
+        #user id
+        $userId=Common::getUserIdByToken($request->header('access_token'));
+        #get user profile data
 
-                ship_address::where('id', $request->id)->update(array(
-                    'name' => $request->name,
-                    'street' => $request->street,
-                    'city' => $request->city,
-                    'province' => $request->province,
-                    'zip' => $request->zip,
-                    'contact' => $request->contact,
-                    'uid' => $userId
-                ));
-                return response()->json(["status"=>true,"data"=>[],"message"=>"ship address updated successfully"]);
+        ship_address::where('id', $request->id)->update(array(
+            'name' => $request->name,
+            'street' => $request->street,
+            'city' => $request->city,
+            'province' => $request->province,
+            'zip' => $request->zip,
+            'contact' => $request->contact,
+            'uid' => $userId
+        ));
 
-            }
-            else{
-                return response()->json(["status"=>false,"data"=>[],"message"=>"User not found!"]);
-            }
-        }
-        else{
-            return response()->json(["status"=>false,"data"=>[],"message"=>"please add signature"]);
-        }
+        return Common::json(true,[],"ship address updated successfully");
+  
     }
 
 
     public function deleteUserShipAddress( Request $request){
-        $userToken=$request->header('access_token');
-        $addressId=$request->header('id');
-        if($userToken){
-            if(user_token::where('access_token',$userToken)->exists()){
-                #get uid from token
-                $user=user_token::where('access_token',$userToken)->first();
-                #user id
-                $userId=$user->uid;
-                #get user profile data
 
-                $delteAddres = ship_address::where('id', $addressId)->first();
-                if ($delteAddres->delete()) {
-                    return response()->json(["status"=>true,"data"=>[],"message"=>"ship address delete successfully"]);
-                    
-                } else {
-                    return response()->json(["status"=>false,"data"=>[],"message"=>"ship address not deleted "]);
-                }
-            }
-            else{
-                return response()->json(["status"=>false,"data"=>[],"message"=>"User not found!"]);
+        #get user profile data
+        $addressId=$request->header('id');
+        if($addressId){
+            $delteAddres = ship_address::where('id', $addressId)->first();
+            if ($delteAddres->delete()) {
+                return Common::json(true,[],"ship address delete successfully");
+            } else {
+                return Common::json(false,[],"ship address not deleted");
             }
         }
         else{
-            return response()->json(["status"=>false,"data"=>[],"message"=>"please add signature"]);
+            return Common::json(false,[],"ship address not mentioned");
         }
+
     }
+
+    public function changeUserPassword(Request $request){
+        $validator=Validator::make($request->all(),[
+            'old'=>'required|min:8|max:15',
+            'new'=>'required|min:8|max:15',
+        ]);
+
+        if($validator->fails()){
+            return Common::json(false,[],"plz ender data correct format");
+        }
+
+        $userId=Common::getUserIdByToken($request->header('access_token'));
+        $user=user::where('uid',$userId)->first(['password']);
+
+        if(Hash::check($request->old, $user->password)){
+            $update = user::where('uid', $userId)->update(array(
+                'password' => $request->new
+            ));
+            return Common::json(true,[],"Pasword changed..!");
+        }
+        else{
+            return Common::json(false,[],"Old password not matched..!");
+        }
+
+
+    }
+
+ 
+
+     
 }
