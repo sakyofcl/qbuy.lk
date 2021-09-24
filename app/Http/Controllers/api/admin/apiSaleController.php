@@ -11,10 +11,12 @@ class apiSaleController extends Controller
 {
     public function getBanners(Request $request){
         
-        $banner=banner::all()->sortByDesc('date');
-        for ($i=0; $i <count($banner) ; $i++) { 
-            $banner[$i]['banner']="http://qbuy.lk/banners/".$banner[$i]['banner'];
+        $banner=banner::orderBy('date', 'DESC')->get();
+       
+        foreach($banner as  $bannerItem){
+            $bannerItem->banner="http://qbuy.lk/banners/".$bannerItem->banner;
         }
+        
         return Common::json(true,$banner,'all banners');
     }
 }
