@@ -100,7 +100,7 @@ class apiClientCartController extends Controller
                         }
                     }
 
-                    return response()->json(['status'=>true,'data'=>$cartDataList,'message'=>"cart..!",'total'=>$total]);
+                    
                     
                     if(count($cartDataList)>0){
                         return response()->json(['status'=>true,'data'=>$cartDataList,'message'=>"cart..!",'total'=>$total]);
