@@ -17,7 +17,7 @@ use App\model\payment_method;
 use App\model\offer;
 use App\model\cart;
 use App\model\cart_item;
-
+use App\model\offer_cart_item;
 
 class apiClientOrderController extends Controller
 {
@@ -63,10 +63,13 @@ class apiClientOrderController extends Controller
 
                                     #order product
                                     $orderProductData = [];
+                                    $activeOfferItem=[];
                                     foreach ($productData as $item) {
 
-                                        if($item['offer']!=0){
+                                        
+                                        if($item['offer']){
                                             $offer=$item['offer'];
+                                            
                                             if(offer::where('offer_id',$offer)->exists()){
                                                 
                                                 $offerData=DB::table('offers')
@@ -74,6 +77,7 @@ class apiClientOrderController extends Controller
                                                     ->join('products','offers.pid','=','products.pid')
                                                     ->where('offers.offer_id','=',$offer)
                                                     ->first();
+                                                
                                                 
                                                 if($offerData){
                                                     
@@ -86,6 +90,9 @@ class apiClientOrderController extends Controller
                                         
                                                     #check offer is active?
                                                     if($diff_current_start->format("%R%a")>=0 && $diff_current_end->format("%R%a")>=0){
+
+                                                        $activeOfferItem[]=$offer;
+
                                                         $orderProductData[] = [
                                                             'oid' => $oid->oid,
                                                             'pid' => $offerData->pid,
@@ -116,14 +123,13 @@ class apiClientOrderController extends Controller
                                         
                                     }
 
-
-
-
-
+                                    
+                                
                                     DB::table('order_products')->insert($orderProductData);
 
                                     #clear cart after order place;
                                     $cart=cart::where('uid',$userId)->first();
+                                    #unique user cart
                                     $cart_id=$cart->cart_id;
                                     foreach($orderProductData as $delItem){
                                         $delPid=$delItem['pid'];
@@ -132,6 +138,21 @@ class apiClientOrderController extends Controller
                                             $delItemData->delete();
                                         }
                                     }
+
+                                    #clear active offer item on offer_cart_items table
+                                    foreach($activeOfferItem as $activeOfferItemData){
+                                        if($activeOfferItemData){
+                                            if(offer_cart_item::where('offer',$activeOfferItemData)->exists()){
+                                                $del=offer_cart_item::where([['offer','=',$activeOfferItemData],['cart_id','=',$cart_id]])->first();
+                                                if($del){
+                                                    $del->delete();
+                                                }
+                                            }
+
+                                        }
+                                        
+                                    }
+
 
                                     return response()->json(["status"=>true,"data"=>[],"message"=>"Order successfully placed",'oreder'=>$oid->oid]);
                                 }
