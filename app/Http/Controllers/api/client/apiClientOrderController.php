@@ -223,8 +223,8 @@ class apiClientOrderController extends Controller
                     $orederData=DB::table('orders')
                     ->select(
                         [
-                            'products.name',
-                            'products.price',
+                            'order_products.name',
+                            'order_products.price',
                             'order_products.qty',
                             'orders.oid',
                             'orders.status',
@@ -249,8 +249,8 @@ class apiClientOrderController extends Controller
                     $orederData=DB::table('orders')
                     ->select(
                         [
-                            'products.name',
-                            'products.price',
+                            'order_products.name',
+                            'order_products.price',
                             'order_products.qty',
                             'orders.oid',
                             'orders.status',
