@@ -78,12 +78,18 @@ class apiProductController extends Controller
 
         $cat_Id=$request->header('cat_id');
         if($cat_Id){
-            $data=product::where('cid',$cat_Id)->get();
+            $data=DB::table('products')
+                ->select(['*'])
+                ->orderByRaw('RAND()')
+                ->where('products.cid','=',$cat_Id)
+                ->get();
+            
+            #$data=product::where('cid',$cat_Id)->order->get();
 
             if(isset($data) && count($data)>0){
             
                 foreach($data as $dataItem){
-                    $dataItem['image']="http://qbuy.lk/products/".$dataItem['image'];
+                    $dataItem->image="http://qbuy.lk/products/".$dataItem->image;
                 }
     
                 return response()->json(['status'=>true,'data'=>$data,'message'=>"get product successfully..!"]);
