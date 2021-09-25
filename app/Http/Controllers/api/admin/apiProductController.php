@@ -89,6 +89,14 @@ class apiProductController extends Controller
             if(isset($data) && count($data)>0){
             
                 foreach($data as $dataItem){
+                    #cast int 
+                    $dataItem->pid=(int)$dataItem->pid;
+                    $dataItem->price=(int)$dataItem->price;
+                    $dataItem->stock=(int)$dataItem->stock;
+                    $dataItem->sold_count=(int)$dataItem->sold_count;
+                    $dataItem->unit_weight=(int)$dataItem->unit_weight;
+                    $dataItem->cid=(int)$dataItem->cid;
+                    
                     $dataItem->image="http://qbuy.lk/products/".$dataItem->image;
                 }
     
