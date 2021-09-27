@@ -21,4 +21,6 @@ class category extends Model
     protected $casts = [ 
         'cid' => 'integer'
     ];
+
+    
 }

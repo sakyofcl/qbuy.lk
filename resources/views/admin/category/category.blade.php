@@ -48,7 +48,7 @@
                     <div class="row">
 
                         <!-- Area Chart -->
-                        <div class="col-xl-6 col-lg-6">
+                        <div class="col-xl-12 col-lg-12">
                             <div class="card RT-shadow RT-radius mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
@@ -66,7 +66,7 @@
                                     
                                         <ul class="list-unstyled">
                                             @foreach($main as $item)
-                                            <li class="bg-gray d-flex row flex-nowrap m-0 mb-2">
+                                            <li class="bg-gray d-flex row flex-nowrap m-0 mb-2  RT-shadow">
                                                 <div class="col-9 d-flex p-0">
                                                     <a data-toggle="collapse" href="#list-{{$item->cid}}" aria-expanded="false" class=" btn btn-primary rounded-0 d-flex justify-content-center align-items-center">
                                                         <i class="fas fa-plus"></i>
@@ -85,24 +85,26 @@
                                                         <input type="text" name="catid" value="{{$item->cid}}" hidden/>
                                                     </form>
 
-                                                   <span class="d-flex align-items-center pl-2 font-weight-bold text-capitalize text-dark" id="display-{{$item->cid}}">{{$item->name}}</span>
+                                                   <span class="d-flex align-items-center pl-2 font-weight-bold text-capitalize text-dark" id="display-{{$item->cid}}">
+                                                        {{$item->name}} ({{$item->tottal}})
+                                                    </span>
 
                                                 </div>
-                                                <div class="col-3 d-flex justify-content-center align-items-center p-1">
+                                                <div class="col-3 d-flex justify-content-end align-items-center p-1">
 
                                                     <div id="cat-container-{{$item->cid}}" class="d-block">
                                                         <button class="btn btn-success RT-shadow rounded-0 mr-2 cat-edit-btn" targetContainer="cat-edit-container-{{$item->cid}}"  container="cat-container-{{$item->cid}}" catid="{{$item->cid}}" target="cat-edit-{{$item->cid}}" display="display-{{$item->cid}}">
                                                             <i class="fas fa-pencil-alt text-white cat-edit-btn" targetContainer="cat-edit-container-{{$item->cid}}" container="cat-container-{{$item->cid}}" catid="{{$item->cid}}" target="cat-edit-{{$item->cid}}" display="display-{{$item->cid}}"></i>
                                                         </button>
-                                                        <button class="btn btn-danger RT-shadow rounded-0 delete-category-btn" endpoint="/category/main/delete?cid={{$item->cid}}">
-                                                            <i class="far fa-trash-alt text-white delete-category-btn" endpoint="/category/main/delete?cid={{$item->cid}}"></i>
+                                                        <button class="btn btn-danger RT-shadow rounded-0 delete-category-btn" targetName={{$item->name}} targetId={{$item->cid}} endpoint="/category/main/delete" data-toggle="modal" data-target="#delete-category-model" >
+                                                            <i class="far fa-trash-alt text-white delete-category-btn" targetName={{$item->name}} targetId={{$item->cid}} endpoint="/category/main/delete"></i>
                                                         </button>
                                                     </div>   
                                                     <div id="cat-edit-container-{{$item->cid}}" class="d-none">
                                                         <button class="btn btn-success RT-shadow rounded-0 mr-2 category-save" type="submit" form="cat-edit-{{$item->cid}}">
                                                             <i class="fas fa-check text-white category-save"></i>
                                                         </button>
-                                                        <button class="btn btn-danger RT-shadow rounded-0 cancel-cat-btn" display="display-{{$item->cid}}" container="cat-edit-container-{{$item->cid}}" targetContainer="cat-container-{{$item->cid}}" target="cat-edit-{{$item->cid}}">
+                                                        <button class="btn btn-danger RT-shadow rounded-0 cancel-cat-btn"  display="display-{{$item->cid}}" container="cat-edit-container-{{$item->cid}}" targetContainer="cat-container-{{$item->cid}}" target="cat-edit-{{$item->cid}}">
                                                             <i class="fas fa-times text-white delete-category-btn" display="display-{{$item->cid}}" container="cat-edit-container-{{$item->cid}}" targetContainer="cat-container-{{$item->cid}}" target="cat-edit-{{$item->cid}}"></i>
                                                         </button>
                                                     </div>  
@@ -113,7 +115,7 @@
                                             <ul class="list-unstyled pl-5 collapse" id="list-{{$item->cid}}">
                                                 @foreach($sub as $subitem)
                                                 @if($subitem->cid==$item->cid)
-                                                <li class="bg-gray d-flex row flex-nowrap m-0 mb-2 p-2">
+                                                <li class="bg-gray d-flex row flex-nowrap m-0 mb-2 p-2 RT-shadow">
                                                     <div class="col-10 d-flex p-0">
                                                         <span class="d-flex align-items-center pl-2 ">{{$subitem->name}}</span>
                                                     </div>
@@ -176,31 +178,7 @@
                             </div>
                         </div>
 
-                        <!-- Pie Chart -->
-                        <div class="col-xl-6 col-lg-6">
-                            <div class="card RT-shadow RT-radius mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-
-                                </div>
-                            </div>
-                        </div>
+                       
                     </div>
 
                 </div>
@@ -211,7 +189,8 @@
 
             <!----------------------------[ Footer ]---------------------------->
             @include('/admin/Component/Footer/footer')
-
+            @include('/admin/Component/popup/delete-category')
+            
         </div>
     </div>
 
@@ -224,7 +203,7 @@
 
     <!----------------------------[ Javascript Library ]---------------------------->
     @include('/admin/Component/Link/js')
-    <script src="/assets/Backend/js/category/category.js" ></script>
+    <script src="/assets/Backend/js/category/category.js" type="module"></script>
     <script src="/assets/Backend/js/category/category-dynamic.js" type="module"></script>
 
 </body>

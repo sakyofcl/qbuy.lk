@@ -5,14 +5,38 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\model\category;
+use App\model\product;
 use App\model\sub_category;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class categoryController extends Controller
 {
     public function category()
     {
+        $data=DB::table('categories')
+            ->select( 'categories.cid',DB::raw("COUNT(products.cid) as count"))
+            ->join('products','categories.cid','=','products.cid')
+            ->groupBy('categories.cid')
+            ->get();
+        
+       
+        #return $data;
         $maincat = category::all();
+        
+        foreach($maincat as $maincatItem){
+            #initial count 
+            $maincatItem->tottal= 0;
+            
+            foreach($data as $dataItem){
+                if($dataItem->cid==$maincatItem->cid){
+                    $maincatItem->tottal= $dataItem->count;
+                }
+            }
+            
+        }
+
+        
         $subcat = sub_category::all();
         return view('admin/category/category', ['main' => $maincat, 'sub' => $subcat]);
     }
@@ -44,9 +68,21 @@ class categoryController extends Controller
     public function deleteMainCategory(Request $data)
     {
 
-        $maincat = category::findOrFail($data->cid);
-        File::delete(public_path("category/{$maincat->image}"));
-        $maincat->delete();
+        if($data->cid){
+            if(category::where('cid',$data->cid)->exists()){
+                #set unknow value 0 to all product
+                product::where('cid', $data->cid)->update(array(
+                    'cid' =>0
+                ));
+
+                #then delete the main category 
+                $maincat = category::findOrFail($data->cid);
+                File::delete(public_path("category/{$maincat->image}"));
+                $maincat->delete();
+
+            }
+        }
+
         return back();
     }
     public function storeSubCategory(Request $data)
