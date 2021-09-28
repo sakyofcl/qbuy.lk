@@ -7,9 +7,11 @@ $(document).ready(()=>{
     let unitList=['Kg','g','mg','pcs','l','ml'];
     let placeHolderImage="/assets/Backend/img/placeholder.jpg";
     let imageUpload=$('#image-upload');
-    let displayImage=$('#show-img');
+    let displayImage=$('#image');
     let imgPrevCancel = $('#img-preview-cancel');
      
+
+    let preImage;
     function editHandleClick(e){
         const pid=$(e.target).attr('pid');
         
@@ -20,6 +22,7 @@ $(document).ready(()=>{
             if(res.data.status){
                 
                 data=res.data.data
+                preImage=data.image;
                 
                 setDefaultValueToForm(data,['name','description','price','unit_weight','pid','stock'],'text');
                 setDefaultValueToForm(data,['image'],'image');
@@ -44,24 +47,23 @@ $(document).ready(()=>{
         displayName.text(targetName);
         
         actionForm.attr('action',endPoint);
-        console.log(endPoint);
+        
         
     })
     
 
     imageUpload.change((e)=>{
         if (e.target.files.length >= 1) {
-            console.log('have file');
+            
             displayImage.attr('src',window.URL.createObjectURL(e.target.files[ 0 ]));
         }
         else {
-            displayImage.attr('src',placeHolderImage);
-            
+            displayImage.attr('src',preImage);
         }
     })
 
     imgPrevCancel.click((e) => {
-        displayImage.attr('src',placeHolderImage);
+        displayImage.attr('src',preImage);
         imageUpload.val('');
     })
 
@@ -81,7 +83,6 @@ $(document).ready(()=>{
         else if(type=='image'){
             ele.map((v)=>{
                 const element=$("#"+v);
-                console.log(element);
                 element.attr('src',data[v]);
             })
         }
@@ -95,11 +96,7 @@ $(document).ready(()=>{
                 }
             }) 
         }
-        else if('editer'){
-            ele.map((v)=>{
-                tinymce.get(v).setContent(data['editerdesc']);
-            }) 
-        }
+       
         
         
     }

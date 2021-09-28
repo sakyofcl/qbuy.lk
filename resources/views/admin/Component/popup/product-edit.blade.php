@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="$('#image-upload').val('')">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -55,22 +55,21 @@
                             <textarea name="description" id="description" class="form-control rawinput h-100" rows="3"></textarea>
                         </div>
 
-                        <div class="col-6  w-100" style="margin-top:28px; margin-bottom: 15px;">
-                             <div class="img-upload-wrapper w-100">
-                                <div class="pt-2 pb-1 w-100">
-                                    <div class="image-preview row m-0 w-100" id="img-preview">
-                                        <img src="/assets/Backend/img/placeholder.jpg" id="image" class="w-100 border rounded" style="height:200px;" />
-                                    </div>
+                        
+                        <div class="col-6 w-100 pt-3" style="margin-top:28px; margin-bottom: 15px;">
+                            <div class="img-upload-wrapper w-100 mt-2 position-relative">
+                                <span class="img-preview-close RT-shadow" id="img-preview-cancel">
+                                    <i class="fas fa-times-circle p-0 m-0"></i>
+                                </span>
+                                <label class="file-input-btn btn mt-3 w-100" for="image-upload">   
+                                    <img src="/assets/Backend/img/placeholder.jpg" id="image" class="w-100" style="height:200px;" />
+                                </label>
+                                <div class="content-details fadeIn-bottom">
+                                    <label for="image-upload">
+                                        <i class="fas fa-upload content-text"></i> 
+                                    </label>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-6  w-100" style="margin-top:28px; margin-bottom: 15px;">
-                            <div class="img-upload-wrapper w-100 mt-2 position-relative">
-                                 <span class="img-preview-close RT-shadow" id="img-preview-cancel"><i class="fas fa-times-circle p-0 m-0"></i></span>
-                                <img src="/assets/Backend/img/placeholder.jpg" id="show-img" class="w-100 RT-shadow border" style="height:200px;" />
-                            </div>
-
-                            <label class="file-input-btn btn btn-primary RT-shadow mt-3 w-100" for="image-upload"><i class="fas fa-upload"></i> image</label>
                             <input type="file" class="d-none" value="/assets/Backend/img/placeholder.jpg" class="image-upload" id="image-upload" name="image" accept="image/*" />
                         </div>
 
@@ -81,7 +80,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick="$('#image-upload').val('')">Close</button>
                 <button class="btn btn-primary" onclick="document.getElementById('update-product-form').submit();">Update</button>
             </div>
         </div>
