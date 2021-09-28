@@ -5,7 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-
+use Illuminate\Support\Facades\Validator;
 use App\model\category;
 use App\model\product;
 use App\model\product_stock_status;
@@ -39,17 +39,35 @@ class productController extends Controller
     }
     public function productDelete(Request $data)
     {
-        $del = product::where('pid', $data->pid)->first();
-        $delStockStatus = product_stock_status::where('pid', $data->pid)->first();
-        $delStockStatus->delete();
-        $del->delete();
-        File::delete(public_path("products/{$del->image}"));
+        if($data->pid){
+            $del = product::where('pid', $data->pid)->first();
+            $delStockStatus = product_stock_status::where('pid', $data->pid)->first();
+            $delStockStatus->delete();
+            $del->delete();
+            File::delete(public_path("products/{$del->image}"));
+        }
+      
         return back();
     }
 
     public function productUpdate(Request $data)
     {
+        $validator=Validator::make($data->all(),[
+            'pid'=>'required|numeric',
+            'name'=>'required',
+            'price'=>'required|numeric',
+            'weight'=>'numeric',
+            'stock'=>'numeric'
+        ]);
+
+        if($validator->fails()){
+            return back();
+        }
+
+        
         $storepath = public_path('./products');
+        $updateArray=['name' => $data->name,'price' => $data->price,'date' => date('Y-m-d H:i:s')];
+
 
         if (isset($data->image)) {
             //delete preivious image
@@ -63,22 +81,29 @@ class productController extends Controller
                 'image' => $imageName
             ));
         }
+        #return back();
 
-        $update = product::where('pid', $data->pid)->update(array(
-            'name' => $data->name,
-            'description' => $data->description,
-            'price' => $data->price,
-            'stock' => $data->stock,
-            'unit_weight' => $data->unit_weight,
-            'unit' => $data->unit,
-            'date' => date('Y-m-d H:i:s'),
-            'cid' => $data->cid,
-            'sub_id' => $data->sub_id
-        ));
+        if($data->description){
+            $updateArray['description']=$data->description;
+        }
+        if($data->weight){
+            $updateArray['unit_weight']=$data->weight;
+        }
+        if($data->unit){
+            $updateArray['unit']=$data->unit;
+        }
+        if($data->stock){
+            $updateArray['stock']=$data->stock;
+        }
+
+       
+        $update = product::where('pid', $data->pid)->update($updateArray);
+        
 
         if ($update) {
             return back();
         }
+        
     }
 
     public function productStockStatusUpdate(Request $data)

@@ -228,12 +228,12 @@
                                                             </td>
                                                             <td>
                                                                 <div class="w-100 d-flex justify-content-center">
-                                                                    <button type="button" class="btn btn-primary mr-2 RT-shadow RT-radius" id="{{ $item->pid }}" data-toggle="modal" data-target="#product-edit-model">
-                                                                        <i class="far fa-edit"></i>
+                                                                    <button type="button" class="btn btn-primary mr-2 RT-shadow RT-radius product-edit-btn"  pid={{ $item->pid }} data-toggle="modal" data-target="#product-edit-model">
+                                                                        <i class="far fa-edit product-edit-btn" pid={{ $item->pid }}></i>
                                                                     </button>
-                                                                    <a href="/product/delete?pid={{$item->pid}}" class="btn btn-danger RT-shadow RT-radius">
-                                                                        <i class="far fa-trash-alt"></i>
-                                                                    </a>
+                                                                    <button class="btn btn-danger RT-shadow RT-radius product-delete-btn" targetName="{{$item->name}}" targetId={{ $item->pid }} endpoint="/product/delete" data-toggle="modal" data-target="#product-delete-model">
+                                                                        <i class="far fa-trash-alt product-delete-btn" targetName="{{$item->name}}" targetId={{ $item->pid }} endpoint="/product/delete"></i>
+                                                                    </button>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -243,22 +243,7 @@
                                             </div>
 
                                             <div class="pagination-area d-flex justify-content-center align-items-center">
-                                                <!--
-                                                <ul class="pagination m-0">
-                                                    <li class="page-item disabled">
-                                                        <span class="page-link">Previous</span>
-                                                    </li>
-                                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                    <li class="page-item active" aria-current="page">
-                                                        <span class="page-link">2</span>
-                                                    </li>
-                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="#">Next</a>
-                                                    </li>
-                                                </ul>
-                                                -->
-
+                                               
                                                 {{ $product->links() }}
                                             </div>
                                         </div>
@@ -277,6 +262,7 @@
             <!----------------------------[ Footer ]---------------------------->
             @include('/admin/Component/Footer/footer')
             @include('/admin/Component/popup/product-edit')
+            @include('/admin/Component/popup/product-delete')
 
         </div>
     </div>
@@ -290,6 +276,7 @@
 
     <!----------------------------[ Javascript Library ]---------------------------->
     @include('/admin/Component/Link/js')
+    <script src="/assets/Backend/js/product/product-edit.js" type="module"></script>
 
 </body>
 

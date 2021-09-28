@@ -32,10 +32,6 @@ $(document).ready((e) => {
         displayName.text(targetName);
         
         actionForm.attr('action',endPoint);
-
-
-
-
         console.log(endPoint);
         
     })

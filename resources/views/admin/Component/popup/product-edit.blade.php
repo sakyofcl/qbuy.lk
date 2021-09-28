@@ -15,61 +15,63 @@
 
                     <div class="form-body row ml-0 mr-0 p-3">
 
-                        <div class="col-md-6 form-row">
-                            <select class="form-control rawinput text-uppercase" name="catid" id="catid">
-
-                            </select>
-                        </div>
-
-                        <div class="col-md-6 form-row">
-                            <select class="form-control rawinput" name="subid" id="subid">
-
-                            </select>
-                        </div>
-
-                        <div class="col-12 form-row" style='padding-right:25px;'>
+                      
+                        <div class="col-12">
                             <label for="name" class="text-danger">Name</label>
-                            <input type="text" name="name" id="name" class="form-control rawinput">
+                            <input type="text" name="name" id="name" class="form-control rawinput mb-2" autocomplete="off">
                         </div>
 
 
-                        <div class="col-md-6 form-row">
+                        <div class="col-md-6 ">
                             <label for="price" class="text-danger">Price</label>
-                            <input type="number" name="price" id="price" class="form-control rawinput">
+                            <input type="text" name="price" id="price" class="form-control rawinput mb-2" autocomplete="off">
                         </div>
-                        <div class="col-md-4 form-row">
+                        <div class="col-md-6 ">
+                            <label for="stock" class="text-danger">Stock</label>
+                            <input type="text" name="stock" id="stock" class="form-control rawinput mb-2" autocomplete="off">
+                        </div>
+                        <div class="col-md-6 ">
                             <label for="weight" class="text-danger">Weight</label>
-                            <input type="number" name="weight" id="weight" class="form-control rawinput">
+                            <input type="text" name="weight" id="unit_weight" class="form-control rawinput mb-2" autocomplete="off">
                         </div>
-                        <div class="col-md-2 form-row">
+                        <div class="col-md-6  mb-2">
                             <label for="weight" class="text-danger">Unit</label>
-                            <select class="form-control rawinput" name="unit" id="unit" class="form-control rawinput">
-
+                            
+                            <select class="form-control rawinput" name="unit" id="unit" class="form-control rawinput" style="text-align-last:center;">
+                                <option value="Kg">Kg</option>
+                                <option value="g">g</option>
+                                <option value="mg">mg</option>
+                                <option value="pcs">Pcs</option>
+                                <option value="l">L</option>
+                                <option value="ml">ml</option>
                             </select>
                         </div>
 
 
-                        <div class="col-md-6 form-row">
-                            <label for="brand" class="text-danger">Stock</label>
-                            <input type="text" name="brand" id="brand" class="form-control rawinput" placeholder="Brand" readonly>
-                        </div>
+                    
 
-                        <div class="col-md-6 form-row">
-                            <label for="model" class="text-danger">Model</label>
-                            <input type="text" name="model" id="model" class="form-control rawinput" placeholder="Model" readonly>
-                        </div>
-
-
-
-
-                        <div class="col-12 form-row">
+                        <div class="col-12  mb-2">
                             <label for="description" class="text-danger">Description</label>
                             <textarea name="description" id="description" class="form-control rawinput h-100" rows="3"></textarea>
                         </div>
 
-                        <div class="col-12 form-row" style="margin-top:28px; margin-bottom: 15px;">
-                            <label for="image" class="text-danger">Image</label>
-                            <input type="file" name="image" id="image" class="form-control-file rawinput">
+                        <div class="col-6  w-100" style="margin-top:28px; margin-bottom: 15px;">
+                             <div class="img-upload-wrapper w-100">
+                                <div class="pt-2 pb-1 w-100">
+                                    <div class="image-preview row m-0 w-100" id="img-preview">
+                                        <img src="/assets/Backend/img/placeholder.jpg" id="image" class="w-100 border rounded" style="height:200px;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6  w-100" style="margin-top:28px; margin-bottom: 15px;">
+                            <div class="img-upload-wrapper w-100 mt-2 position-relative">
+                                 <span class="img-preview-close RT-shadow" id="img-preview-cancel"><i class="fas fa-times-circle p-0 m-0"></i></span>
+                                <img src="/assets/Backend/img/placeholder.jpg" id="show-img" class="w-100 RT-shadow border" style="height:200px;" />
+                            </div>
+
+                            <label class="file-input-btn btn btn-primary RT-shadow mt-3 w-100" for="image-upload"><i class="fas fa-upload"></i> image</label>
+                            <input type="file" class="d-none" value="/assets/Backend/img/placeholder.jpg" class="image-upload" id="image-upload" name="image" accept="image/*" />
                         </div>
 
 
