@@ -63,6 +63,8 @@ $(document).ready((e)=>{
                     offerProductName.val(name)
                     offerProductId.val(pid)
 
+                    offerSearchBtn.val(pid+"   "+name);
+
                     //hide resuld wrapper and clear data
                     resultWrapper.addClass('d-none')
                     resultWrapper.removeClass('d-flex')

@@ -46,7 +46,8 @@ Route::group(['middleware' => 'admin.check'], function () {
     #------ [ OFFER ] -----#
     Route::get('/offer', [offerController::class, 'index']);
     Route::post('/offer/place', [offerController::class, 'placeOffer']);
-
+    Route::post('/offer/update/store', [offerController::class, 'updateOffer']);
+    Route::get('/offer/delete', [offerController::class, 'deleteOffer']);
     #------ [ ORDER ] -----#
     Route::get('/order', [orderController::class, 'order']);
     Route::get('/order/accept', [orderController::class, 'orderAccept']);

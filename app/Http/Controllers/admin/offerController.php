@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\model\category;
 use App\model\offer;
+use App\model\offer_cart_item;
 use App\model\product;
 use Illuminate\Support\Facades\DB;
 
@@ -128,5 +129,69 @@ class offerController extends Controller
         }
 
         
+    }
+
+
+    public function updateOffer(Request $request){
+        $validation=Validator::make($request->all(),
+            [
+                'offer'=>'required|numeric',
+                'price'=>'required|numeric',
+                'end'=>'required|date',
+            ]
+
+        );  
+        if($validation->fails()){
+            return back();
+        }
+
+        if(offer::where('offer_id',$request->offer)->exists()){
+            $data=offer::where('offer_id',$request->offer)->first(['start']);
+            $startDate=date_create($data->start);
+            $modifyDate=date_create($request->end);
+
+            $diff=date_diff($startDate,$modifyDate);
+
+            if($diff->format("%R%a")>=0){
+                offer::where('offer_id',$request->offer)->update(array(
+                    'offer_price' =>$request->price,
+                    'end'=>$request->end
+                ));
+            }
+
+            return back();
+
+
+        }
+
+
+    }
+
+    public function deleteOffer(Request $request){
+        $validation=Validator::make($request->all(),
+            [
+                'offer_id'=>'required|numeric',
+            ]
+
+        );  
+
+        if($validation->fails()){
+            return back();
+        }
+
+        if(offer::where('offer_id',$request->offer_id)->exists()){
+            $offer=offer::where('offer_id',$request->offer_id)->first();
+            if($offer){
+                $offer->delete();
+            }
+
+            offer_cart_item::where('offer', $request->offer_id)->delete();
+
+            return back();
+        }
+        else{
+            return back();
+        }
+
     }
 }

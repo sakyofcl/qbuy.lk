@@ -147,35 +147,23 @@
                                                 <div class="col-md-12 pr-1 pl-1 mb-3 position-relative">
                                                     <small  class="form-text text-muted font-weight-bold text-uppercase">find</small>
                                                     <div class="input-group m-0 ">
-                                                        <input type="text" class="form-control" placeholder="search..!" id="search-box-for-offer">
+                                                        <input type="text" class="form-control" placeholder="search..!" id="search-box-for-offer" autocomplete="off">
                                                         <div class="input-group-append">
-                                                            <button class="btn btn-danger" type="submit">
+                                                            <div class="bg-danger pl-2 pr-2 text-white d-flex justify-content-center align-items-center" style="border-top-right-radius: 0.35rem;border-bottom-right-radius: 0.35rem;">
                                                                 <i class="fas fa-search " id="searchIcon"></i> 
                                                                 <div class="load-search d-none" id="searchLoader"></div> 
-                                                            </button>
+                                                            </div>
                                                         </div>
                                                         
                                                     </div>
+                                                    
                                                     <div class="d-none  flex-column flex-nowrap  w-100 p-2 RT-shadow position-absolute bg-white" id="search-result-wrapper" style="top:32;left:0;z-index:50;">
-                                                        
-                                                        
-
                                                     </div>
+
                                                 </div>
                                                
-                                               <div class="col-md-12 pr-1 pl-1 mb-3">
-                                                    <small  class="form-text text-muted font-weight-bold text-uppercase">product id</small>
-                                                    <div class="input-group m-0">
-                                                        <input type="text" id="offer-product-id" name="pid" class="form-control" value="" readonly>
-                                                    </div>
-                                                </div>
-
-                                               <div class="col-md-12 pr-1 pl-1 mb-3">
-                                                    <small  class="form-text text-muted font-weight-bold text-uppercase">product name</small>
-                                                    <div class="input-group m-0">
-                                                        <input type="text" id="offer-product-name" class="form-control" value=""  disabled >
-                                                    </div>
-                                                </div>
+                                               <input type="text" id="offer-product-id" name="pid" class="form-control" value="" readonly hidden>
+                                               <input type="text" id="offer-product-name" class="form-control" value=""  readonly hidden >
 
                                                 <div class="col-md-6 pr-1 pl-1 mb-3">
                                                     <small  class="form-text text-muted font-weight-bold text-uppercase">Current price</small>
@@ -355,9 +343,9 @@
                                                                 
                                                                 <td>
                                                                     <div>
-                                                                        <button class="btn btn-danger text-white border-0 RT-shadow">
-                                                                            <i class="fas fa-eye font-weight-bold"></i>
-                                                                            <span class="font-weight-bold">View</span>
+                                                                        <button class="btn btn-danger text-white border-0 RT-shadow offer-edit-btn" offer={{$offerItem->offer_id}} price={{$offerItem->offer_price}} end={{$offerItem->end}} start={{$offerItem->start}}  data-toggle="modal" data-target="#offer-edit-model">
+                                                                            <i class="fas fa-eye font-weight-bold offer-edit-btn" offer={{$offerItem->offer_id}} price={{$offerItem->offer_price}} end={{$offerItem->end}} start={{$offerItem->start}}></i>
+                                                                            
                                                                         </button>
                                                                     </div>
                                                                 </td>
@@ -385,7 +373,7 @@
 
             <!----------------------------[ Footer ]---------------------------->
             @include('/admin/Component/Footer/footer')
-
+            @include('/admin/Component/popup/offer-edit')
             
 
         </div>
@@ -401,6 +389,7 @@
     <!----------------------------[ Javascript Library ]---------------------------->
     @include('/admin/Component/Link/js')
     <script src="/assets/Backend/js/offer/offer.js"></script>
+    <script src="/assets/Backend/js/offer/offer-edit.js" type="module"></script>
 
 </body>
 
