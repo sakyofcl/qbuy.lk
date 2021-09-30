@@ -193,6 +193,13 @@ class apiClientOrderController extends Controller
         $userToken=$request->header('access_token');
         $orderStatus=$request->header('status');
 
+        #for web 
+        $isWeb=false;
+        $paginationPath="";
+        $paginationTotal="";
+        $paginationPerPage="";
+        $paginationParam="page";
+
         if($userToken){
             
             if(user_token::where('access_token',$userToken)->exists()){
@@ -209,6 +216,9 @@ class apiClientOrderController extends Controller
                 if($orderStatus){
                     if($orderStatus=="wait"){
                         $status="wait";
+                    }
+                    else if($orderStatus=="web"){
+                        $status="web";
                     }
                     else{
                         $status="all"; 
@@ -240,6 +250,34 @@ class apiClientOrderController extends Controller
                     ->orWhere('orders.status',$status3)
                     ->orderBy('orders.date','DESC')
                     ->get();
+                }
+                else if($status=="web"){
+                    
+
+                    $orederData=DB::table('orders')
+                    ->select(
+                        [
+                            'order_products.name',
+                            'order_products.price',
+                            'order_products.qty',
+                            'orders.oid',
+                            'orders.status',
+                            'orders.date',
+                        ]
+                    )
+                    ->join('order_products','orders.oid','=','order_products.oid')
+                    ->join('products','order_products.pid',"=","products.pid")
+                    ->where(['orders.uid' =>$userId])
+                    ->orderBy('orders.date','DESC')
+                    ->paginate(10);
+                    
+                    
+                    $isWeb=true;
+                    $paginationPath=$orederData->path();
+                    $paginationPerPage=$orederData->perPage();
+                    $paginationTotal=$orederData->total();
+
+                    
                 }
                 else{
                    
@@ -301,8 +339,24 @@ class apiClientOrderController extends Controller
 
                 }
 
+                if($isWeb){
+                    return response()->json(
+                        [
+                            "status"=>true,
+                            "data"=>$newArray,
+                            "message"=>"User orders",
+                            "path"=>$paginationPath,
+                            "total"=>$paginationTotal,
+                            "per"=>$paginationPerPage,
+                            "param"=>$paginationParam,
+                        ]
+                    );
+                }
+                else{
+                    return response()->json(["status"=>true,"data"=>$newArray,"message"=>"User orders"]);
+                }
                 
-                return response()->json(["status"=>true,"data"=>$newArray,"message"=>"User orders"]);
+                
 
             }
             else{

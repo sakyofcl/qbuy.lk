@@ -18,9 +18,11 @@ class userController extends Controller
                 'user_profiles.image',
                 'users.level',
                 'users.status',
+                'user_tokens.access_token',
             ]
         )
         ->join('user_profiles','users.uid','=','user_profiles.uid')
+        ->join('user_tokens','users.uid','=','user_tokens.uid')
         ->paginate(10);
         return view('admin/user/user',['users'=>$data]);
     }

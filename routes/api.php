@@ -113,3 +113,5 @@ Route::post('/user/order/place/create', [apiOrderController::class, 'createPlace
 
 //------------------------------- [ SALES API ROUTES ] ---------------------------------\\
 Route::get('/banner', [apiSaleController::class, 'getBanners']);
+
+
