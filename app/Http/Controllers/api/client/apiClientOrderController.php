@@ -18,6 +18,7 @@ use App\model\offer;
 use App\model\cart;
 use App\model\cart_item;
 use App\model\offer_cart_item;
+use App\model\order_address;
 
 class apiClientOrderController extends Controller
 {
@@ -59,6 +60,20 @@ class apiClientOrderController extends Controller
                                     $orderStage->stage = "new";
                                     $orderStage->oid = $oid->oid;
                                     $orderStage->save();
+
+                                    #store order ship address
+                                    $orderAddress=new order_address;
+                                    #order address data
+                                    $orderAddressData=ship_address::where('id',$address)->first();
+                                    #store order address data
+                                    $orderAddress->name=$orderAddressData->name;
+                                    $orderAddress->street=$orderAddressData->street;
+                                    $orderAddress->city=$orderAddressData->city;
+                                    $orderAddress->province=$orderAddressData->province;
+                                    $orderAddress->zip=$orderAddressData->zip;
+                                    $orderAddress->contact=$orderAddressData->contact;
+                                    $orderAddress->oid=$oid->oid;
+                                    $orderAddress->save();
 
 
                                     #order product
@@ -263,10 +278,12 @@ class apiClientOrderController extends Controller
                             'orders.oid',
                             'orders.status',
                             'orders.date',
+                            'order_addresses.*'
                         ]
                     )
                     ->join('order_products','orders.oid','=','order_products.oid')
                     ->join('products','order_products.pid',"=","products.pid")
+                    ->join('order_addresses','order_addresses.oid',"=","orders.oid")
                     ->where(['orders.uid' =>$userId])
                     ->orderBy('orders.date','DESC')
                     ->paginate(10);
@@ -277,6 +294,7 @@ class apiClientOrderController extends Controller
                     $paginationPerPage=$orederData->perPage();
                     $paginationTotal=$orederData->total();
 
+                    #return $orederData;
                     
                 }
                 else{
@@ -318,7 +336,11 @@ class apiClientOrderController extends Controller
                         if($newArray['result'][$j]["OrderId"]==$orederData[$i]->oid){
                             $newArray['result'][$j]["total"]=$newArray['result'][$j]["total"]+(int)$orederData[$i]->price*(int)$orederData[$i]->qty;
                             
-                            $newArray['result'][$j]["OrderData"][]=$orederData[$i];
+                            $newArray['result'][$j]["OrderData"][]=[
+                                'name'=>$orederData[$i]->name,
+                                'price'=>$orederData[$i]->price,
+                                'qty'=>$orederData[$i]->qty
+                            ];
                             $machedIndex=true;
                            
                         }
@@ -327,14 +349,46 @@ class apiClientOrderController extends Controller
                         }
                     }
                     if(!$machedIndex){
-                        $newArray['result'][]=[
-                            'OrderId'=>$orederData[$i]->oid,
-                            'date'=>$orederData[$i]->date,
-                            'total'=>(int)$orederData[$i]->price*(int)$orederData[$i]->qty,
-                            'status'=>$orederData[$i]->status,
-                            'OrderData'=>[$orederData[$i]]
-                            
-                        ];
+                        if($isWeb){
+                            $newArray['result'][]=[
+                                'OrderId'=>$orederData[$i]->oid,
+                                'date'=>$orederData[$i]->date,
+                                'total'=>(int)$orederData[$i]->price*(int)$orederData[$i]->qty,
+                                'status'=>$orederData[$i]->status,
+                                'OrderData'=>[
+                                    [
+                                        'name'=>$orederData[$i]->name,
+                                        'price'=>$orederData[$i]->price,
+                                        'qty'=>$orederData[$i]->qty
+                                    ]
+                                ],
+                                
+                                'orderAddress'=>[
+                                    'customer_name'=>$orederData[$i]->customer_name,
+                                    'street'=>$orederData[$i]->street,
+                                    'city'=>$orederData[$i]->city,
+                                    'province'=>$orederData[$i]->province,
+                                    'zip'=>$orederData[$i]->zip,
+                                    'contact'=>$orederData[$i]->contact,
+                                ]
+                                
+                            ];
+                        }
+                        else{
+                            $newArray['result'][]=[
+                                'OrderId'=>$orederData[$i]->oid,
+                                'date'=>$orederData[$i]->date,
+                                'total'=>(int)$orederData[$i]->price*(int)$orederData[$i]->qty,
+                                'status'=>$orederData[$i]->status,
+                                'OrderData'=>[
+                                    [
+                                        'name'=>$orederData[$i]->name,
+                                        'price'=>$orederData[$i]->price,
+                                        'qty'=>$orederData[$i]->qty
+                                    ]
+                                ]
+                            ];
+                        }
                     }
 
                 }

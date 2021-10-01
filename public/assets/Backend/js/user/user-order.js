@@ -50,7 +50,7 @@ $(document).ready((e) => {
                     </a>
                 </div>
 
-                ${nestedChild(data[i].OrderId,data[i].OrderData,data[i].total)}
+                ${nestedChild(data[i].OrderId,data[i].OrderData,data[i].total,data[i].orderAddress)}
 
             `
 
@@ -61,7 +61,8 @@ $(document).ready((e) => {
         
         return final;
     }
-    const nestedChild=(id,data,total)=>{
+    const nestedChild=(id,data,total,address)=>{
+        
         let final="";
 
         let  loopItem=
@@ -90,6 +91,26 @@ $(document).ready((e) => {
                             </tbody>
                         </table>
                     </div>
+
+                    <div class="invoice-title">
+
+                        <div id="main-title" class="mt-0">
+                            <span style="color:#000;" class="font-weight-bold">Delivered address :</span>
+                        </div>
+                
+                        <div class='address-details-box'>
+                            <span id="add-name">${address.customer_name}</span>
+                            <span id="add-street">${address.street}</span>
+                            <span id="add-city">${address.city}</span>
+                            <span>
+                                <span id="add-zip">${address.zip}</span>
+                                <span id="add-province">${address.province}</span>
+                            </span>
+                            <span id="add-contact">${address.contact}</span>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -152,11 +173,14 @@ $(document).ready((e) => {
         let url="/api/user/order";
         let status="web";
         let data=[];
+
+        //RESET DOM
+        accordionWrapper.html("");
+
+
         axios.get(url, {headers: {'status': status,'access_token':token}}).then((res)=>{
             if(res.data.status){
                 data=res.data.data.result;
-                //RESET DOM
-                accordionWrapper.html("");
                 accordionWrapper.append(listItemRoot(listItem,data,nestedChild));
             }
            
