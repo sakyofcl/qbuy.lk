@@ -66,7 +66,7 @@ class apiClientOrderController extends Controller
                                     #order address data
                                     $orderAddressData=ship_address::where('id',$address)->first();
                                     #store order address data
-                                    $orderAddress->name=$orderAddressData->name;
+                                    $orderAddress->customer_name=$orderAddressData->name;
                                     $orderAddress->street=$orderAddressData->street;
                                     $orderAddress->city=$orderAddressData->city;
                                     $orderAddress->province=$orderAddressData->province;
