@@ -257,8 +257,8 @@
                                                                         <button class="btn btn-primary text-white border-0 RT-shadow mr-2 user-order-btn" token={{$userItem->access_token}} data-toggle="modal" data-target="#user-order-model" >
                                                                             <i class="fas fa-shopping-bag font-weight-bold" token={{$userItem->access_token}}></i>
                                                                         </button>
-                                                                        <button class="btn btn-dark text-white border-0 RT-shadow" data-toggle="modal" data-target="#user-delete-confirm-model">
-                                                                            <i class="fas fa-user font-weight-bold" ></i>
+                                                                        <button class="btn btn-dark text-white border-0 RT-shadow user-info-btn" token={{$userItem->access_token}} data-toggle="modal" data-target="#user-info-model">
+                                                                            <i class="fas fa-user font-weight-bold" token={{$userItem->access_token}} ></i>
                                                                         </button>
                                                                         
                                                                     </div>
@@ -296,7 +296,7 @@
             @include('/admin/Component/popup/user-delete')
             @include('/admin/Component/popup/user-status')
             @include('/admin/Component/popup/user-order')
-            
+            @include('/admin/Component/popup/user-info')            
 
         </div>
     </div>
@@ -311,6 +311,7 @@
     <!----------------------------[ Javascript Library ]---------------------------->
     @include('/admin/Component/Link/js')
     <script src="/assets/Backend/js/user/user-order.js" type="module"></script>
+    <script src="/assets/Backend/js/user/user-info.js" type="module"></script>
 
 </body>
 

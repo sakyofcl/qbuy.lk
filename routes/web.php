@@ -55,6 +55,9 @@ Route::group(['middleware' => 'admin.check'], function () {
 
     #------ [ USER ] -----#
     Route::get('/user', [userController::class, 'user']);
+    Route::post('/admin/edit/user/profile', [userController::class, 'editUserProfile']);
+    Route::post('/admin/change/user/password', [userController::class, 'changeUserPassword']);
+    Route::post('/admin/delete/user', [userController::class, 'deleteUser']);
     Route::get('/user/info', [userController::class, 'userInfo']);
 
     #------ [ SEARCH ] -----#
