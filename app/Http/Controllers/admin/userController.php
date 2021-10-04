@@ -176,5 +176,23 @@ class userController extends Controller
             return back();
         }
     }
+
+
+    public function createUserAccount(Request $data){
+                #validate input
+        $validator=Validator::make($data->all(),[
+            'phone'=>'required|max:10',
+            'name'=>'required',
+            'password'=>'required|min:8|max:15',
+            'verify_key'=>'required',
+        ]);
+        if($validator->fails()){
+            return back();
+        }
+        
+        if(user::where('phone',$data->phone)->exists()){
+            return back();
+        }
+    }
     
 }

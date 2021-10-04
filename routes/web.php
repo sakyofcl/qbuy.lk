@@ -59,7 +59,7 @@ Route::group(['middleware' => 'admin.check'], function () {
     Route::post('/admin/change/user/password', [userController::class, 'changeUserPassword']);
     Route::post('/admin/delete/user', [userController::class, 'deleteUser']);
     Route::get('/user/info', [userController::class, 'userInfo']);
-
+    Route::post('/admin/create/user',[userController::class, 'createUserAccount']);
     #------ [ SEARCH ] -----#
     
 

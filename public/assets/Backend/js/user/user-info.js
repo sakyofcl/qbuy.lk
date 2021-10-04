@@ -17,6 +17,37 @@ function addressEle(name,street,city,zip,province,contact){
     `
 }
 
+function statusEle(status){
+    if(status=="active"){
+        return ` <span class="badge badge-success  rounded-0 p-1 RT-shadow" style="font-size:12px;">Active</span> ` 
+        
+    }
+    else if(status=="restricted"){
+        return ` <span class="badge badge-warning rounded-0 p-1 RT-shadow" style="font-size:12px;">Restricted</span> `
+    }
+    else if(status=="deactive"){
+        return ` <span class="badge badge-danger rounded-0 p-1 RT-shadow" style="font-size:12px;">Deactive</span>  `
+    }
+    else{
+        return ` <span class="badge badge-light rounded-0 p-1 RT-shadow" style="font-size:12px;">?</span> `
+    }
+    
+}
+
+function levelEle(level){
+    switch (level) {
+        case 'silver':
+            return `<i class="fas fa-crown" style="color:#bfbfbf;">`;
+        case 'gold':
+            return `<i class="fas fa-crown" style="color:#FFD700;">`;
+        case 'platinum':
+            return `<i class="fas fa-crown" style="color:#9e9e9e;">`;
+        case 'diamond':
+            return `<i class="fas fa-crown" style="color:#7b00e8;">`;
+        default:
+            return `<span style="color:#000;">?</span>`;
+    }
+}
 
 $(document).ready((e) => {
 
@@ -63,16 +94,32 @@ $(document).ready((e) => {
 
     Class.addEvent('user-info-btn','click',(e)=>{
         const token=$(e.target).attr('token');
-        callUserProfile(e,token);
+        const level=$(e.target).attr('level');
+        const status=$(e.target).attr('status');
+        const img=$(e.target).attr('img');
+
+
+        callUserProfile(e,token,level,status,img);
     })
 
 
 })
 
-function callUserProfile(e,token){
+function callUserProfile(e,token,level,status,img){
     let tokenString=token;
     let url='/api/user/profile';
     let data={};
+
+    //set user profile and level status
+    $('#user-profile-image').attr('src',img)
+    
+    //reset status
+    setValueToInnerHtml('user-profile-status','');
+    $('#user-profile-status').html(statusEle(status))
+
+    //rest level
+    setValueToInnerHtml('user-level-ele','');
+    $('#user-level-ele').html(levelEle(level))
     
 
     //reset dom
@@ -85,6 +132,7 @@ function callUserProfile(e,token){
     
 
     axios.get(url, {headers: {'access_token':tokenString}}).then((res)=>{
+        const dateExt=new DateExtract();
         console.log(res.data.data);
         if(res.data.status){
 
@@ -95,7 +143,7 @@ function callUserProfile(e,token){
             setValueToInnerHtml('user-gender',data.gender)
             setValueToInnerHtml('user-id',"#"+data.uid)
             setValueToInnerHtml('user-phone',data.contact)
-            setValueToInnerHtml('user-join','10/2/2021')
+            setValueToInnerHtml('user-join',dateExt.humanReadbleDate(data.date,'d-M-y'))
 
             
             //input box defailt value

@@ -20,8 +20,15 @@ class apiClientUserController extends Controller
     public function getUserProfile(Request $request){
 
         $userId=Common::getUserIdByToken($request->header('access_token'));
+
+        #join date
+        $joinDate=user::where('uid',$userId)->first(['date']);
+
         #get user profile data
         $userProfileData=user_profile::where('uid',$userId)->first();
+
+        #set user join date
+        $userProfileData->date=$joinDate->date;
 
         $deCode = base64_decode($userProfileData->image);        
         $profile = fopen(public_path('products/default/profile.jpg'), 'w');

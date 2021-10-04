@@ -138,6 +138,9 @@
                                         <h6 class="m-0 font-weight-bold text-primary text-capitalize">
                                             <i class="fas fa-cogs pr-2"></i>Users
                                         </h6>
+                                        <button  class="btn btn-danger font-weight-bold RT-shadow"  data-toggle="modal" data-target="#user-add-model">
+                                            Add User
+                                        </button>
 
                                     </div>
                                     <div class="card-body">
@@ -257,8 +260,8 @@
                                                                         <button class="btn btn-primary text-white border-0 RT-shadow mr-2 user-order-btn" token={{$userItem->access_token}} data-toggle="modal" data-target="#user-order-model" >
                                                                             <i class="fas fa-shopping-bag font-weight-bold" token={{$userItem->access_token}}></i>
                                                                         </button>
-                                                                        <button class="btn btn-dark text-white border-0 RT-shadow user-info-btn" token={{$userItem->access_token}} data-toggle="modal" data-target="#user-info-model">
-                                                                            <i class="fas fa-user font-weight-bold" token={{$userItem->access_token}} ></i>
+                                                                        <button class="btn btn-dark text-white border-0 RT-shadow user-info-btn" token={{$userItem->access_token}} level="{{$userItem->level}}" status="{{$userItem->status}}" img="data:image/png;base64,{{$userItem->image}}" data-toggle="modal" data-target="#user-info-model">
+                                                                            <i class="fas fa-user font-weight-bold" token={{$userItem->access_token}} level="{{$userItem->level}}" status="{{$userItem->status}}" img="data:image/png;base64,{{$userItem->image}}"></i>
                                                                         </button>
                                                                         
                                                                     </div>
@@ -296,7 +299,8 @@
             @include('/admin/Component/popup/user-delete')
             @include('/admin/Component/popup/user-status')
             @include('/admin/Component/popup/user-order')
-            @include('/admin/Component/popup/user-info')            
+            @include('/admin/Component/popup/user-info')   
+            @include('/admin/Component/popup/user-add')     
 
         </div>
     </div>
@@ -312,7 +316,7 @@
     @include('/admin/Component/Link/js')
     <script src="/assets/Backend/js/user/user-order.js" type="module"></script>
     <script src="/assets/Backend/js/user/user-info.js" type="module"></script>
-
+    <script src="/assets/Backend/js/user/create-user.js" type="module"></script>
 </body>
 
 
