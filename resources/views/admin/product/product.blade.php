@@ -46,10 +46,16 @@
                     ?>
                     <!-- end breadcrumb -->
 
-                    <?php 
+                    <?php
+                        if(session::has('message')){
+                            $status=0;
+                            $msg=session::get('message');
 
-                        echo alertBox('product complete',0);
-
+                            if(session::has('status')){
+                                $status=session::get('status');
+                            }
+                            echo alertBox($msg,$status);
+                        }
                     ?>
 
                     

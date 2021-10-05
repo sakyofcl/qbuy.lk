@@ -143,11 +143,13 @@ class apiClientAuthController extends Controller
                 if (Hash::check($request->password, $user->password)) {
                     $token=user_token::where('uid',$user->uid)->first(['access_token']);
                     if($token){
+
                         return response()->json(
                             [
                                 'status' => true,
                                 'access_token' => $token->access_token,
-                                'message' => "user successfully login"
+                                'message' => "user successfully login",
+                                'verified'=>(int)$user->verified
                             ]
                         );
                     }

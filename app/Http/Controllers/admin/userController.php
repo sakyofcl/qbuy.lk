@@ -173,7 +173,19 @@ class userController extends Controller
             'signature'=>'required',
         ]);
 
+        $error=$validator->errors();
+
         if($validator->fails()){
+
+            if($error->has('signature')){
+                $sigError=$error->first('signature');
+                return back()->with(
+                    [
+                        'message'=>$sigError,
+                        'status'=>0
+                    ]
+                );
+            }
 
             
             return back();
@@ -218,10 +230,20 @@ class userController extends Controller
             
             
             
-            return back();
+            return back()->with(
+                [
+                    'message'=>"Successfully user deleted.",
+                    'status'=>1
+                ]
+            );
         } 
         else{
-            return back();
+            return back()->with(
+                [
+                    'message'=>"This user doesn't exist.",
+                    'status'=>2
+                ]
+            );
         }
     }
 

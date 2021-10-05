@@ -40,14 +40,41 @@ class productController extends Controller
     public function productDelete(Request $data)
     {
         if($data->pid){
-            $del = product::where('pid', $data->pid)->first();
-            $delStockStatus = product_stock_status::where('pid', $data->pid)->first();
-            $delStockStatus->delete();
-            $del->delete();
-            File::delete(public_path("products/{$del->image}"));
+            if(product::where('pid', $data->pid)->exists()){
+                $del = product::where('pid', $data->pid)->first();
+                $delStockStatus = product_stock_status::where('pid', $data->pid)->first();
+                $delStockStatus->delete();
+                $del->delete();
+                File::delete(public_path("products/{$del->image}"));
+
+                return back()->with(
+                    [
+                        'message'=>"Successfully product deleted.",
+                        'status'=>1
+                    ]
+                );
+            }
+            else{
+                return back()->with(
+                    [
+                        'message'=>"This product doesn't exist.",
+                        'status'=>2
+                    ]
+                );
+            }
+            
+
+            
         }
+
+        return back()->with(
+            [
+                'message'=>"The Product id field is required.",
+                'status'=>0
+            ]
+        );
       
-        return back();
+        
     }
 
     public function productUpdate(Request $data)
