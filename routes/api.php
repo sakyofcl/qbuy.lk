@@ -61,6 +61,9 @@ Route::middleware(['check.token'])->group(function(){
     #change password
     Route::post('/user/password/change', [apiClientUserController::class, 'changeUserPassword']);
 
+    #verification
+    Route::post('/user/account/verify', [apiClientUserController::class, 'userAccountVerify']);
+
     
 });
 

@@ -179,6 +179,34 @@ class apiClientUserController extends Controller
 
     }
 
+    public function userAccountVerify(Request $request){
+        $validator=Validator::make($request->all(),[
+            'verify_key'=>'required',
+        ]);
+
+        if($validator->fails()){
+            return Common::json(false,[],"The verify_key field is required.");
+        }
+
+        $userId=Common::getUserIdByToken($request->header('access_token'));
+
+        $update = user::where('uid', $userId)->update(array(
+            'verify_key' =>$request->verify_key,
+            'verified'=>1,
+            'status'=>'active'
+        ));
+
+        return response()->json(
+            [
+                'status' => true,
+                'message' => "User successfully verified",
+                'verified'=>1
+            ]
+        );
+
+
+    }
+
 
      
 }
