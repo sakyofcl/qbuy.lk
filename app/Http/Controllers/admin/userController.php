@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Session;
 
 use App\model\user_profile;
 use App\model\user;
@@ -100,8 +100,41 @@ class userController extends Controller
             'signature'=>'required',
             'password'=>'required|min:8|max:15',
         ]);
+        $error=$validator->errors();
+        #return $error->first('password');
 
         if($validator->fails()){
+
+            if($error->has('password') && $error->has('signature')){
+                $passError=$error->first('password');
+                $sigError=$error->first('signature');
+
+                return back()->with(
+                    [
+                        'message'=>$passError." ".$sigError,
+                        'status'=>0
+                    ]
+                );
+            }
+            else if($error->has('password')){
+                $passError=$error->first('password');
+                return back()->with(
+                    [
+                        'message'=>$passError,
+                        'status'=>0
+                    ]
+                );
+            }
+            else if($error->has('signature')){
+                $sigError=$error->first('signature');
+                return back()->with(
+                    [
+                        'message'=>$sigError,
+                        'status'=>0
+                    ]
+                );
+            }
+
             return back();
         }
 
@@ -112,10 +145,23 @@ class userController extends Controller
                 'password' => Hash::make($data->password),
             ));
 
-            return back();
+            
+            return back()->with(
+                [
+                    'message'=>"Successfully changed password.",
+                    'status'=>1
+                ]
+            );
+            
         } 
         else{
-            return back();
+            
+            return back()->with(
+                [
+                    'message'=>"This user doesn't exist.",
+                    'status'=>2
+                ]
+            );
         }
 
 
@@ -128,6 +174,8 @@ class userController extends Controller
         ]);
 
         if($validator->fails()){
+
+            
             return back();
         }
 

@@ -35,6 +35,7 @@
                 <div class="container-fluid">
 
                     @include('/admin/Component/breadcrumb')
+                    @include('/admin/Component/message/alert-box')
 
                     <!-- breadcrumb -->
                     <?php
@@ -44,6 +45,21 @@
                     echo breadcrumb('user', $path);
                     ?>
                     <!-- end breadcrumb -->
+
+                    <?php
+                        if(session::has('message')){
+                            $status=0;
+                            $msg=session::get('message');
+
+                            if(session::has('status')){
+                                $status=session::get('status');
+                            }
+                            echo alertBox($msg,$status);
+                        }
+                    ?>
+
+                    
+
 
                     <div class="row">
 

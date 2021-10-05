@@ -35,6 +35,7 @@
                 <div class="container-fluid">
 
                     @include('/admin/Component/breadcrumb')
+                    @include('/admin/Component/message/alert-box')
 
                     <!-- breadcrumb -->
                     <?php
@@ -44,6 +45,14 @@
                     echo breadcrumb('product', $path);
                     ?>
                     <!-- end breadcrumb -->
+
+                    <?php 
+
+                        echo alertBox('product complete',0);
+
+                    ?>
+
+                    
 
                     <div class="row">
 

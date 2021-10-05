@@ -24,7 +24,6 @@ class apiClientAuthController extends Controller
             'phone'=>'required|max:10',
             'name'=>'required',
             'password'=>'required|min:8|max:15',
-            'verify_key'=>'required',
         ]);
         if($validator->fails()){
             return response()->json(['status'=>false,'data'=>[],'message'=>'plz ender data correct format.']);
@@ -38,11 +37,11 @@ class apiClientAuthController extends Controller
         $store = new user;
         $store->phone = $request->phone;
         $store->password = Hash::make($request->password);
-        $store->verify_key=$request->verify_key;
+        
 
         #temp set status active. and set verified 1 but we will check the verfify key on firebase and confirm it
-        $store->status="active";
-        $store->verified="1";
+        $store->status="restricted";
+        $store->verified="0";
 
         #check verify key
         #...check ferify into firbase;
@@ -78,6 +77,7 @@ class apiClientAuthController extends Controller
                         'status' => true,
                         'access_token' => $access_token,
                         'message' => "User successfully register",
+                        'verified'=>0
                     ]
                 );
             }
