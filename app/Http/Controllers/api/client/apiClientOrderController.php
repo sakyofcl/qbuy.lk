@@ -245,6 +245,9 @@ class apiClientOrderController extends Controller
                     $status1='pending';
                     $status2='process';
                     $status3='couriered';
+
+                    $query="orders.uid={$userId} AND (orders.status='$status1' OR orders.status='$status2' OR orders.status='$status3' )";
+
                     $orederData=DB::table('orders')
                     ->select(
                         [
@@ -258,13 +261,11 @@ class apiClientOrderController extends Controller
                         ]
                     )
                     ->join('order_products','orders.oid','=','order_products.oid')
-                    ->join('products','order_products.pid',"=","products.pid")
-                    ->where(['orders.uid' =>$userId])
-                    ->where('orders.status',$status1)
-                    ->orWhere('orders.status',$status2)
-                    ->orWhere('orders.status',$status3)
+                    ->whereRaw($query)
                     ->orderBy('orders.date','DESC')
                     ->get();
+
+                    
                 }
                 else if($status=="web"){
                     
@@ -282,9 +283,8 @@ class apiClientOrderController extends Controller
                         ]
                     )
                     ->join('order_products','orders.oid','=','order_products.oid')
-                    ->join('products','order_products.pid',"=","products.pid")
                     ->join('order_addresses','order_addresses.oid',"=","orders.oid")
-                    ->where(['orders.uid' =>$userId])
+                    ->where('orders.uid' ,$userId)
                     ->orderBy('orders.date','DESC')
                     ->paginate(10);
                     
@@ -294,13 +294,14 @@ class apiClientOrderController extends Controller
                     $paginationPerPage=$orederData->perPage();
                     $paginationTotal=$orederData->total();
 
-                    #return $orederData;
+                    
                     
                 }
                 else{
                    
                     $status1='complete';
                     $status2='cancelled';
+                    $query="orders.uid={$userId} AND (orders.status='$status1' OR orders.status='$status2')";
 
                     $orederData=DB::table('orders')
                     ->select(
@@ -315,10 +316,7 @@ class apiClientOrderController extends Controller
                         ]
                     )
                     ->join('order_products','orders.oid','=','order_products.oid')
-                    ->join('products','order_products.pid',"=","products.pid")
-                    ->where(['orders.uid' =>$userId])
-                    ->where('orders.status',$status1)
-                    ->orWhere('orders.status',$status2)
+                    ->whereRaw($query)
                     ->orderBy('orders.date','DESC')
                     ->get();
                 }

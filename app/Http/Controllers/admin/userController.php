@@ -74,7 +74,12 @@ class userController extends Controller
         ]);
 
         if($validator->fails()){
-            return back();
+            return back()->with(
+                [
+                    'message'=>"All fields are required",
+                    'status'=>0
+                ]
+            );
         }
 
         
@@ -86,10 +91,21 @@ class userController extends Controller
                 'contact' => $data->phone,
             ));
 
-            return back();
+            
+            return back()->with(
+                [
+                    'message'=>"Successfully user profile updated.",
+                    'status'=>1
+                ]
+            );
         } 
         else{
-            return back();
+            return back()->with(
+                [
+                    'message'=>"This user profile doesn't exist.",
+                    'status'=>2
+                ]
+            );
         }
     }
 
