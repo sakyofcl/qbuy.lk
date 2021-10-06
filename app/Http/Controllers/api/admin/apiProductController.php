@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\model\category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 use App\model\product;
 use App\model\product_stock_status;
@@ -17,33 +18,52 @@ class apiProductController extends Controller
     public function storeProduct(Request $data)
     {
 
+        $validator=Validator::make($data->all(),[
+            'image'=>'required',
+            'cid'=>'required',
+            'name'=>'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['message' => "Name,category,image are required", 'status' =>300]);
+        }
+
+
+
         $store = new product;
         
 
         $store->cid = $data->cid;
 
-        if ($data->name == null) {
-            $store->name = "no name";
-        } else {
-            $store->name = $data->name;
-            #final string;
-            $ask=" ";
-            #explode word by " "
-            $word=explode(" ", $data->name);
+        $store->name = $data->name;
+        #final string;
+        $ask=" ";
+        #explode word by " "
+        $word=explode(" ", $data->name);
 
-            foreach($word as $wordItem){
-                $ask.=metaphone($wordItem)." ";
-            }
-
-            $store->key_tag=$ask;
+        foreach($word as $wordItem){
+            $ask.=metaphone($wordItem)." ";
         }
 
-        $store->price = $data->price;
-        $store->description = $data->description;
-        $store->stock = $data->stock;
-        $store->unit_weight = $data->unitWeight;
-        $store->unit = $data->unit;
+        $store->key_tag=$ask;
 
+        if($data->price){
+            $store->price = $data->price;
+        }
+        if($data->description){
+            $store->description = $data->description;
+        }
+        if($data->stock){
+            $store->stock = $data->stock;
+        }
+        if($data->unitWeight){
+            $store->unit_weight = $data->unitWeight;
+        }
+        if($data->unit){
+            $store->unit = $data->unit;
+        }
+       
+        
 
         # store main image
         $image = $data->file('image');
@@ -53,12 +73,6 @@ class apiProductController extends Controller
         $store->image = $imageName;
 
 
-        /*
-        $image = $data->file('image')->getRealPath();
-        $fileContent = file_get_contents($image);
-        $convBase64 = base64_encode($fileContent);
-        #$store->image = $convBase64;
-        */
 
         if ($store->save()) {
             #get product id

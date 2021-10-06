@@ -61,7 +61,12 @@ class categoryController extends Controller
       
         
         if ($store->save()) {
-            return back();
+            return back()->with(
+                [
+                    'message'=>"Successfully category added.",
+                    'status'=>1
+                ]
+            );
         }
     }
 
@@ -83,7 +88,12 @@ class categoryController extends Controller
             }
         }
 
-        return back();
+        return back()->with(
+            [
+                'message'=>"Successfully category deleted.",
+                'status'=>1
+            ]
+        );
     }
     public function storeSubCategory(Request $data)
     {
@@ -91,7 +101,12 @@ class categoryController extends Controller
         $store->name = $data->subname;
         $store->cid = $data->cid;
         if ($store->save()) {
-            return back();
+            return back()->with(
+                [
+                    'message'=>"Successfully sub category added.",
+                    'status'=>1
+                ]
+            );
         }
     }
 
@@ -122,7 +137,12 @@ class categoryController extends Controller
         }
        
         
-        return back();
+        return back()->with(
+            [
+                'message'=>"Successfully category updated.",
+                'status'=>1
+            ]
+        );
 
     }
 }

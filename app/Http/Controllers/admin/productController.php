@@ -88,7 +88,13 @@ class productController extends Controller
         ]);
 
         if($validator->fails()){
-            return back();
+            return back()->with(
+                [
+                    'message'=>"All fields are required",
+                    'status'=>0
+                ]
+            );
+            
         }
 
         
@@ -128,7 +134,12 @@ class productController extends Controller
         
 
         if ($update) {
-            return back();
+            return back()->with(
+                [
+                    'message'=>"Successfully product updated.",
+                    'status'=>1
+                ]
+            );
         }
         
     }
@@ -139,6 +150,11 @@ class productController extends Controller
         product_stock_status::where('pid', $data->pid)->update([
             'status' => $data->v
         ]);
-        return back();
+        return back()->with(
+            [
+                'message'=>"Successfully stock status updated.",
+                'status'=>1
+            ]
+        );
     }
 }

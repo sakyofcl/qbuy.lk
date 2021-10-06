@@ -43,7 +43,7 @@
                         ['name' => 'home', 'link' => '/'], ['name' => 'Product', 'link' => '/product']
                     ];
                     echo breadcrumb('Add product', $path);
-                    echo alertMsg('alert-success', 'product added completed..!');
+                    echo alertMsg();
                     ?>
                     <!-- end breadcrumb -->
 

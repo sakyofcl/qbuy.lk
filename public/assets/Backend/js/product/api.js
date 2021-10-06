@@ -64,13 +64,13 @@ $(document).ready(() => {
         })
         axios.post('/api/product/store', formData).then((res) => {
 
-            console.log(res.data.message)
+            
             if (res.data.status == 200) {
                 if (eve.target.id == "save-btn") {
                     window.location = "/product";
                 }
 
-                let dataEle = [ 'name', 'price', 'stock', 'unitWeight', 'description' ];
+                let dataEle = [ 'name', 'price', 'stock', 'unitWeight', 'description','image' ];
                 dataEle.map((v) => {
                     $('#' + v).val("");
                 })
@@ -79,7 +79,18 @@ $(document).ready(() => {
 
                 rootEleAlert.addClass('d-flex');
                 rootEleAlert.removeClass('d-none');
+                rootEleAlert.removeClass('alert-danger');
+                rootEleAlert.addClass('alert-success');
+                rALertMsgSpan.text('product added completed..!');
 
+            }
+            else if(res.data.status == 300){
+                rootEleAlert.addClass('d-flex');
+                rootEleAlert.addClass('alert-danger');
+                rootEleAlert.removeClass('alert-success');
+                rootEleAlert.removeClass('d-none');
+                rALertMsgSpan.text('product name,category,image are required..!');
+                console.log(res.data);
             }
 
 
