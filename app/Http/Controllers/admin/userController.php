@@ -216,7 +216,11 @@ class userController extends Controller
             user_token::where('uid',$data->signature)->delete();
             #delete profile row
             $getImage=user_profile::where('uid',$data->signature)->first(['image']);
-            File::delete(public_path("profile/{$getImage->image}"));
+            
+            if($getImage->image!='user.jpg'){
+                File::delete(public_path("profile/{$getImage->image}"));
+            }
+            
             user_profile::where('uid',$data->signature)->delete();
 
             #delete ship address
