@@ -209,7 +209,7 @@ class apiClientAuthController extends Controller
 
         if(user::where('phone',$request->phone)->exists()){
 
-            $user=user::where('phone',$request->phone)->first(['uid']);
+            $user=user::where('phone',$request->phone)->first(['uid','verified']);
 
             $update = user::where('uid', $user->uid)->update(array(
                 'password' => Hash::make($request->password)
@@ -218,7 +218,7 @@ class apiClientAuthController extends Controller
             #get token
             $token=user_token::where('uid',$user->uid)->first(['access_token']);
             if($token){
-                return response()->json(['status' => true,'access_token' => $token->access_token,'message' => "Password successfully forgot"]);
+                return response()->json(['status' => true,'access_token' => $token->access_token,'message' => "Password successfully forgot",'verified'=>(int)$user->verified]);
             }
 
             
