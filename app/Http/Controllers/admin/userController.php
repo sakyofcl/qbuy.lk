@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\File;
 use App\model\user_profile;
 use App\model\user;
 use App\model\user_token;
@@ -215,7 +215,10 @@ class userController extends Controller
             #delete user token
             user_token::where('uid',$data->signature)->delete();
             #delete profile row
+            $getImage=user_profile::where('uid',$data->signature)->first(['image']);
+            File::delete(public_path("profile/{$getImage->image}"));
             user_profile::where('uid',$data->signature)->delete();
+
             #delete ship address
             if(ship_address::where('uid', $data->signature)->exists()){
                 $delData=ship_address::where('uid', $data->signature)->get();
