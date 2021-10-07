@@ -60,9 +60,6 @@ class apiClientAuthController extends Controller
                 #create user profile
                 $profile=new user_profile;
                 $profile->uid=$uid->uid;
-                $defaultImage = public_path('assets/Backend/img/default/user.jpg');
-                $image=base64_encode(file_get_contents($defaultImage));      
-                $profile->image=$image;
                 $profile->contact=$request->phone;
                 $profile->name=$request->name;
                 $profile->save();

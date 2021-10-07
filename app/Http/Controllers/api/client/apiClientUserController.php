@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\File;
 
 use App\Lib\Common;
 use App\model\user;
@@ -33,12 +33,7 @@ class apiClientUserController extends Controller
         #set is user verified status;
         $userProfileData->verified=(int)$joinDate->verified;
 
-        $deCode = base64_decode($userProfileData->image);        
-        $profile = fopen(public_path('products/default/profile.jpg'), 'w');
-        fwrite($profile, $deCode);
-        fclose($profile);
-
-        $userProfileData['image']="http://qbuy.lk/products/default/profile.jpg";
+        $userProfileData['image']="http://qbuy.lk/profile/{$userProfileData->image}";
 
         return Common::json(true,$userProfileData,"user profie");
             
@@ -65,15 +60,46 @@ class apiClientUserController extends Controller
         
         $userId=Common::getUserIdByToken($request->header('access_token'));
 
-        if($request->image){
-            $update = user_profile::where('uid', $userId)->update(array(
-                'image' => $request->image
-            ));
-            return Common::json(true,[],"Profile successfully updated..!");
+        $validator=Validator::make($request->all(),[
+            'image'=>'required',
+        ]);
+
+        if($validator->fails()){
+            return Common::json(false,[],"Profile image required.");
         }
-        else{
-            return Common::json(false,[],"Plz select image");   
+
+        $profileData=user_profile::where('uid',$userId)->first(['image']);
+
+        #check is default image and delete
+        if($profileData->image!='user.jpg'){
+            $imageName=$profileData->image;
+            File::delete(public_path("profile/{$imageName}"));
         }
+
+
+        $defaultImagePath=public_path('profile/make-image-from-uri.jpg');
+        $storePath=public_path('profile');
+
+        $deCode = base64_decode($request->image);        
+        $profile = fopen($defaultImagePath, 'w');
+
+        fwrite($profile, $deCode);
+
+        #genarate file
+        $filePath=pathinfo($defaultImagePath);
+        $fileName=time().'.'.$filePath['extension'];
+
+        #after genrate the name we copy file
+        copy($defaultImagePath,$storePath.'/'.$fileName);
+        
+        fclose($profile);
+
+        $update = user_profile::where('uid', $userId)->update(array(
+            'image' => $fileName
+        ));
+        return Common::json(true,[],"Profile successfully updated..!");
+
+
 
     }
 
