@@ -144,6 +144,7 @@ function callUserProfile(e,token,level,status,img){
             setValueToInnerHtml('user-id',"#"+data.uid)
             setValueToInnerHtml('user-phone',data.contact)
             setValueToInnerHtml('user-join',dateExt.humanReadbleDate(data.date,'d-M-y'))
+            setValueToInnerHtml('user-point',data.point)
 
             
             //input box defailt value

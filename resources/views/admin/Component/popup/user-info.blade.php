@@ -24,7 +24,7 @@
                                         <span class="badge badge-success rounded-0 p-1 RT-shadow" style="font-size:12px;">Active</span>
                                     </div>
                                 </div>
-                                <div class="profile-item-box  text-center font-weight-bold"><span style="font-size:13px;color:#000;">0 <i class="fas fa-coins text-warning"></i></span></div>
+                                <div class="profile-item-box  text-center font-weight-bold"><span style="font-size:13px;color:#000;"> <span id="user-point"></span> <i class="fas fa-coins text-warning"></i></span></div>
                                 <div class="profile-item-action-box d-flex justify-content-center align-items-center ">
                                     
                                     <button class="btn btn-primary text-white border-0 RT-shadow w-50 mr-1" id="admin-edit-user-btn">

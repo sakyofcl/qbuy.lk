@@ -157,4 +157,26 @@ class productController extends Controller
             ]
         );
     }
+
+    public function getProductByCategoryName($name){
+
+        #$product = product::orderBy('date', 'DESC')->paginate(10);
+        $stock_status = product_stock_status::all();
+        $maincat = category::all();
+        $subcat = sub_category::all();
+
+
+        $data=[];
+        if($name=="all"){
+            $data=product::orderBy('date', 'DESC')->paginate(10);
+        }
+        else{
+            $cid=category::where("name",$name)->first(["cid"]);
+            if($cid){
+                $data=product::where('cid',$cid->cid)->orderBy('date', 'DESC')->paginate(10);
+            }
+        }
+
+        return view('admin/product/product', ['product' => $data, 'stock_status' => $stock_status, 'main' => $maincat, 'sub' => $subcat,'current'=>$name]);
+    }
 }

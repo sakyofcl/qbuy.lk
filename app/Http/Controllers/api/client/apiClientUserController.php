@@ -22,13 +22,16 @@ class apiClientUserController extends Controller
         $userId=Common::getUserIdByToken($request->header('access_token'));
 
         #join date
-        $joinDate=user::where('uid',$userId)->first(['date','verified']);
+        $joinDate=user::where('uid',$userId)->first(['date','verified','point']);
 
         #get user profile data
         $userProfileData=user_profile::where('uid',$userId)->first();
 
         #set user join date
         $userProfileData->date=$joinDate->date;
+
+        #set user point
+        $userProfileData->point=$joinDate->point;
 
         #set is user verified status;
         $userProfileData->verified=(int)$joinDate->verified;

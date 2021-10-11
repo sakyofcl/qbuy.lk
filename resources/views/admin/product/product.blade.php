@@ -162,8 +162,10 @@
                                             <i class="fas fa-list-ul pr-1"></i>List products
                                         </span>
 
+                                    
 
 
+                                    <!--
                                         <div class="filter-wrapper mb-3">
                                             <form class="row m-0 d-flex flex-nowrap" method="GET" action="/product">
                                                 <div class="col-4 col-md-2 p-0 mr-2">
@@ -186,7 +188,36 @@
                                                 </div>
                                             </form>
                                         </div>
+                                    -->
+                                        <div class="owl-carousel product-category-slider" id="product-category-slider">
 
+                                            @if($current=="all")
+                                                <a href="/product/all" class=" d-block item product-category-slider-item rounded-pill active-category-slider">
+                                                    all 
+                                                </a>
+                                            @else
+                                                <a href="/product/all" class=" d-block item product-category-slider-item rounded-pill">
+                                                    all
+                                                </a>
+                                            @endif
+
+                                            @foreach($main as $item)
+
+                                                @if($current==$item->name)
+                                                    <a href="/product/{{$item->name}}" class=" d-block item product-category-slider-item rounded-pill active-category-slider">
+                                                        {{$item->name}}
+                                                    </a>
+                                                @else
+                                                    <a href="/product/{{$item->name}}" class="d-block item product-category-slider-item rounded-pill">
+                                                        {{$item->name}} 
+                                                    </a>
+                                                @endif
+
+                                            @endforeach
+
+                                        </div>
+
+                                        
 
 
                                         <div class="w-100">

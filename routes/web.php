@@ -31,6 +31,7 @@ Route::group(['middleware' => 'admin.check'], function () {
 
     #------ [ PRODUCT ] -----#
     Route::get('/product', [productController::class, 'index']);
+    Route::get('/product/{name}', [productController::class, 'getProductByCategoryName']);
     Route::get('/product/create', [productController::class, 'productCreate']);
     Route::post('/product/create/store', [productController::class, 'productStore']);
     Route::get('/product/delete', [productController::class, 'productDelete']);
@@ -62,11 +63,10 @@ Route::group(['middleware' => 'admin.check'], function () {
     Route::post('/admin/create/user',[userController::class, 'createUserAccount']);
     #------ [ SEARCH ] -----#
     
+    #------ [ SALES ] -----#
 
+    Route::post('/sale/add/banner', [saleController::class, 'addBanner']);
 
 
 });
 
-#------ [ SALES ] -----#
-
-Route::post('/sale/add/banner', [saleController::class, 'addBanner']);

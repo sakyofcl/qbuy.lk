@@ -159,7 +159,7 @@ class apiClientCartController extends Controller
                                     $store->cart_id=$cart_id;
         
                                     if($store->save()){
-                                        return response()->json(['status'=>true,'data'=>[],'message'=>"Cart added successfully..!"]);
+                                        return response()->json(['status'=>true,'data'=>[],'message'=>"Added to cart"]);
                                     }
                                     else{
                                         return response()->json(['status'=>false,'data'=>[],'message'=>"Cart not added"]);

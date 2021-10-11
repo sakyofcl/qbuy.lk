@@ -56,23 +56,57 @@ class orderController extends Controller
                         'orders.date',
                         'orders.uid',
                         'orders.payment',
-                        'users.phone',
                         'order_stages.stage',
-                        'user_profiles.image'
-                        
                     ]
                 )
-                ->join('users','users.uid','=','orders.uid')
-                ->join('user_profiles','user_profiles.uid','=','orders.uid')
                 ->join('order_stages','order_stages.oid','=','orders.oid')
                 ->where(['order_stages.stage'=>$tab])
                 ->orderBy('orders.date','DESC')
                 ->paginate(10);
             
         $orderProduct=order_product::get(['oid','price','qty']);
+
+
+        #get count of order in status;
+        
+        $countNew=DB::table('order_stages')
+            ->join('orders','orders.oid','order_stages.oid')
+            ->where('order_stages.stage','=','new')
+            ->count('order_stages.stage');
+        
+        $countComplete=DB::table('order_stages')
+            ->join('orders','orders.oid','order_stages.oid')
+            ->where('order_stages.stage','=','complete')
+            ->count('order_stages.stage');
+
+        $countProcess=DB::table('order_stages')
+            ->join('orders','orders.oid','order_stages.oid')
+            ->where('order_stages.stage','=','process')
+            ->count('order_stages.stage');
+
+        $countCancelled=DB::table('order_stages')
+            ->join('orders','orders.oid','order_stages.oid')
+            ->where('order_stages.stage','=','cancelled')
+            ->count('order_stages.stage');
+
+        
+        
             
 
-        return view('admin/order/order',['orders'=>$orederData,'tab'=>$tab,'orderProduct'=>$orderProduct]);
+        return view('admin/order/order',
+            [
+                'orders'=>$orederData,
+                'tab'=>$tab,
+                'orderProduct'=>$orderProduct,
+                'stageCount'=>
+                    [
+                        'new'=>$countNew,
+                        'complete'=>$countComplete,
+                        'process'=>$countProcess,
+                        'cancelled'=>$countCancelled
+                    ]
+            ]
+        );
     }
 
 
@@ -105,6 +139,38 @@ class orderController extends Controller
             if(order::where('oid', $request->oid)->exists()){
 
                 if($request->status=="complete"){
+
+                    $pointPercentage=0.1;
+                    #get total price
+                    $tot=DB::table('orders')
+                        ->select(DB::raw('SUM(order_products.price*order_products.qty) as total'))
+                        ->join('order_products','order_products.oid','=','orders.oid')
+                        ->where('orders.oid','=',$request->oid)
+                        ->first();
+                    
+                        #->sum('tot');
+                        
+                    $totalAmountOfPrice=$tot->total;
+
+                    #calculate points
+                    $points=round($totalAmountOfPrice*$pointPercentage);
+
+                    #set points to user
+                    $orderUser=order::where('oid',$request->oid)->first(['uid']);
+
+                    if(user::where('uid',$orderUser->uid)->exists()){
+                        #get user current points
+                        $user=user::where('uid',$orderUser->uid)->first(['point']);
+                        $currentPoints=$user->point;
+
+                        user::where('uid',$orderUser->uid)->update(array(
+                            'point' =>$currentPoints+$points
+                        ));
+
+                        
+                    }
+                    
+
                     order::where('oid', $request->oid)->update(array(
                         'status' =>"complete"
                     ));
@@ -126,6 +192,14 @@ class orderController extends Controller
                     ));
                     order_stage::where('oid', $request->oid)->update(array(
                         'stage' =>"process"
+                    ));
+                }
+                else if($request->status=="pending"){
+                    order::where('oid', $request->oid)->update(array(
+                        'status' =>"pending"
+                    ));
+                    order_stage::where('oid', $request->oid)->update(array(
+                        'stage' =>"new"
                     ));
                 }
 

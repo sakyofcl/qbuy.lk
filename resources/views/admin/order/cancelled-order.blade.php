@@ -21,7 +21,7 @@
                             <div>#{{$ordersItem->oid}}</div>
                         </td>
                         <td>
-                            <div>
+                            <div class="text-uppercase">
                             <?php
                         
                                 echo date('m/d/Y', strtotime($ordersItem->date));
@@ -67,9 +67,9 @@
 
                         <td>
                             <div>
-                                <button class="btn btn-danger text-white border-0 RT-shadow order-view-btn"  oid={{$ordersItem->oid}} data-toggle="modal" data-target="#order-info-model">
-                                    <i class="fas fa-eye font-weight-bold order-view-btn"  oid={{$ordersItem->oid}} ></i>
-                                    <span class="font-weight-bold order-view-btn"  oid={{$ordersItem->oid}} >View</span>
+                                <button class="btn btn-danger text-white border-0 RT-shadow order-view-btn" tab="cancelled" oid={{$ordersItem->oid}} data-toggle="modal" data-target="#order-info-model">
+                                    <i class="fas fa-eye font-weight-bold order-view-btn" tab="cancelled"  oid={{$ordersItem->oid}} ></i>
+                                    <span class="font-weight-bold order-view-btn" tab="cancelled" oid={{$ordersItem->oid}} >View</span>
                                 </button>
                             
                             </div>

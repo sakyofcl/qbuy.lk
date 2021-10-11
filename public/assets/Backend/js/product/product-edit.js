@@ -100,4 +100,29 @@ $(document).ready(()=>{
         
         
     }
+
+
+    var nxtico = "<i class='fas fa-chevron-right'></i>";
+    var prvico = "<i class='fas fa-chevron-left'></i>";
+
+    $('#product-category-slider').owlCarousel({
+        loop: false,
+        nav: false,
+        dots: false,
+        autoWidth:true,
+        navText: [prvico, nxtico],
+        responsive: {
+            0:{
+                items:4
+            },
+            400: {
+                items: 5
+            }
+            ,
+            1000:{
+                items:10
+            }
+        }
+    })
+
 })

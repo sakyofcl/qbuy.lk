@@ -181,17 +181,17 @@
 
                                         <div class="order-tap-pane-controller mb-2">
                                             
-                                            <a class="nav-link btn {{$tab=="new" ? "active" : ""}}" href="/order?tab=new">
-                                                New
+                                            <a class="nav-link btn position-relative {{$tab=="new" ? "active" : ""}} " href="/order?tab=new">
+                                                New  <span class="badge badge-pill badge-primary ml-1 p-1 RT-shadow border">{{$stageCount['new']}}</span>
                                             </a>
                                             <a class="nav-link btn {{$tab=="process" ? "active" : ""}}" href="/order?tab=process">
-                                                Process
+                                                Processing <span class="badge badge-pill badge-primary ml-1 p-1 RT-shadow border ">{{$stageCount['process']}}</span>
                                             </a>
                                             <a class="nav-link btn {{$tab=="complete" ? "active" : ""}}" href="/order?tab=complete">
-                                                Complete
+                                                Completed  <span class="badge badge-pill badge-primary ml-1 p-1 RT-shadow border">{{$stageCount['complete']}}</span>
                                             </a>
                                             <a class="nav-link btn {{$tab=="cancelled" ? "active" : ""}}" href="/order?tab=cancelled">
-                                                Cancelled
+                                                Cancelled <span class="badge badge-pill badge-primary ml-1 p-1 RT-shadow border">{{$stageCount['cancelled']}}</span>
                                             </a>
 
                                         </div>

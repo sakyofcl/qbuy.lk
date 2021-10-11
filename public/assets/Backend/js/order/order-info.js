@@ -28,6 +28,11 @@ $(document).ready(()=>{
     let url="/api/order/view/info?oid=";
      
     function editHandleClick(e){
+        //tab
+        let tab=$(e.target).attr('tab');
+        
+
+        
         const addId={
             name:'add-name',
             street:'add-street',
@@ -55,6 +60,10 @@ $(document).ready(()=>{
         axios.get(url+oid).then((res)=>{
             if(res.data.status){
 
+
+
+
+
                 //set data order id and date
                 
                 if(res.data.order){
@@ -68,6 +77,27 @@ $(document).ready(()=>{
                         houre:date.getHours(),
                         minit:date.getMinutes()
                     };
+
+
+                    switch (tab) {
+                        case 'new':
+                            acceptOrderBtn.text('Accept');
+                            cancelOrderBtn.text('Reject');
+                            acceptOrderBtn.attr('href','/order/status/change?status=process&oid='+orderId);
+                            cancelOrderBtn.attr('href','/order/status/change?status=cancelled&oid='+orderId);
+                        case 'process':
+                            acceptOrderBtn.text('Renew');
+                            cancelOrderBtn.text('Reject');
+                            acceptOrderBtn.attr('href','/order/status/change?status=pending&oid='+orderId);
+                            cancelOrderBtn.attr('href','/order/status/change?status=cancelled&oid='+orderId);
+                        case 'complete':
+                            break;
+                        case 'cancelled':
+                            break;
+                        default:
+                            break;
+                    }
+
                     
                     
                     const dateFinal=datevalues.day+"/"+datevalues.month+"/"+datevalues.year+"  "+datevalues.houre+":"+datevalues.minit;
