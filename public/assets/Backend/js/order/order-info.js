@@ -69,7 +69,7 @@ $(document).ready(()=>{
                 if(res.data.order){
                     const orderId=res.data.order.oid;
                     const orderDate=res.data.order.date;
-                    date = new Date(orderDate)
+                    let date = new Date(orderDate)
                     const datevalues = {
                         year:date.getFullYear(),
                         month:date.getMonth()+1,
@@ -79,24 +79,28 @@ $(document).ready(()=>{
                     };
 
 
+                    /*
                     switch (tab) {
                         case 'new':
-                            acceptOrderBtn.text('Accept');
-                            cancelOrderBtn.text('Reject');
-                            acceptOrderBtn.attr('href','/order/status/change?status=process&oid='+orderId);
-                            cancelOrderBtn.attr('href','/order/status/change?status=cancelled&oid='+orderId);
-                        case 'process':
-                            acceptOrderBtn.text('Renew');
-                            cancelOrderBtn.text('Reject');
-                            acceptOrderBtn.attr('href','/order/status/change?status=pending&oid='+orderId);
-                            cancelOrderBtn.attr('href','/order/status/change?status=cancelled&oid='+orderId);
-                        case 'complete':
-                            break;
-                        case 'cancelled':
-                            break;
-                        default:
-                            break;
+                            acceptOrderBtn.removeClass('d-none');
+                            cancelOrderBtn.removeClass('d-none');
+                        case 'process' || 'complete' || 'cancelled':
+                            acceptOrderBtn.addClass('d-none');
+                            cancelOrderBtn.addClass('d-none');
                     }
+                    */
+
+                    
+                    if(tab=="new"){
+                        acceptOrderBtn.removeClass('d-none');
+                        cancelOrderBtn.removeClass('d-none');
+                    }
+                    else{
+                        acceptOrderBtn.addClass('d-none');
+                        cancelOrderBtn.addClass('d-none');
+                    }
+
+                    
 
                     
                     
@@ -142,10 +146,24 @@ $(document).ready(()=>{
                     productItemWrapper.append(productListTotal(fullTotal));
 
                 }
-                console.log(res.data.product);
+
+               
+                var node = document.getElementById('invoice-div');
+                var options = {
+                    quality: 0.95
+                };
+
+                domtoimage.toJpeg(node, options).then((data) => {
+                    
+                    $('#invoice-print-btn').attr('href', data);
+                    $('#invoice-print-btn').attr('download', true);
+                })
+
+
             }
             else{
                 console.log("no ok");
+                $('#invoice-print-btn').attr('download', false);
             }
             
         }) 
@@ -167,5 +185,7 @@ $(document).ready(()=>{
         return d.toLocaleTimeString.replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
     }
 
+
     
+
 })

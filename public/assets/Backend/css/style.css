@@ -109,6 +109,9 @@
     font-weight:bold;
     text-transform:capitalize;
 }
+.order-tap-pane-controller a span{
+  font-size: 13px;
+}
 .order-tap-pane-controller .nav-link.active{
     background-color: #e74a3b!important;
     color:#fff;
@@ -467,6 +470,10 @@
     background-color: rgba(0, 0, 0, 0.192);
     transition: 0.5s;
     border:1px solid #c1c1c1;
+  }
+  .add-products-image-wrapper:hover{
+    background-color:transparent;
+    border: none;
   }
   
   .content-details i{

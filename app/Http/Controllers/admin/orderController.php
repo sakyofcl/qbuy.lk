@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 use App\model\order;
 use App\model\order_stage;
@@ -18,34 +19,36 @@ use App\model\payment_method;
 
 class orderController extends Controller
 {
-    public function order(Request $request)
+    public function order($name,Request $request)
     {
-
-        
-
-       
-
         
         $tab="new";
-        if($request->tab){
-            if($request->tab=="new"){
+        $rawQuery="order_stages.stage = 'new' ";
+        if($name){
+            if($name=="new"){
+                $rawQuery="order_stages.stage = 'new' ";
                 $tab="new";
             }
-            else if($request->tab=="process"){
+            else if($name=="process"){
+                $rawQuery=" order_stages.stage = 'process' OR order_stages.stage = 'couriered' OR order_stages.stage = 'delivered' ";
                 $tab="process";
             }
-            else if($request->tab=="complete"){
+            else if($name=="complete"){
+                $rawQuery="order_stages.stage = 'complete' ";
                 $tab="complete";
             }
-            else if($request->tab=="cancelled"){
+            else if($name=="cancelled"){
+                $rawQuery="order_stages.stage = 'cancelled' ";
                 $tab="cancelled";
             }
             else{
+                $rawQuery="order_stages.stage = 'new' ";
                 $tab="new";
             }
 
         }
         else{
+            $rawQuery="order_stages.stage = 'new' ";
             $tab="new";
         }
 
@@ -55,15 +58,17 @@ class orderController extends Controller
                         'orders.oid',
                         'orders.date',
                         'orders.uid',
+                        'orders.paid',
                         'orders.payment',
-                        'order_stages.stage',
+                        'order_stages.stage'
+                        
                     ]
                 )
                 ->join('order_stages','order_stages.oid','=','orders.oid')
-                ->where(['order_stages.stage'=>$tab])
+                ->whereRaw($rawQuery)
                 ->orderBy('orders.date','DESC')
                 ->paginate(10);
-            
+        
         $orderProduct=order_product::get(['oid','price','qty']);
 
 
@@ -81,7 +86,7 @@ class orderController extends Controller
 
         $countProcess=DB::table('order_stages')
             ->join('orders','orders.oid','order_stages.oid')
-            ->where('order_stages.stage','=','process')
+            ->whereRaw(" order_stages.stage = 'process' OR order_stages.stage = 'couriered' OR order_stages.stage = 'delivered' ")
             ->count('order_stages.stage');
 
         $countCancelled=DB::table('order_stages')
@@ -122,6 +127,11 @@ class orderController extends Controller
                     'stage' =>$status
                 ));
 
+                session()->flash([
+                    'message', 'Task was successful!',
+                    'status'=>1
+                ]);
+                return "ok";
                 return back();
             }
             else{
@@ -129,6 +139,7 @@ class orderController extends Controller
             }
         }
         else{
+            
             return back();
         }
     }
@@ -177,6 +188,8 @@ class orderController extends Controller
                     order_stage::where('oid', $request->oid)->update(array(
                         'stage' =>"complete"
                     ));
+
+                    
                 }
                 else if($request->status=="cancelled"){
                     order::where('oid', $request->oid)->update(array(
@@ -185,6 +198,13 @@ class orderController extends Controller
                     order_stage::where('oid', $request->oid)->update(array(
                         'stage' =>"cancelled"
                     ));
+
+                    return back()->with(
+                        [
+                            'message'=>"This order is cancelled #$request->oid",
+                            'status'=>1
+                        ]
+                    );
                 }
                 else if($request->status=="process"){
                     order::where('oid', $request->oid)->update(array(
@@ -193,6 +213,13 @@ class orderController extends Controller
                     order_stage::where('oid', $request->oid)->update(array(
                         'stage' =>"process"
                     ));
+
+                    return back()->with(
+                        [
+                            'message'=>"Successfully accepted this order #$request->oid",
+                            'status'=>1
+                        ]
+                    );
                 }
                 else if($request->status=="pending"){
                     order::where('oid', $request->oid)->update(array(
@@ -212,5 +239,88 @@ class orderController extends Controller
         else{
             return back();
         }
+    }
+
+
+    public function changeOrderStatusAndPaid(Request $request){
+        $validator=Validator::make($request->all(),[
+            'oid'=>'required|numeric',
+            'paid'=>'required|numeric',
+            'status'=>'required',
+        ]);
+
+        if($validator->fails()){
+            return back()->with(
+                [
+                    'message'=>"All fields are required",
+                    'status'=>0
+                ]
+            );
+        }
+
+        if(order::where('oid',$request->oid)->exists()){
+            if($request->paid==1 && $request->status=="delivered"){
+
+                order::where('oid', $request->oid)->update(array(
+                    'status' =>"complete",
+                    'paid'=>1
+                ));
+                order_stage::where('oid', $request->oid)->update(array(
+                    'stage' =>"complete"
+                ));
+
+                return back()->with(
+                    [
+                        'message'=>"This order is complete #$request->oid",
+                        'status'=>1
+                    ]
+                );
+
+            }
+            else{
+                $status="process";
+                $paid=0;
+                
+                if($request->status=="couriered"){
+                    $status="couriered";
+                }
+                elseif($request->status=="delivered"){
+                    $status="delivered";
+                }
+
+                if($request->paid==1){
+                    $paid=1; 
+                }
+
+                order::where('oid', $request->oid)->update(array(
+                    'paid'=>$paid
+                ));
+                order_stage::where('oid', $request->oid)->update(array(
+                    'stage' =>$status
+                ));
+
+               
+                $paidMsg= $paid==0?'unpaid':'paid';
+                return back()->with(
+                    [
+                        'message'=>"This order is $status"." and payment is $paidMsg",
+                        'status'=>1
+                    ]
+                );
+            }
+
+            
+        }
+        else{
+            return back()->with(
+                [
+                    'message'=>"Order not found!",
+                    'status'=>2
+                ]
+            );
+        }
+
+
+        
     }
 }

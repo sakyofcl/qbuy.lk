@@ -40,7 +40,7 @@
                     <!-- breadcrumb -->
                     <?php
                     $path = [
-                        ['name' => 'home', 'link' => '/'], ['name' => 'Product', 'link' => '/product']
+                        ['name' => 'home', 'link' => '/dashboard'], ['name' => 'Products', 'link' => '/product/all']
                     ];
                     echo breadcrumb('Add product', $path);
                     echo alertMsg();
@@ -120,7 +120,7 @@
                                                 </div>
 
                                                 <div class="col-md-12 mt-5">
-                                                    <div class="img-upload-wrapper">
+                                                    <div class="img-upload-wrapper add-products-image-wrapper">
                                                         <div class="pt-1 pb-1">
                                                             <div class="image-preview borderw-100 row m-0 d-none " id="img-preview">
                                                                 <div class="col-md-4 p-1 border border-dark RT-shadow position-relative">

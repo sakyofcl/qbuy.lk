@@ -7,12 +7,13 @@
       <div class="modal-header">
         <span class="badge badge-danger RT-shadow p-2 rounded-0 text-uppercase">Order details</span>
         
+
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body product-info-body p-1">
-          <div class="invoice-card position-relative">
+          <div class="invoice-card position-relative" id="invoice-div">
               <div class="invoice-title">
                   <div id="main-title" class="mt-0">
                       <h4 style="color:#000;">INVOICE</h4>
@@ -68,11 +69,18 @@
               </div>
               -->
           </div>
+
+          
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary RT-shadow" data-dismiss="modal">Close</button>
-        <a href="#"  class="btn btn-danger RT-shadow" id="reject-order-btn">Reject</button>
-        <a href="#" class="btn btn-success RT-shadow" id="accept-order-btn">Accept</a>
+        <a href="#" class="btn btn-light border RT-shadow" id="invoice-print-btn"> <i class="fas fa-file-invoice mr-1"></i>Invoice</a>
+
+        <div class='w-75 d-flex justify-content-end'>
+          <button type="button" class="btn btn-secondary RT-shadow ml-2" data-dismiss="modal">Close</button>
+          <a href="#"  class="btn btn-danger RT-shadow ml-2" id="reject-order-btn">Reject</button>
+          <a href="#" class="btn btn-success RT-shadow ml-2" id="accept-order-btn">Accept</a>
+        </div>
+        
       </div>
     </div>
   </div>

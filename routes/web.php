@@ -30,13 +30,15 @@ Route::group(['middleware' => 'admin.check'], function () {
     Route::get('/dashboard', [dashboard::class, 'index']);
 
     #------ [ PRODUCT ] -----#
-    Route::get('/product', [productController::class, 'index']);
-    Route::get('/product/{name}', [productController::class, 'getProductByCategoryName']);
+    #Route::get('/product', [productController::class, 'index']);
     Route::get('/product/create', [productController::class, 'productCreate']);
     Route::post('/product/create/store', [productController::class, 'productStore']);
     Route::get('/product/delete', [productController::class, 'productDelete']);
     Route::post('/product/update/store', [productController::class, 'productUpdate']);
     Route::get('/product/stock/update/staus', [productController::class, 'productStockStatusUpdate']);
+    Route::get('/product/{name}', [productController::class, 'getProductByCategoryName']);
+    Route::get('/search/product', [productController::class, 'searchProduct']);
+    
     #------ [ CATEGORY ] -----#
     Route::get('/category-tab', [categoryController::class, 'category']);
     Route::get('/category/main/delete', [categoryController::class, 'deleteMainCategory']);
@@ -50,12 +52,16 @@ Route::group(['middleware' => 'admin.check'], function () {
     Route::post('/offer/update/store', [offerController::class, 'updateOffer']);
     Route::get('/offer/delete', [offerController::class, 'deleteOffer']);
     #------ [ ORDER ] -----#
-    Route::get('/order', [orderController::class, 'order']);
+    #Route::get('/order', [orderController::class, 'order']);
+    Route::get('/order/{name}', [orderController::class, 'order']);
     Route::get('/order/accept', [orderController::class, 'orderAccept']);
     Route::get('/order/status/change', [orderController::class, 'changeOrderStatus']);
+    Route::post('/order/setting/status-paid/change/store', [orderController::class, 'changeOrderStatusAndPaid']);
+    
 
     #------ [ USER ] -----#
     Route::get('/user', [userController::class, 'user']);
+    Route::get('/search/user', [userController::class, 'searchUser']);
     Route::post('/admin/edit/user/profile', [userController::class, 'editUserProfile']);
     Route::post('/admin/change/user/password', [userController::class, 'changeUserPassword']);
     Route::post('/admin/delete/user', [userController::class, 'deleteUser']);

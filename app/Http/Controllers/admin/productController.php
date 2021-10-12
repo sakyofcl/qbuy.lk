@@ -179,4 +179,44 @@ class productController extends Controller
 
         return view('admin/product/product', ['product' => $data, 'stock_status' => $stock_status, 'main' => $maincat, 'sub' => $subcat,'current'=>$name]);
     }
+
+    public function searchProduct(Request $request){
+        
+        
+        if($request->q){
+            $stock_status = product_stock_status::all();
+            $maincat = category::all();
+            $subcat = sub_category::all();
+
+            
+            #final string;
+            $ask=" ";
+            #explode word by " "
+            $word=explode(" ",$request->q);
+
+            foreach($word as $wordItem){
+                $ask.=metaphone($wordItem)." ";
+            }
+
+
+            #common all search
+            $data=product::query()
+            ->orWhere('key_tag', 'LIKE', "%{$ask}%") 
+            ->orWhere('name', 'LIKE', $request->q)
+            ->orderBy('date','DESC')
+            ->paginate(10);
+            
+            if(count($data)>0){
+                
+                return view('admin/product/product', ['product' => $data, 'stock_status' => $stock_status, 'main' => $maincat, 'sub' => $subcat,'current'=>'0']);
+            }
+            else{
+                return view('admin/product/product', ['product' => [], 'stock_status' => $stock_status, 'main' => $maincat, 'sub' => $subcat,'current'=>'0']);
+            }
+
+           
+        }
+    }
+
+    
 }

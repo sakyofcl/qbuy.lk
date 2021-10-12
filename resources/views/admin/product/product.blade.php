@@ -40,9 +40,9 @@
                     <!-- breadcrumb -->
                     <?php
                     $path = [
-                        ['name' => 'home', 'link' => '/']
+                        ['name' => 'home', 'link' => '/dashboard']
                     ];
-                    echo breadcrumb('product', $path);
+                    echo breadcrumb('products', $path);
                     ?>
                     <!-- end breadcrumb -->
 
@@ -153,16 +153,22 @@
                                         <h6 class="m-0 font-weight-bold text-primary text-capitalize">
                                             <i class="fas fa-cogs pr-2"></i>Manage Products
                                         </h6>
+
+                                       
+
+                                        <form class="input-group w-50" action="/search/product" method="get">
+                                            <input type="text" name="q" class="form-control" placeholder="search product..!">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-danger" type="submit"><i class="fas fa-search " id="searchIcon"></i></button>
+                                            </div>
+                                        </form>
+
                                         <a href="/product/create" class="btn btn-danger font-weight-bold RT-shadow">
                                             Add Products
                                         </a>
                                     </div>
                                     <div class="card-body">
-                                        <span class="badge badge-primary rounded p-2 text-capitalize border mb-3">
-                                            <i class="fas fa-list-ul pr-1"></i>List products
-                                        </span>
-
-                                    
+                                       
 
 
                                     <!--

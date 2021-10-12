@@ -154,18 +154,21 @@
                                         <h6 class="m-0 font-weight-bold text-primary text-capitalize">
                                             <i class="fas fa-cogs pr-2"></i>Users
                                         </h6>
+
+                                        <form class="input-group w-50" action="/search/user" method="get">
+                                            <input type="text" name="q" class="form-control" placeholder="search user..!">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-danger" type="submit"><i class="fas fa-search " id="searchIcon"></i></button>
+                                            </div>
+                                        </form>
+
+
                                         <button  class="btn btn-danger font-weight-bold RT-shadow"  data-toggle="modal" data-target="#user-add-model">
                                             Add User
                                         </button>
 
                                     </div>
                                     <div class="card-body">
-
-                                        <span class="badge badge-primary rounded p-2 text-capitalize border mb-3">
-                                            <i class="fas fa-list-ul pr-1"></i>List Users
-                                        </span>
-
-
 
                                         <div class="filter-wrapper mb-3">
                                             <form class="row m-0 d-flex flex-nowrap" method="GET" action="#">
@@ -197,6 +200,7 @@
                                                             <th>Name</th>
                                                             <th>Status</th>
                                                             <th>Level</th>
+                                                            <th>Points</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
@@ -266,6 +270,15 @@
                                                                             
                                                                         </span>
                                                                         
+                                                                    </div>
+                                                                </td>
+
+                                                                <td>
+                                                                    <div>
+                                                                        <span style="font-size:13px;color:#000;">
+                                                                            <span id="user-point">{{$userItem->point}}</span>
+                                                                            <i class="fas fa-coins text-warning"></i>
+                                                                        </span>
                                                                     </div>
                                                                 </td>
                                                                 

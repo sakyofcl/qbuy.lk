@@ -154,6 +154,7 @@
                 <div class="container-fluid">
 
                     @include('/admin/Component/breadcrumb')
+                    @include('/admin/Component/message/alert-box')
 
                     <!-- breadcrumb -->
                     <?php
@@ -164,6 +165,18 @@
                     ?>
                     <!-- end breadcrumb -->
 
+                    <?php
+                        if(session::has('message')){
+                            $status=0;
+                            $msg=session::get('message');
+
+                            if(session::has('status')){
+                                $status=session::get('status');
+                            }
+                            echo alertBox($msg,$status);
+                        }
+                    ?>
+
 
 
 
@@ -173,25 +186,25 @@
                                 <div class="card RT-shadow RT-radius border-0 mb-3 RT-list-products">
                                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
                                         <h6 class="m-0 font-weight-bold text-primary text-capitalize">
-                                            <i class="fas fa-cogs pr-2"></i>Orders
+                                            <i class="fas fa-cogs pr-2"></i>Manage Orders
                                         </h6>
 
                                     </div>
                                     <div class="card-body">
 
-                                        <div class="order-tap-pane-controller mb-2">
+                                        <div class="order-tap-pane-controller mb-2" >
                                             
-                                            <a class="nav-link btn position-relative {{$tab=="new" ? "active" : ""}} " href="/order?tab=new">
-                                                New  <span class="badge badge-pill badge-primary ml-1 p-1 RT-shadow border">{{$stageCount['new']}}</span>
+                                            <a class="nav-link btn position-relative {{$tab=="new" ? "active" : ""}} " href="/order/new">
+                                                New  <span class="badge  ml-1 p-1 ">({{$stageCount['new']}})</span>
                                             </a>
-                                            <a class="nav-link btn {{$tab=="process" ? "active" : ""}}" href="/order?tab=process">
-                                                Processing <span class="badge badge-pill badge-primary ml-1 p-1 RT-shadow border ">{{$stageCount['process']}}</span>
+                                            <a class="nav-link btn {{$tab=="process" ? "active" : ""}}" href="/order/process">
+                                                Processing <span class="badge  ml-1 p-1  ">({{$stageCount['process']}})</span>
                                             </a>
-                                            <a class="nav-link btn {{$tab=="complete" ? "active" : ""}}" href="/order?tab=complete">
-                                                Completed  <span class="badge badge-pill badge-primary ml-1 p-1 RT-shadow border">{{$stageCount['complete']}}</span>
+                                            <a class="nav-link btn {{$tab=="complete" ? "active" : ""}}" href="/order/complete">
+                                                Completed  <span class="badge  ml-1 p-1 ">({{$stageCount['complete']}})</span>
                                             </a>
-                                            <a class="nav-link btn {{$tab=="cancelled" ? "active" : ""}}" href="/order?tab=cancelled">
-                                                Cancelled <span class="badge badge-pill badge-primary ml-1 p-1 RT-shadow border">{{$stageCount['cancelled']}}</span>
+                                            <a class="nav-link btn {{$tab=="cancelled" ? "active" : ""}}" href="/order/cancelled">
+                                                Cancelled <span class="badge  ml-1 p-1 ">({{$stageCount['cancelled']}})</span>
                                             </a>
 
                                         </div>
@@ -243,11 +256,13 @@
     </a>
     <!-- PRODUCT INFO MODEL -->
     @include('/admin/Component/popup/order-info')
+    @include('/admin/Component/popup/order-setting')
 
     <!----------------------------[ Javascript Library ]---------------------------->
     @include('/admin/Component/Link/js')
-    <script src="/assets/Backend/js/category/category.js"></script>
-    <script src="/assets/Backend/js/order/order-info.js"></script>
+    <script src="/assets/Backend/js/category/category.js" type="module"></script>
+    <script src="/assets/Backend/js/order/order-info.js" type="module"></script>
+    <script src="/assets/Backend/js/order/order-setting.js" type="module"></script>
 
 </body>
 

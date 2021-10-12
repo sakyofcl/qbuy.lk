@@ -27,6 +27,7 @@ class userController extends Controller
                 'user_profiles.name',
                 'user_profiles.image',
                 'users.level',
+                'users.point',
                 'users.status',
                 'user_tokens.access_token',
             ]
@@ -284,6 +285,38 @@ class userController extends Controller
         }
         
         if(user::where('phone',$data->phone)->exists()){
+            return back();
+        }
+    }
+
+
+    public function searchUser(Request $request){
+        
+        
+        if($request->q){
+            
+            $data=DB::table('users')
+            ->select(
+                [
+                    'users.uid',
+                    'users.phone',
+                    'user_profiles.name',
+                    'user_profiles.image',
+                    'users.level',
+                    'users.point',
+                    'users.status',
+                    'user_tokens.access_token',
+                ]
+            )
+            ->join('user_profiles','users.uid','=','user_profiles.uid')
+            ->join('user_tokens','users.uid','=','user_tokens.uid')
+            ->where('user_profiles.name', 'LIKE', $request->q)
+            ->paginate(10);
+
+            return view('admin/user/user',['users'=>$data]);
+
+        }
+        else{
             return back();
         }
     }

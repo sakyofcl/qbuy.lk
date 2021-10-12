@@ -39,9 +39,9 @@
                     <!-- breadcrumb -->
                     <?php
                     $path = [
-                        ['name' => 'home', 'link' => '/']
+                        ['name' => 'home', 'link' => '/dashboard']
                     ];
-                    echo breadcrumb('offer', $path);
+                    echo breadcrumb('offers', $path);
                     ?>
                     <!-- end breadcrumb -->
 
@@ -245,18 +245,13 @@
                                 <div class="card RT-shadow RT-radius border-0 mb-3 RT-list-products">
                                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
                                         <h6 class="m-0 font-weight-bold text-primary text-capitalize">
-                                            <i class="fas fa-cogs pr-2"></i>Users
+                                            <i class="fas fa-cogs pr-2"></i>Manage Offers
                                         </h6>
 
                                     </div>
                                     <div class="card-body">
 
-                                        <span class="badge badge-primary rounded p-2 text-capitalize border mb-3">
-                                            <i class="fas fa-list-ul pr-1"></i>List Users
-                                        </span>
-
-
-
+                                
                                         <div class="filter-wrapper mb-3">
                                             <form class="row m-0 d-flex flex-nowrap">
                                                 <div class="col-4 col-md-2 p-0 mr-2">

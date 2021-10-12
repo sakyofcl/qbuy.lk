@@ -108,6 +108,9 @@
                 </div>
 
                 <div class="ship-address-container RT-shadow RT-radius">
+                    <div class="w-100 p-1">
+                        <span class="font-weight-bold text-capitalize" style="color:#000;">Ship addresses</span>
+                    </div>
                     <div class="ship-address-wrapper owl-carousel w-100" id="ship-address-carousel">
 
                         <div class="ship-address-item w-100">
