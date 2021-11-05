@@ -96,7 +96,7 @@ class apiProductController extends Controller
                 ->select(['*'])
                 ->orderByRaw('RAND()')
                 ->where('products.cid','=',$cat_Id)
-                ->get();
+                ->paginate(1);
             
             #$data=product::where('cid',$cat_Id)->order->get();
 
@@ -113,8 +113,21 @@ class apiProductController extends Controller
                     
                     $dataItem->image="http://qbuy.lk/products/".$dataItem->image;
                 }
+
+                $next=false;
+                if($data->nextPageUrl()){
+                    $next=$data->nextPageUrl();
+                }
+                else{
+                    $next=false;
+                }
     
-                return response()->json(['status'=>true,'data'=>$data,'message'=>"get product successfully..!"]);
+                return response()->json([
+                    'status'=>true,
+                    'data'=>$data,
+                    'message'=>"get product successfully..!",
+                    'next'=>$next
+                ]);
             }
             else{
                 return response()->json(['status'=>true,'data'=>[],'message'=>"no product in this category..!"]);
