@@ -96,7 +96,7 @@ class apiProductController extends Controller
                 ->select(['*'])
                 ->orderByRaw('RAND()')
                 ->where('products.cid','=',$cat_Id)
-                ->paginate(1);
+                ->paginate(20);
             
             #$data=product::where('cid',$cat_Id)->order->get();
 
