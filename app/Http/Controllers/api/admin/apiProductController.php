@@ -124,7 +124,7 @@ class apiProductController extends Controller
     
                 return response()->json([
                     'status'=>true,
-                    'data'=>$data,
+                    'data'=>$data->items(),
                     'message'=>"get product successfully..!",
                     'next'=>$next
                 ]);
